@@ -1,6 +1,6 @@
 {
-  "short_name": "Feira-Livre App",
-  "name": "Feira-Livre App",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "estande-de-feira.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "estande-de-feira-128.png",
+      "src": "logo192.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "192x192"
     },
     {
-      "src": "estande-de-feira-512.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
