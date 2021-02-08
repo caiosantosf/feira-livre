@@ -4,7 +4,6 @@ module.exports = {
   async getMany (req, res) {
     const { currentPage } = req.headers
     const feiras = await db('feiras')
-                          .whereNot({ 'name' : 'admin'})
                           .orderBy('name')
                           .paginate({ perPage: 10, currentPage, isLengthAware: true  })
 
@@ -45,9 +44,9 @@ module.exports = {
     try {
       const result = await db('feiras').where({ id }).update({ id, ...data })
       if (result) {
-        return res.status(200).json({ message : 'feira alterada'})
+        return res.status(200).json({ message : 'feira alterada' })
       }
-      return res.status(404).json({ message: 'feira não encontrada'})
+      return res.status(404).json({ message: 'feira não encontrada' })
     } catch (error) {
       return res.status(500).json(error)     
     }
@@ -58,8 +57,8 @@ module.exports = {
     const result = await db('feiras').where({ id }).del()
 
     if (result) {
-      return res.status(200).json({ message: 'feira excluída'})
+      return res.status(200).json({ message: 'feira excluída' })
     }
-    return res.status(404).json({ message: 'feira não encontrada'})
+    return res.status(404).json({ message: 'feira não encontrada' })
   }
 }
