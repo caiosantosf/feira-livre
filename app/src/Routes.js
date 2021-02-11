@@ -5,7 +5,8 @@ import App        from './components/usuario/App'
 import Login      from './components/usuario/Login'
 import NovaSenha  from './components/usuario/NovaSenha'
 import Cadastro   from './components/usuario/Cadastro'
-import Cliente    from './components/cliente/cliente'
+import Feiras     from './components/feira/feiras'
+import Feirantes  from './components/feirante/feirantes'
 
 
 export default function Routes() {
@@ -16,7 +17,8 @@ export default function Routes() {
         <Route path="/login" exact component={Login} />
         <Route path="/cadastro" exact component={Cadastro} />
         <Route path="/novasenha" exact component={NovaSenha} />
-        <Route path="/cliente" exact component={Cliente} />
+        <Route path="/feiras" exact component={Feiras} />
+        <Route path="/feirantes" exact component={Feirantes} />
       </Switch>
     </BrowserRouter>
   )

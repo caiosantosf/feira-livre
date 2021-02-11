@@ -68,10 +68,10 @@ const [cidade, setCidade] = React.useState('');
     setCidade(event.target.value);
   };
 
-const [feira, setFeira] = React.useState('');
+const [estado, setEstado] = React.useState('');
 
-  const handleChangeFeira = (event) => {
-    setFeira(event.target.value);
+  const handleChangeEstado = (event) => {
+    setEstado(event.target.value);
   };
 
   
@@ -87,6 +87,20 @@ const [feira, setFeira] = React.useState('');
         </Typography>
 
         <FormControl className={classes.formControl}>  
+        <InputLabel id="select-estado">Estado</InputLabel>
+        <Select
+          className={classes.form}
+          labelId="select-estado"
+          id="select-estado"
+          value={estado}
+          onChange={handleChangeEstado}
+        >
+          <MenuItem value={1}>SP</MenuItem>
+          <MenuItem value={2}>MG</MenuItem>
+          <MenuItem value={3}>RJ</MenuItem>
+        </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>  
         <InputLabel id="select-cidade">Cidade</InputLabel>
         <Select
           labelId="select-cidade"
@@ -99,21 +113,7 @@ const [feira, setFeira] = React.useState('');
           <MenuItem value={3}>Batatais</MenuItem>
         </Select>
         </FormControl>
-        <FormControl className={classes.formControl}>  
-        <InputLabel id="select-feira">Local da Feira-Livre</InputLabel>
-        <Select
-          className={classes.form}
-          labelId="select-feira"
-          id="select-feira"
-          value={feira}
-          onChange={handleChangeFeira}
-        >
-          <MenuItem value={1}>Av. Major Nicácio</MenuItem>
-          <MenuItem value={2}>Centro</MenuItem>
-          <MenuItem value={3}>Estação</MenuItem>
-        </Select>
-        </FormControl>
-        
+
         <form className={classes.form}>
           <Button
             type="submit"
@@ -122,7 +122,7 @@ const [feira, setFeira] = React.useState('');
             color="primary"
             className={classes.submit}
             onClick={() => {
-              history.push('/cliente')
+              history.push('/feiras')
             }}
           >
             Acessar
