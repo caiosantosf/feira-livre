@@ -96,7 +96,7 @@ export default function ImgMediaCard() {
             </AccordionSummary>
             <AccordionDetails>
                 <Box display="flex" flexWrap="wrap" p={1} m={1} bgcolor="background.paper">
-                    <Box p={1} bgcolor="grey.300" css={{ maxWidth: 200 }}>
+                    <Box p={1} css={{ maxWidth: 200 }}>
                         <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia
@@ -124,7 +124,7 @@ export default function ImgMediaCard() {
                         </CardActionArea>
                         </Card>
                     </Box>
-                    <Box p={1} bgcolor="grey.300" css={{ maxWidth: 200 }}>
+                    <Box p={1} css={{ maxWidth: 200 }}>
                         <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia
@@ -152,7 +152,7 @@ export default function ImgMediaCard() {
                         </CardActionArea>
                         </Card>
                     </Box>
-                    <Box p={1} bgcolor="grey.300" css={{ maxWidth: 200 }}>
+                    <Box p={1} css={{ maxWidth: 200 }}>
                         <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia
@@ -180,7 +180,7 @@ export default function ImgMediaCard() {
                         </CardActionArea>
                         </Card>
                     </Box>
-                    <Box p={1} bgcolor="grey.300" css={{ maxWidth: 200 }}>
+                    <Box p={1} css={{ maxWidth: 200 }}>
                         <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia
@@ -208,7 +208,7 @@ export default function ImgMediaCard() {
                         </CardActionArea>
                         </Card>
                     </Box>
-                    <Box p={1} bgcolor="grey.300" css={{ maxWidth: 200 }}>
+                    <Box p={1} css={{ maxWidth: 200 }}>
                         <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia
