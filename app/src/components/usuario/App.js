@@ -34,21 +34,22 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    //marginTop: theme.spacing(8),
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    justifyContent: "center" ,
+    alignItems: "center" ,
+    alignContent: "center",
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    //marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 200,
+    width: '100%', // Fix IE 11 issue.
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -79,6 +80,12 @@ const [estado, setEstado] = React.useState('');
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+      <Box display="flex" 
+      flexDirection="column" 
+      justifyContent="center" 
+      alignItems="center" 
+      alignContent="center"
+      >
         <Typography component="h1" variant="h6">
           Seja Bem-Vindo ao App Feira-Livre
         </Typography>
@@ -129,9 +136,6 @@ const [estado, setEstado] = React.useState('');
           </Button>
 
           <div className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              Acesso do Feirante
-            </Typography>
             <Button
                 type="submit"
                 fullWidth
@@ -142,15 +146,17 @@ const [estado, setEstado] = React.useState('');
                   history.push('/login')
                 }}
               >
-                Feirante
+                Acesso Feira ou Feirante
               </Button>
           </div>
         </form>
+        
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+    
+        </Box>
       </div>
-
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+    </Container>  
   );
 }
