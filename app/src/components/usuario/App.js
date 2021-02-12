@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Paper from '@material-ui/core/Paper'
 import { api } from '../../config/api';
 
 function Copyright() {
@@ -34,8 +35,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
+    padding: '20px'
   },
   form: {
     width: '100%'
@@ -94,88 +94,91 @@ export default function SignIn() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-      <Box display="flex" 
-      flexDirection="column" 
-      justifyContent="center" 
-      alignItems="center" 
-      alignContent="center"
-      >
-        <Typography component="h1" variant="h6">
-          Seja Bem-Vindo ao App Feira-Livre
-        </Typography>
-        <Typography component="h1" variant="h6">
-          Escolha um local para visitar!
-        </Typography>
-
-        <FormControl className={classes.formControl}>  
-        <InputLabel id="select-estado">Estado</InputLabel>
-        <Select
-          className={classes.form}
-          labelId="select-estado"
-          id="select-estado"
-          value={estado}
-          onChange={handleChangeEstado}
-        >
-          {estados.map(estado => {
-            return (
-            <MenuItem key={estado.estado} value={estado.estado}>{estado.estado}</MenuItem>
-          )})}
-        </Select>
-        </FormControl>
-        <FormControl className={classes.formControl}>  
-        <InputLabel id="select-cidade">Cidade</InputLabel>
-        <Select
-          labelId="select-cidade"
-          id="select-cidade"
-          value={cidade}
-          onChange={handleChangeCidade}
-        >
-          {cidades.map(cidade => {
-            return (
-            <MenuItem key={cidades.cidades} value={cidade.cidade}>{cidade.cidade}</MenuItem>
-          )})}
-        </Select>
-        </FormControl>
-
-        <form className={classes.form}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => {
-              history.push('/feiras')
-            }}
-          >
-            Acessar
-          </Button>
-
+    <React.Fragment>
+      <div id="container-imagem"></div>
+      <Container component="main" maxWidth="false">
+        <Paper elevation={3}>
+          <CssBaseline />
           <div className={classes.paper}>
-            <Button
+          <Box display="flex" 
+              flexDirection="column" 
+              justifyContent="center" 
+              alignItems="center" 
+              alignContent="center"
+          >
+            <Typography component="h1" variant="h6">
+              Seja Bem-Vindo ao App Feira-Livre
+            </Typography>
+            <Typography component="h2" variant="h6">
+              Escolha um local para visitar!
+            </Typography>
+
+            <FormControl className={classes.formControl}>  
+            <InputLabel id="select-estado">Estado</InputLabel>
+            <Select
+              className={classes.form}
+              labelId="select-estado"
+              id="select-estado"
+              value={estado}
+              onChange={handleChangeEstado}
+            >
+              {estados.map(estado => {
+                return (
+                <MenuItem key={estado.estado} value={estado.estado}>{estado.estado}</MenuItem>
+              )})}
+            </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>  
+            <InputLabel id="select-cidade">Cidade</InputLabel>
+            <Select
+              labelId="select-cidade"
+              id="select-cidade"
+              value={cidade}
+              onChange={handleChangeCidade}
+            >
+              {cidades.map(cidade => {
+                return (
+                <MenuItem key={cidades.cidades} value={cidade.cidade}>{cidade.cidade}</MenuItem>
+              )})}
+            </Select>
+            </FormControl>
+
+            <form className={classes.form}>
+              <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
                 onClick={() => {
-                  history.push('/login')
+                  history.push('/feiras')
                 }}
               >
-                Acesso Feira ou Feirante
+                Acessar
               </Button>
-          </div>
-        </form>
+
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    className={classes.submit}
+                    onClick={() => {
+                      history.push('/login')
+                    }}
+                  >
+                    Acesso Feira ou Feirante
+                  </Button>
+            </form>
+            
+            <Box mt={8}>
+              <Copyright />
+            </Box>
         
-        <Box mt={8}>
-          <Copyright />
-        </Box>
-    
-        </Box>
-      </div>
-    </Container>  
+            </Box>
+          </div>
+        </Paper>
+      </Container>  
+    </React.Fragment>
   );
 }
