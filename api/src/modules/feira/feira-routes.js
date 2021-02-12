@@ -1,13 +1,22 @@
 const express = require('express')
-const { getMany, post, destroy, getOne, put } = require('./feira-controller')
+const { getMany, post, destroy, getOne, put, getEstados, getCidades } = require('./feira-controller')
 const { routeSecurity : security } = require('../../config/security')
-const validation = require('./user-validation')
+const validation = require('./feira-validation')
 
 const routes = express.Router()
 
 routes.get('/feiras',
   getMany
 )
+
+routes.get('/feiras/estados',
+  getEstados
+)
+
+routes.get('/feiras/estados/:estado/cidades',
+  getCidades
+)
+
 
 routes.post('/feiras', 
   validation(['cidade', 'estado', 'descricao']), 

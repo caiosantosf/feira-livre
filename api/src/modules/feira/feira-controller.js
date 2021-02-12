@@ -15,6 +15,41 @@ module.exports = {
     return res.status(204).json({ message: 'Não existem feiras cadastradas' })
   },
 
+  async getEstados (req, res) {
+    const { currentPage } = req.headers
+    const estados = await db('feiras')
+                          .select('estado')
+                          .groupBy('estado')
+                          .orderBy('estado')
+                          .paginate({ perPage: 10, currentPage, isLengthAware: true  })
+
+    if (estados.hasOwnProperty('data')) {
+      if (estados.data.length) {
+        return res.status(200).json(estados)
+      }
+    }
+    return res.status(204).json({ message: 'Não existem feiras cadastradas' })
+  },
+
+  async getCidades (req, res) {
+    const { currentPage } = req.headers
+    const { estado } = req.params
+
+    const cidades = await db('feiras')
+                          .select('cidade')
+                          .where({ estado })
+                          .groupBy('cidade')
+                          .orderBy('cidade')
+                          .paginate({ perPage: 10, currentPage, isLengthAware: true  })
+
+    if (cidades.hasOwnProperty('data')) {
+      if (cidades.data.length) {
+        return res.status(200).json(cidades)
+      }
+    }
+    return res.status(204).json({ message: 'Não existem feiras cadastradas' })
+  },
+
   async getOne (req, res) {
     const { id } = req.params
     const feira = await db('feiras').where({ id })
