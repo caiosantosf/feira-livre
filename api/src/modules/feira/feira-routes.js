@@ -17,7 +17,6 @@ routes.get('/feiras/estados/:estado/cidades',
   getCidades
 )
 
-
 routes.post('/feiras', 
   validation(['cidade', 'estado', 'descricao']), 
   post

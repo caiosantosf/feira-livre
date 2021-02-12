@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-
+import { api } from '../../config/api';
 
 function Copyright() {
   let history = useHistory()
@@ -38,41 +38,61 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    //marginTop: theme.spacing(1),
+    width: '100%'
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   formControl: {
     margin: theme.spacing(1),
-    width: '100%', // Fix IE 11 issue.
+    width: '100%'
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 }));
-
-
 
 export default function SignIn() {
   const classes = useStyles();
 
-let history = useHistory()
+  let history = useHistory()
 
-const [cidade, setCidade] = React.useState('');
+  const [cidades, setCidades] = React.useState([]);
+  const [estados, setEstados] = React.useState([]);
+
+  const [cidade, setCidade] = React.useState();
+  const [estado, setEstado] = React.useState();
 
   const handleChangeCidade = (event) => {
     setCidade(event.target.value);
   };
 
-const [estado, setEstado] = React.useState('');
-
   const handleChangeEstado = (event) => {
     setEstado(event.target.value);
+    handleGetCidades(event.target.value)
   };
 
-  
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/feiras/estados/')
+        setEstados(res.data)
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const handleGetCidades = async (estado) => {
+    try {
+      const res = await api.get(`/feiras/estados/${estado}/cidades`)
+      setCidades(res.data)
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -99,9 +119,10 @@ const [estado, setEstado] = React.useState('');
           value={estado}
           onChange={handleChangeEstado}
         >
-          <MenuItem value={1}>SP</MenuItem>
-          <MenuItem value={2}>MG</MenuItem>
-          <MenuItem value={3}>RJ</MenuItem>
+          {estados.map(estado => {
+            return (
+            <MenuItem key={estado.estado} value={estado.estado}>{estado.estado}</MenuItem>
+          )})}
         </Select>
         </FormControl>
         <FormControl className={classes.formControl}>  
@@ -112,9 +133,10 @@ const [estado, setEstado] = React.useState('');
           value={cidade}
           onChange={handleChangeCidade}
         >
-          <MenuItem value={1}>Franca</MenuItem>
-          <MenuItem value={2}>Riberão Preto</MenuItem>
-          <MenuItem value={3}>Batatais</MenuItem>
+          {cidades.map(cidade => {
+            return (
+            <MenuItem key={cidades.cidades} value={cidade.cidade}>{cidade.cidade}</MenuItem>
+          )})}
         </Select>
         </FormControl>
 
