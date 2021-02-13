@@ -54,7 +54,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   root: {
-    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
   },
   card: {
     width: '100%',
@@ -67,6 +69,15 @@ const useStyles = makeStyles((theme) => ({
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
+  },
+  texto: {
+    marginTop: theme.spacing(4),
+  },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: 'auto',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
   },
 }));
 
@@ -82,9 +93,15 @@ export default function ImgMediaCard() {
   };
 
   return (
-    <Container component="main" maxWidth="100%">
+    <div className={classes.root}>
+    <Container >
       <CssBaseline />
-        <div className={classes.root}>
+        <Typography component="h1" variant="h6" className={classes.texto}>
+          <Box textAlign="center" m={1}>
+            Aqui você encontra tudo o que procura!
+          </Box>
+        </Typography>
+        <div className={classes.texto}>
         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -291,10 +308,13 @@ export default function ImgMediaCard() {
             </AccordionDetails>
             </Accordion>
         </div>
-
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
+
+    <footer className={classes.footer}>
+        <Container maxWidth="sm">
+          <Copyright />
+        </Container>
+    </footer>
+    </div>
   );
 }
