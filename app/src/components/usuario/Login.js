@@ -34,7 +34,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -61,7 +60,6 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -77,6 +75,17 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: 'auto',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+  },
 }));
 
 export default function SignIn() {
@@ -85,78 +94,83 @@ export default function SignIn() {
   let history = useHistory()
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        
-      <Avatar alt="Banca de Feira" src="/images/banca-feira.png" />
+    <div className={classes.root}>
+      <Container component="main">
+        <CssBaseline />
+        <div className={classes.paper}>
+          
+        <Avatar alt="Banca de Feira" src="/images/banca-feira.png" />
 
-        <Typography component="h1" variant="h5">
-          Acessar Conta
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Endereço de Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Senha"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Continuar Conectado"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Acessar
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link 
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/novasenha')
-              }}>
-                Esqueceu a Senha?
-              </Link>
+          <Typography component="h1" variant="h5">
+            Acessar Conta
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Endereço de Email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Senha"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Continuar Conectado"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Acessar
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link 
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  history.push('/novasenha')
+                }}>
+                  Esqueceu a Senha?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  history.push('/cadastro')
+                }}>
+                  {"Não tem uma conta? Crie uma!"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/cadastro')
-              }}>
-                {"Não tem uma conta? Crie uma!"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    
+      <footer className={classes.footer}>
+          <Container maxWidth="sm">
+            <Copyright />
+          </Container>
+      </footer>
+    </div>
   );
 }
