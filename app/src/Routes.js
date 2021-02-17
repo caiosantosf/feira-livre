@@ -5,8 +5,8 @@ import App        from './components/usuario/App'
 import Login      from './components/usuario/Login'
 import NovaSenha  from './components/usuario/NovaSenha'
 import Cadastro   from './components/usuario/Cadastro'
-import Feiras     from './components/feira/feiras'
-import Feirantes  from './components/feirante/feirantes'
+import Feiras     from './components/cliente/feiras'
+import Feirantes  from './components/cliente/feirantes'
 
 
 export default function Routes() {
