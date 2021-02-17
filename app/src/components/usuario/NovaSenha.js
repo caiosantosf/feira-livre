@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box';
 
 function Copyright() {
   let history = useHistory()
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: '20px',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -61,10 +63,12 @@ export default function SignIn() {
   let history = useHistory()
 
   return (
-    <div className={classes.root}>
-      <Container component="main">
-        <CssBaseline />
-        <div className={classes.paper}>
+    <React.Fragment>
+      <div id="container-imagem"></div>
+      <Container component="main" maxWidth="false">
+        <Paper elevation={3}>
+          <CssBaseline />
+          <div className={classes.paper}>
           
           <Typography component="h1" variant="h5">
             Informe seu email
@@ -104,14 +108,12 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </form>
-        </div>
-      </Container>
-
-      <footer className={classes.footer}>
-          <Container maxWidth="sm">
+          <Box mt={8}>
             <Copyright />
-          </Container>
-      </footer>
-    </div>
+          </Box>
+        </div>
+        </Paper>
+      </Container>  
+    </React.Fragment>
   );
 }

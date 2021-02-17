@@ -1,29 +1,3 @@
-/*
-import logo from './banca-feira.png';
-import './App.css';
-import TextField from '@material-ui/core/TextField';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="App-link">
-        Login Feira-Livre App
-        </p>
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField id="standard-basic" label="Standard" />
-          <TextField id="filled-basic" label="Filled" variant="filled" />
-          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-        </form>
-      </header>
-    </div>
-  );
-}
-
-export default App;
-*/
-
 import { useHistory } from "react-router-dom"
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
@@ -37,7 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box';
 
 function Copyright() {
   let history = useHistory()
@@ -63,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: '20px',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -94,12 +70,14 @@ export default function SignIn() {
   let history = useHistory()
 
   return (
-    <div className={classes.root}>
-      <Container component="main">
-        <CssBaseline />
-        <div className={classes.paper}>
+    <React.Fragment>
+      <div id="container-imagem"></div>
+      <Container component="main" maxWidth="false">
+        <Paper elevation={3}>
+          <CssBaseline />
+          <div className={classes.paper}>
           
-        <Avatar alt="Banca de Feira" src="/images/banca-feira.png" />
+           <Avatar alt="Banca de Feira" src="/images/banca-feira.png" />
 
           <Typography component="h1" variant="h5">
             Acessar Conta
@@ -163,14 +141,12 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </form>
-        </div>
-      </Container>
-    
-      <footer className={classes.footer}>
-          <Container maxWidth="sm">
+          <Box mt={8}>
             <Copyright />
-          </Container>
-      </footer>
-    </div>
+          </Box>
+        </div>
+        </Paper>
+      </Container>  
+    </React.Fragment>
   );
 }

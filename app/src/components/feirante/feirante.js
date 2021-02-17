@@ -12,8 +12,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box';
 
 function Copyright() {
   let history = useHistory()
@@ -39,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '20px',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -84,12 +81,10 @@ export default function SignUp() {
   let history = useHistory()
 
   return (
-    <React.Fragment>
-      <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
-        <Paper elevation={3}>
-          <CssBaseline />
-          <div className={classes.paper}>
+    <div className={classes.root}>
+      <Container component="main">
+        <CssBaseline />
+        <div className={classes.paper}>
           <Typography component="h1" variant="h5">
             Cadastro
           </Typography>
@@ -180,12 +175,14 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </form>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
         </div>
-        </Paper>
-      </Container>  
-    </React.Fragment>
+      </Container>
+      
+      <footer className={classes.footer}>
+          <Container maxWidth="sm">
+            <Copyright />
+          </Container>
+      </footer>
+    </div>
   );
 }
