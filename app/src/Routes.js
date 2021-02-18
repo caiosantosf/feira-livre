@@ -9,6 +9,7 @@ import Feiras     from './components/cliente/feiras'
 import Feirantes  from './components/cliente/feirantes'
 import Feira      from './components/feira/feira'
 import Feirante   from './components/feirante/feirante'
+import FeiraGrid from './components/feira/feira-grid'
 
 export default function Routes() {
   return (
@@ -22,6 +23,7 @@ export default function Routes() {
         <Route path="/feirantes" exact component={Feirantes} />
         <Route path="/feira" exact component={Feira} />
         <Route path="/feirante" exact component={Feirante} />
+        <Route path="/feiragrid" exact component={FeiraGrid} />
       </Switch>
     </BrowserRouter>
   )

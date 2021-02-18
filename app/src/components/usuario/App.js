@@ -156,19 +156,18 @@ export default function SignIn() {
               >
                 Acessar
               </Button>
-
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="secondary"
-                    className={classes.submit}
-                    onClick={() => {
-                      history.push('/login')
-                    }}
-                  >
-                    Acesso Feira ou Feirante
-                  </Button>
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  className={classes.submit}
+                  onClick={() => {
+                    history.push('/login')
+                  }}
+                >
+                  Acesso Feira ou Feirante
+                </Button>
             </form>
             
             <Box mt={8}>

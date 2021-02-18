@@ -115,6 +115,9 @@ export default function SignIn() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={() => {
+                history.push('/feiragrid')
+              }}
             >
               Acessar
             </Button>

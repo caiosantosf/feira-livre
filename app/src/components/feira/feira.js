@@ -56,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(1),
   },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -82,23 +87,56 @@ export default function SignUp() {
 
   return (
     <div className={classes.root}>
-      <Container component="main">
+      <Container maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Cadastro
+            Cadastro da Feira
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
                 <TextField
-                  autoComplete="fname"
-                  name="firstName"
                   variant="outlined"
                   required
                   fullWidth
-                  id="firstName"
-                  label="Nome"
+                  id="nomeFeira"
+                  label="Nome da Feira"
+                  name="nomeFeira"
+                  autoComplete="nomeFeira"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="cep"
+                  label="CEP"
+                  name="cep"
+                  autoComplete="cep"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="logradouro"
+                  name="logradouro"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="logradouro"
+                  label="Endereço"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="complemento"
+                  name="complemento"
+                  variant="outlined"
+                  fullWidth
+                  id="complemento"
+                  label="Complemento"
                   autoFocus
                 />
               </Grid>
@@ -107,48 +145,64 @@ export default function SignUp() {
                   variant="outlined"
                   required
                   fullWidth
-                  id="lastName"
-                  label="Sobrenome"
-                  name="lastName"
-                  autoComplete="lname"
+                  id="bairro"
+                  label="Bairro"
+                  name="bairro"
+                  autoComplete="bairro"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Endereço de Email"
-                  name="email"
-                  autoComplete="email"
+                    id="horaInicial"
+                    label="Hora Inicial"
+                    type="time"
+                    required
+                    fullWidth
+                    defaultValue="06:00"
+                    className={classes.textField}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    inputProps={{
+                    step: 300, // 5 min
+                    }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Senha"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
+              <Grid item xs={12} sm={6}>
+              <TextField
+                    id="horaFinal"
+                    label="Hora Final"
+                    type="time"
+                    required
+                    fullWidth
+                    defaultValue="12:00"
+                    className={classes.textField}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    inputProps={{
+                    step: 300, // 5 min
+                    }}
                 />
               </Grid>
               <Grid item xs={12}>
               <FormControl className={classes.formControl}>
-                <InputLabel id="select-user-type">Tipo de Usuário</InputLabel>
+                <InputLabel id="select-day">Dia da Semana</InputLabel>
                 <Select
                   required
                   fullWidth
-                  labelId="select-user-type"
-                  id="select-user-type"
+                  labelId="select-day"
+                  id="select-day"
                   value={usertype}
                   onChange={handleChange}
                 >
-                  <MenuItem value={1}>Feira</MenuItem>
-                  <MenuItem value={2}>Feirante</MenuItem>
+                  <MenuItem value={1}>Domingo</MenuItem>
+                  <MenuItem value={2}>Segunda-Feira</MenuItem>
+                  <MenuItem value={3}>Terça-Feira</MenuItem>
+                  <MenuItem value={4}>Quarta-Feira</MenuItem>
+                  <MenuItem value={5}>Quinta-Feira</MenuItem>
+                  <MenuItem value={6}>Sexta-Feira</MenuItem>
+                  <MenuItem value={7}>Sábado</MenuItem>
                 </Select>
               </FormControl>
               </Grid>
@@ -162,18 +216,27 @@ export default function SignUp() {
             >
               Cadastrar
             </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
-              </Grid>
-            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+              className={classes.submit}
+            >
+              Apagar
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => {
+                history.push('/feiragrid')
+              }}
+            >
+              Voltar
+            </Button>
           </form>
         </div>
       </Container>
