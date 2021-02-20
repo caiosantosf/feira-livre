@@ -104,12 +104,12 @@ export default function ImgMediaCard() {
                         image={`${apiUrl}uploads/${feira.image}`}
                         title={feira.nome}
                         onClick={() => {
-                        history.push('/feirantes')
+                          history.push(`/feirantes/${feira.id}`)
                         }}  
                     />
                     <CardContent
                     onClick={() => {
-                        history.push('/feirantes')
+                      history.push(`/feirantes/${feira.id}`)
                     }}
                     >
                         <Typography gutterBottom variant="h6" component="h5">

@@ -4,6 +4,7 @@ const cors = require('cors')
 
 //const userRoutes = require('./modules/user/user-routes')
 const feiraRoutes = require('./modules/feira/feira-routes')
+const feiranteRoutes = require('./modules/feirante/feirante-routes')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(express.static(`${process.cwd()}\\public`))
 
 //app.use(userRoutes)
 app.use(feiraRoutes)
+app.use(feiranteRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`API server running on port ${process.env.PORT}!`)

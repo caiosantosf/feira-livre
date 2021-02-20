@@ -14,6 +14,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
+import { api } from '../../config/api';
 
 function Copyright() {
   let history = useHistory()
@@ -83,10 +84,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImgMediaCard() {
+export default function ImgMediaCard(props) {
   const classes = useStyles();
 
   let history = useHistory()
+
+  const [feirantes, setFeirante] = React.useState([])
+
+  let { feira_id } = props.match.params
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get(`/feiras/${feira_id}/feirantes`)
+        setFeirante(res.data)
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData()
+  }, [feira_id])
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -104,474 +121,166 @@ export default function ImgMediaCard() {
           </Box>
         </Typography>
         <div className={classes.texto}>
-          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-              <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-              >
-              <Typography className={classes.heading}>Feirante 1</Typography>
-              <Typography className={classes.secondaryHeading}>Nome da Banca ou Barraca</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
+        {feirantes.map((feirante, i) => {
+          return (
+          <Accordion key={i} expanded={expanded === feirante.id} onChange={handleChange(feirante.id)}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+            >
+            <Typography className={classes.heading}>{feirante.nome}</Typography>
+            <Typography className={classes.secondaryHeading}>{feirante.descricao}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
                 <div className={classes.paper}>
-                  <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                  </Box>
+                <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
+                    <Box p={1} css={{ maxWidth: 200 }}>
+                        <Card className={classes.card}>
+                        <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Feira Livre 2"
+                            height="140"
+                            image="/images/banca-feira.png"
+                            title="Feira Livre em Major Nicacio"
+                            onClick={() => {
+                            history.push('/')
+                            }}  
+                        />
+                        <CardContent
+                        onClick={() => {
+                            history.push('/')
+                        }}
+                        >
+                            <Typography gutterBottom variant="h5" component="h2">
+                            Feira Livre na Av. Major Nicário
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
+                            </Typography>
+                        </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Box>
+                    <Box p={1} css={{ maxWidth: 200 }}>
+                        <Card className={classes.card}>
+                        <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Feira Livre 2"
+                            height="140"
+                            image="/images/banca-feira.png"
+                            title="Feira Livre em Major Nicacio"
+                            onClick={() => {
+                            history.push('/')
+                            }}  
+                        />
+                        <CardContent
+                        onClick={() => {
+                            history.push('/')
+                        }}
+                        >
+                            <Typography gutterBottom variant="h5" component="h2">
+                            Feira Livre na Av. Major Nicário
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
+                            </Typography>
+                        </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Box>
+                    <Box p={1} css={{ maxWidth: 200 }}>
+                        <Card className={classes.card}>
+                        <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Feira Livre 2"
+                            height="140"
+                            image="/images/banca-feira.png"
+                            title="Feira Livre em Major Nicacio"
+                            onClick={() => {
+                            history.push('/')
+                            }}  
+                        />
+                        <CardContent
+                        onClick={() => {
+                            history.push('/')
+                        }}
+                        >
+                            <Typography gutterBottom variant="h5" component="h2">
+                            Feira Livre na Av. Major Nicário
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
+                            </Typography>
+                        </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Box>
+                    <Box p={1} css={{ maxWidth: 200 }}>
+                        <Card className={classes.card}>
+                        <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Feira Livre 2"
+                            height="140"
+                            image="/images/banca-feira.png"
+                            title="Feira Livre em Major Nicacio"
+                            onClick={() => {
+                            history.push('/')
+                            }}  
+                        />
+                        <CardContent
+                        onClick={() => {
+                            history.push('/')
+                        }}
+                        >
+                            <Typography gutterBottom variant="h5" component="h2">
+                            Feira Livre na Av. Major Nicário
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
+                            </Typography>
+                        </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Box>
+                    <Box p={1} css={{ maxWidth: 200 }}>
+                        <Card className={classes.card}>
+                        <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Feira Livre 2"
+                            height="140"
+                            image="/images/banca-feira.png"
+                            title="Feira Livre em Major Nicacio"
+                            onClick={() => {
+                            history.push('/')
+                            }}  
+                        />
+                        <CardContent
+                        onClick={() => {
+                            history.push('/')
+                        }}
+                        >
+                            <Typography gutterBottom variant="h5" component="h2">
+                            Feira Livre na Av. Major Nicário
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
+                            </Typography>
+                        </CardContent>
+                        </CardActionArea>
+                        </Card>
+                    </Box>
+                </Box>
                 </div>
-              </AccordionDetails>
+            </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-              <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2bh-content"
-              id="panel2bh-header"
-              >
-              <Typography className={classes.heading}>Feirante 2</Typography>
-              <Typography className={classes.secondaryHeading}>Nome da Banca ou Barraca</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className={classes.paper}>
-                  <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                  </Box>
-                </div>
-              </AccordionDetails>
-          </Accordion>
-          <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-              <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel3bh-content"
-              id="panel3bh-header"
-              >
-              <Typography className={classes.heading}>Feirante 3</Typography>
-              <Typography className={classes.secondaryHeading}>Nome da Banca ou Barraca</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-              <div className={classes.paper}>
-                  <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                      <Box p={1} css={{ maxWidth: 200 }}>
-                          <Card className={classes.card}>
-                          <CardActionArea>
-                          <CardMedia
-                              component="img"
-                              alt="Feira Livre 2"
-                              height="140"
-                              image="/images/banca-feira.png"
-                              title="Feira Livre em Major Nicacio"
-                              onClick={() => {
-                              history.push('/')
-                              }}  
-                          />
-                          <CardContent
-                          onClick={() => {
-                              history.push('/')
-                          }}
-                          >
-                              <Typography gutterBottom variant="h5" component="h2">
-                              Feira Livre na Av. Major Nicário
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                              Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                              </Typography>
-                          </CardContent>
-                          </CardActionArea>
-                          </Card>
-                      </Box>
-                  </Box>
-                </div>
-              </AccordionDetails>
-          </Accordion>
+          )
+        })}
         </div>
     </Container>
 

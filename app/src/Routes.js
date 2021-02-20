@@ -20,7 +20,7 @@ export default function Routes() {
         <Route path="/cadastro" exact component={Cadastro} />
         <Route path="/novasenha" exact component={NovaSenha} />
         <Route path="/feiras" exact component={Feiras} />
-        <Route path="/feirantes" exact component={Feirantes} />
+        <Route path="/feirantes/:feira_id" exact component={Feirantes} />
         <Route path="/feira" exact component={Feira} />
         <Route path="/feirante" exact component={Feirante} />
         <Route path="/feiragrid" exact component={FeiraGrid} />

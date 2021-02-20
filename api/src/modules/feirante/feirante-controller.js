@@ -2,16 +2,15 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { currentPage } = req.headers
-    const feirantes = await db('feirantes')
-                          .orderBy('descricao')
-                          .paginate({ perPage: 10, currentPage, isLengthAware: true  })
-
-    if (feirantes.hasOwnProperty('data')) {
-      if (feirantes.data.length) {
-        return res.status(200).json(feirantes)
-      }
+    const { feira_id } = req.params
+    const feirantes = await db('feirante')
+                            .where({ feira_id }) 
+                            .orderBy('descricao')
+                        
+    if (feirantes.length) {
+      return res.status(200).json(feirantes)
     }
+
     return res.status(204).json({ message: 'Não existem feirantes cadastrados' })
   },
 

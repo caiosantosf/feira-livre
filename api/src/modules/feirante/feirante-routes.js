@@ -1,29 +1,29 @@
 const express = require('express')
 const { getMany, post, destroy, getOne, put } = require('./feirante-controller')
 const { routeSecurity : security } = require('../../config/security')
-const validation = require('./user-validation')
+const validation = require('./feirante-validation')
 
 const routes = express.Router()
 
-routes.get('/feirante',
+routes.get('/feiras/:feira_id/feirantes',
   getMany
 )
 
-routes.post('/feirante', 
+routes.post('/feirantes', 
   post
 )
 
-routes.get('/feirante/:id',
+routes.get('/feirantes/:id',
   getOne
 )
 
-routes.put('/feirante/:id', 
+routes.put('/feirantes/:id', 
   security(['feirante']), 
   validation(['descricao']),
   put
 )
 
-routes.delete('/feirante/:id', 
+routes.delete('/feirantes/:id', 
   security(['feirante']), 
   destroy
 )
