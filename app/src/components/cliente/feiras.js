@@ -10,6 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
+import { api, apiUrl } from '../../config/api';
 
 function Copyright() {
   let history = useHistory()
@@ -58,6 +59,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ImgMediaCard() {
+  const [feiras, setFeiras] = React.useState([])
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/feiras/', { headers : {
+          cidade : sessionStorage.getItem('cidade'),
+          estado : sessionStorage.getItem('estado')
+        }})
+        setFeiras(res.data)
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData()
+  }, [])
+
   const classes = useStyles();
 
   let history = useHistory()
@@ -73,92 +91,40 @@ export default function ImgMediaCard() {
           </Box>
         </Typography>
         <div className={classes.paper}>
-          <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
-              <Box p={1} css={{ maxWidth: 250 }}>
-                  <Card className={classes.card}>
-                  <CardActionArea>
-                  <CardMedia
-                      component="img"
-                      alt="Feira Livre 2"
-                      height="200"
-                      image="/images/banca-feira.png"
-                      title="Feira Livre em Major Nicacio"
-                      onClick={() => {
-                      history.push('/feirantes')
-                      }}  
-                  />
-                  <CardContent
-                  onClick={() => {
-                      history.push('/feirantes')
-                  }}
-                  >
-                      <Typography gutterBottom variant="h5" component="h2">
-                      Feira Livre na Av. Major Nicário
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                      Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                      </Typography>
-                  </CardContent>
-                  </CardActionArea>
-                  </Card>
+          {feiras.map((feira, i) => {
+            return (
+              <Box key={i} display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
+                <Box p={1} css={{ maxWidth: 250 }}>
+                    <Card className={classes.card}>
+                    <CardActionArea>
+                    <CardMedia
+                        component="img"
+                        alt={feira.nome}
+                        height="200"
+                        image={`${apiUrl}uploads/${feira.image}`}
+                        title={feira.nome}
+                        onClick={() => {
+                        history.push('/feirantes')
+                        }}  
+                    />
+                    <CardContent
+                    onClick={() => {
+                        history.push('/feirantes')
+                    }}
+                    >
+                        <Typography gutterBottom variant="h6" component="h5">
+                          {feira.nome}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                          {feira.descricao}
+                        </Typography>
+                    </CardContent>
+                    </CardActionArea>
+                    </Card>
+                </Box>
               </Box>
-              <Box p={1} css={{ maxWidth: 250 }}>
-                  <Card className={classes.card}>
-                  <CardActionArea>
-                  <CardMedia
-                      component="img"
-                      alt="Feira Livre 2"
-                      height="200"
-                      image="/images/banca-feira.png"
-                      title="Feira Livre em Major Nicacio"
-                      onClick={() => {
-                      history.push('/feirantes')
-                      }}  
-                  />
-                  <CardContent
-                  onClick={() => {
-                      history.push('/feirantes')
-                  }}
-                  >
-                      <Typography gutterBottom variant="h5" component="h2">
-                      Feira Livre na Av. Major Nicário
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                      Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                      </Typography>
-                  </CardContent>
-                  </CardActionArea>
-                  </Card>
-              </Box>
-              <Box p={1} css={{ maxWidth: 250 }}>
-                  <Card className={classes.card}>
-                  <CardActionArea>
-                  <CardMedia
-                      component="img"
-                      alt="Feira Livre 2"
-                      height="200"
-                      image="/images/banca-feira.png"
-                      title="Feira Livre em Major Nicacio"
-                      onClick={() => {
-                      history.push('/feirantes')
-                      }}  
-                  />
-                  <CardContent
-                  onClick={() => {
-                      history.push('/feirantes')
-                  }}
-                  >
-                      <Typography gutterBottom variant="h5" component="h2">
-                      Feira Livre na Av. Major Nicário
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                      Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                      </Typography>
-                  </CardContent>
-                  </CardActionArea>
-                  </Card>
-              </Box>
-          </Box>
+            )
+          })}
         </div>
       </Container>
 

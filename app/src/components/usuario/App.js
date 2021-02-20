@@ -151,6 +151,8 @@ export default function SignIn() {
                 color="primary"
                 className={classes.submit}
                 onClick={() => {
+                  sessionStorage.setItem('estado', estado)
+                  sessionStorage.setItem('cidade', cidade)
                   history.push('/feiras')
                 }}
               >

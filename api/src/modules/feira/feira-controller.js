@@ -2,15 +2,16 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { currentPage } = req.headers
+    const { cidade, estado } = req.headers
     const feiras = await db('feiras')
-                          .orderBy('name')
+                          .where({ cidade })
+                          .where({ estado })
+                          .orderBy('descricao')
 
-    if (feiras.hasOwnProperty('data')) {
-      if (feiras.data.length) {
-        return res.status(200).json(feiras)
-      }
+    if (feiras.length) {
+      return res.status(200).json(feiras)
     }
+
     return res.status(204).json({ message: 'Não existem feiras cadastradas' })
   },
 
@@ -28,7 +29,6 @@ module.exports = {
   },
 
   async getCidades (req, res) {
-    const { currentPage } = req.headers
     const { estado } = req.params
 
     const cidades = await db('feiras')
