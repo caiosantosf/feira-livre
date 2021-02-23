@@ -12,28 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import { api } from '../../config/api';
-
-function Copyright() {
-  let history = useHistory()
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" 
-      component="button"
-      variant="body2"
-      onClick={() => {
-        history.push('/')
-      }}>
-        Feira-Livre App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from '../../components/nav/footer';
+import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -76,12 +58,6 @@ const useStyles = makeStyles((theme) => ({
   texto: {
     marginTop: theme.spacing(4),
   },
-  footer: {
-    padding: theme.spacing(3, 2),
-    marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
-  },
 }));
 
 export default function ImgMediaCard(props) {
@@ -113,6 +89,7 @@ export default function ImgMediaCard(props) {
 
   return (
     <div className={classes.root}>
+    <Voltar url="/feiras"/>
     <Container >
       <CssBaseline />
         <Typography component="h1" variant="h6" className={classes.texto}>
@@ -284,11 +261,7 @@ export default function ImgMediaCard(props) {
         </div>
     </Container>
 
-    <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Copyright />
-        </Container>
-    </footer>
+    <Footer/>
     </div>
   );
 }
