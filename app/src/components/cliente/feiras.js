@@ -15,7 +15,7 @@ import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    //marginTop: theme.spacing(4),
     display: 'flex',
     width: '100%',
     justifyContent: "center",
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   texto: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(1),
   },
   root: {
     display: 'flex',
@@ -59,7 +59,7 @@ export default function ImgMediaCard() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar url="/"/>
+        <Voltar />
 
         <Container maxWidth="false">
           <CssBaseline />

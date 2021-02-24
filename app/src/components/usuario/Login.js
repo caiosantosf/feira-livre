@@ -92,7 +92,7 @@ export default function SignIn() {
               color="primary"
               className={classes.submit}
               onClick={() => {
-                history.push('/feiragrid')
+                history.push('/feirantegrid')
               }}
             >
               Acessar

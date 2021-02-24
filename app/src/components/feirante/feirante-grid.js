@@ -76,7 +76,7 @@ export default function SignUp() {
         <CssBaseline />
         <div className={classes.selectEmpty}>
           <Typography component="h1" variant="h5">
-            Cadastro da Feira
+            Cadastro de Produtos
           </Typography>
         </div>
       
@@ -95,7 +95,7 @@ export default function SignUp() {
               id={labelId} 
               primary={`Line item ${value + 1}`} 
               onClick={() => {
-                history.push('/feira')
+                history.push('/produto')
               }}/>
           </ListItem>
         );
@@ -104,7 +104,7 @@ export default function SignUp() {
     <div className={classes.rootFab}>
       <Fab color="primary" aria-label="add">
         <AddIcon onClick={() => {
-                history.push('/feira')
+                history.push('/produto')
               }} />
       </Fab>
     </div>

@@ -10,6 +10,8 @@ import Feirantes  from './components/cliente/feirantes'
 import Feira      from './components/feira/feira'
 import Feirante   from './components/feirante/feirante'
 import FeiraGrid from './components/feira/feira-grid'
+import FeiranteGrid from './components/feirante/feirante-grid'
+import Produto from './components/produto/produto'
 
 export default function Routes() {
   return (
@@ -24,6 +26,8 @@ export default function Routes() {
         <Route path="/feira" exact component={Feira} />
         <Route path="/feirante" exact component={Feirante} />
         <Route path="/feiragrid" exact component={FeiraGrid} />
+        <Route path="/feirantegrid" exact component={FeiranteGrid} />
+        <Route path="/produto" exact component={Produto} />
       </Switch>
     </BrowserRouter>
   )

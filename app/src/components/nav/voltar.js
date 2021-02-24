@@ -12,11 +12,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
 }));
 
-export default function Voltar(url) {
+export default function Voltar() {
     const classes = useStyles();
     let history = useHistory()
   
@@ -25,17 +25,9 @@ export default function Voltar(url) {
         <AppBar position="static">
             <Toolbar variant="dense">
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <ArrowBackIcon
-                    onClick={() => {
-                        history.push(url)
-                      }} />
+                    <ArrowBackIcon onClick={() => history.goBack()} />
                 </IconButton>
-                <Typography 
-                variant="h6" 
-                color="inherit"
-                onClick={() => {
-                    history.push(url)
-                  }}>
+                <Typography variant="h6" color="inherit">
                     Voltar
                 </Typography>
             </Toolbar>
