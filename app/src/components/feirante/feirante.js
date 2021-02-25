@@ -12,25 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  let history = useHistory()
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" 
-      component="button"
-      variant="body2"
-      onClick={() => {
-        history.push('/')
-      }}>
-        Feira-Livre App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../../components/nav/copyright'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -69,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function Feirante() {
   const classes = useStyles();
 
   const [usertype, setUsertype] = React.useState('');
@@ -94,7 +76,6 @@ export default function SignUp() {
                 <TextField
                   autoComplete="fname"
                   name="firstName"
-                  variant="outlined"
                   required
                   fullWidth
                   id="firstName"
@@ -104,7 +85,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="lastName"
@@ -115,7 +95,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="email"
@@ -126,7 +105,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   name="password"

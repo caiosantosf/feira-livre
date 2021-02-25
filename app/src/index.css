@@ -24,7 +24,7 @@ main {
   .MuiPaper-elevation3 {
     box-shadow:none !important;
   }
-  .MuiPaper-root {
+  .paperApp {
     background-color: #FAFAFA !important
   }
   .makeStyles-paper-1 {
@@ -44,4 +44,8 @@ main {
   width: 100vw;
   background: url(assets/bg-img.jpg);
   background-size: cover;
+}
+
+.iconLocais {
+  margin-right: 5px;
 }

@@ -1,9 +1,7 @@
 import React from 'react';
-import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,25 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  let history = useHistory()
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" 
-      component="button"
-      variant="body2"
-      onClick={() => {
-        history.push('/')
-      }}>
-        Feira-Livre App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from '../../components/nav/footer';
+import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
-    margin: theme.spacing(1),
     width: '100%'
   },
   selectEmpty: {
@@ -66,12 +46,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     minHeight: '100vh',
   },
-  footer: {
-    padding: theme.spacing(3, 2),
-    marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
-  },
 }));
 
 export default function SignUp() {
@@ -83,10 +57,9 @@ export default function SignUp() {
     setUsertype(event.target.value);
   };
 
-  let history = useHistory()
-
   return (
     <div className={classes.root}>
+      <Voltar url="/feiragrid"/>
       <Container maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
@@ -97,7 +70,6 @@ export default function SignUp() {
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="nomeFeira"
@@ -108,7 +80,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="cep"
@@ -121,7 +92,6 @@ export default function SignUp() {
                 <TextField
                   autoComplete="logradouro"
                   name="logradouro"
-                  variant="outlined"
                   required
                   fullWidth
                   id="logradouro"
@@ -133,7 +103,6 @@ export default function SignUp() {
                 <TextField
                   autoComplete="complemento"
                   name="complemento"
-                  variant="outlined"
                   fullWidth
                   id="complemento"
                   label="Complemento"
@@ -142,7 +111,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="bairro"
@@ -159,7 +127,6 @@ export default function SignUp() {
                     required
                     fullWidth
                     defaultValue="06:00"
-                    className={classes.textField}
                     InputLabelProps={{
                     shrink: true,
                     }}
@@ -176,7 +143,6 @@ export default function SignUp() {
                     required
                     fullWidth
                     defaultValue="12:00"
-                    className={classes.textField}
                     InputLabelProps={{
                     shrink: true,
                     }}
@@ -225,27 +191,11 @@ export default function SignUp() {
             >
               Apagar
             </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => {
-                history.push('/feiragrid')
-              }}
-            >
-              Voltar
-            </Button>
           </form>
         </div>
       </Container>
       
-      <footer className={classes.footer}>
-          <Container maxWidth="sm">
-            <Copyright />
-          </Container>
-      </footer>
+      <Footer/>
     </div>
   );
 }

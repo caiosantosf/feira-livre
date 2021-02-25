@@ -1,166 +1,215 @@
 import React from 'react';
 import { useHistory } from "react-router-dom"
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Copyright from '../../components/nav/copyright'
+import { api, apiUrl } from '../../config/api';
+import Footer from '../../components/nav/footer';
+import Voltar from '../../components/nav/voltar'
+import { Place, Schedule } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    width: '100%',
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
     margin: theme.spacing(1),
-    width: '100%'
+    minWidth: 200,
   },
   selectEmpty: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
   root: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
   },
-  footer: {
-    padding: theme.spacing(3, 2),
-    marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+  card: {
+    width: '100%',
   },
+  cardLocais: {
+    width: '100%',
+    marginTop: "30px"
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  texto: {
+    marginTop: theme.spacing(4),
+  },
+  diaSemana: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: "600",
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  }
 }));
 
-export default function SignUp() {
+export default function Feirantes(props) {
   const classes = useStyles();
 
-  const [usertype, setUsertype] = React.useState('');
-
-  const handleChange = (event) => {
-    setUsertype(event.target.value);
-  };
+  const { titulo } = props.location.state
 
   let history = useHistory()
 
+  const [locais, setLocais] = React.useState([])
+  const [feirantes, setFeirante] = React.useState([])
+  const [produtos, setProdutos] = React.useState([])
+
+  let { feira_id } = props.match.params
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resLocais = await api.get(`/feiras/${feira_id}/locais`)
+        if (resLocais.status === 200) setLocais(resLocais.data)
+      } catch (error) {
+        alert(error)
+      }
+
+      try{
+        const resFeirantes = await api.get(`/feiras/${feira_id}/feirantes`)
+        if (resFeirantes.status === 200) setFeirante(resFeirantes.data)
+      } catch (error) {
+        alert(error)
+      }
+
+      try {
+        const resProdutos = await api.get(`/feiras/${feira_id}/feirantes/produtos`)
+        if (resProdutos.status === 200) setProdutos(resProdutos.data)
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData()
+  }, [feira_id])
+
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
   return (
     <div className={classes.root}>
-      <Container component="main">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Cadastro
-          </Typography>
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Nome"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Sobrenome"
-                  name="lastName"
-                  autoComplete="lname"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Endereço de Email"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Senha"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="select-user-type">Tipo de Usuário</InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  labelId="select-user-type"
-                  id="select-user-type"
-                  value={usertype}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={1}>Feira</MenuItem>
-                  <MenuItem value={2}>Feirante</MenuItem>
-                </Select>
-              </FormControl>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Cadastrar
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
-      
-      <footer className={classes.footer}>
-          <Container maxWidth="sm">
-            <Copyright />
-          </Container>
-      </footer>
+    <Voltar url="/feiras" titulo={titulo}/>
+    <Container >
+      <CssBaseline />
+
+      <Card className={classes.cardLocais}>
+        <CardActionArea>
+        <CardContent>
+            <Typography gutterBottom variant="h6" component="h5">
+              Locais e horários
+            </Typography>
+   
+            {locais.map((local, i) => {
+              return (
+                <Box key={i}>
+                  <Typography gutterBottom className={classes.diaSemana}>
+                    {local.diaSemana}
+                  </Typography>
+                  <Typography className={classes.heading} style={{
+                    display: 'flex'}}>
+                    <Place className="iconLocais" color="primary" />
+                    <span>{`${local.logradouro}, ${local.numero}, ${local.bairro}${local.complemento ? `, ${local.complemento}` : ''}`}</span>
+                  </Typography>
+                  <Typography className={classes.heading} style={{
+                    display: 'flex'}}>
+                    <Schedule className="iconLocais" color="secondary" />
+                    {`Início: ${local.horarioInicio.substr(0, 5)} Termino: ${local.horarioTermino.substr(0, 5)}`}
+                  </Typography>
+                  <br />
+                </Box>
+              )
+            })}
+        </CardContent>
+        </CardActionArea>
+      </Card>
+
+      <div className={classes.texto}>
+      {feirantes.map((feirante, i) => {
+        return (
+        <Accordion key={i} expanded={expanded === feirante.id} onChange={handleChange(feirante.id)}>
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+          >
+          <Typography className={classes.heading}>{feirante.nome}</Typography>
+          <Typography className={classes.secondaryHeading}>{feirante.descricao}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+          <div className={classes.paper}>
+              <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
+                  {produtos.map((produto, i) => {
+                      if (produto.feirante_id === feirante.id) {
+                          return (
+                              <Box key={i} p={i} css={{ maxWidth: 200 }}>
+                                  <Card className={classes.card}>
+                                  <CardActionArea>
+                                  <CardMedia
+                                      component="img"
+                                      alt={produto.nome}
+                                      height="140"
+                                      image={`${apiUrl}uploads/${produto.imagemUrl}`}
+                                      title={produto.nome}
+                                  />
+                                  <CardContent>
+                                      <Typography gutterBottom variant="h5" component="h2">
+                                          {produto.nome}
+                                      </Typography>
+                                      <Typography variant="body2" color="textSecondary" component="p">
+                                          {produto.descricao}
+                                      </Typography>
+                                      <Typography className={classes.heading} style={{marginTop: "10px"}}>
+                                          {`R$ ${produto.valor.replace('.', ',')} / ${produto.unidadeMedida}`}
+                                      </Typography>
+                                  </CardContent>
+                                  </CardActionArea>
+                                  </Card>
+                              </Box>
+                          )
+                      } else {
+                          return ''
+                      }
+                  })}
+              </Box>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        )
+      })}
+      </div>
+    </Container>
+
+    <Footer/>
     </div>
   );
 }
