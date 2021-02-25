@@ -12,24 +12,28 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(1),
+    marginRight: "auto"
+  },
+  box: {
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 
-export default function Voltar() {
+export default function Voltar({titulo}) {
     const classes = useStyles();
     let history = useHistory()
   
     return (
     <div className={classes.root}>
         <AppBar position="static">
-            <Toolbar variant="dense">
+            <Toolbar variant="dense" className={classes.box}>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <ArrowBackIcon onClick={() => history.goBack()} />
                 </IconButton>
-                <Typography variant="h6" color="inherit">
-                    Voltar
-                </Typography>
+                  <Typography variant="h6" color="inherit">
+                      {titulo}
+                  </Typography>
             </Toolbar>
         </AppBar>
     </div>

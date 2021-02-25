@@ -52,7 +52,6 @@ export default function SignIn() {
 
           <form className={classes.form} noValidate>
             <TextField
-              variant="outlined"
               margin="normal"
               required
               fullWidth

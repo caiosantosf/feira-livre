@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
-    margin: theme.spacing(1),
     width: '100%'
   },
   selectEmpty: {
@@ -71,7 +70,6 @@ export default function SignUp() {
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="nomeProduto"
@@ -84,7 +82,6 @@ export default function SignUp() {
                 <TextField
                   name="preco"
                   required
-                  variant="outlined"
                   fullWidth
                   id="preco"
                   label="Preço"
@@ -92,13 +89,25 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <TextField
-                  variant="outlined"
-                  required
-                  id="unidade"
-                  label="Unidade de Medida"
-                  name="unidade"
-                />
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="select-unidade">Unidade de Medida</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    labelId="select-unidade"
+                    id="select-unidade"
+                    value={usertype}
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={1}>Kilo</MenuItem>
+                    <MenuItem value={2}>100 Gramas</MenuItem>
+                    <MenuItem value={3}>Unidade</MenuItem>
+                    <MenuItem value={4}>Dúzia</MenuItem>
+                    <MenuItem value={5}>Metro</MenuItem>
+                    <MenuItem value={6}>Litro</MenuItem>
+                    <MenuItem value={7}>ML</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               </Grid>
             <Button

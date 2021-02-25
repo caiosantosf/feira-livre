@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
-    margin: theme.spacing(1),
     width: '100%'
   },
   selectEmpty: {
@@ -71,7 +70,6 @@ export default function SignUp() {
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="nomeFeira"
@@ -82,7 +80,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="cep"
@@ -95,7 +92,6 @@ export default function SignUp() {
                 <TextField
                   autoComplete="logradouro"
                   name="logradouro"
-                  variant="outlined"
                   required
                   fullWidth
                   id="logradouro"
@@ -107,7 +103,6 @@ export default function SignUp() {
                 <TextField
                   autoComplete="complemento"
                   name="complemento"
-                  variant="outlined"
                   fullWidth
                   id="complemento"
                   label="Complemento"
@@ -116,7 +111,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="bairro"
@@ -133,7 +127,6 @@ export default function SignUp() {
                     required
                     fullWidth
                     defaultValue="06:00"
-                    className={classes.textField}
                     InputLabelProps={{
                     shrink: true,
                     }}
@@ -150,7 +143,6 @@ export default function SignUp() {
                     required
                     fullWidth
                     defaultValue="12:00"
-                    className={classes.textField}
                     InputLabelProps={{
                     shrink: true,
                     }}

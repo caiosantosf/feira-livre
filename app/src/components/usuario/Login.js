@@ -60,7 +60,6 @@ export default function SignIn() {
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
-              variant="outlined"
               margin="normal"
               required
               fullWidth
@@ -71,7 +70,6 @@ export default function SignIn() {
               autoFocus
             />
             <TextField
-              variant="outlined"
               margin="normal"
               required
               fullWidth

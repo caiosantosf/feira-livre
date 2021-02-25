@@ -59,7 +59,7 @@ export default function ImgMediaCard() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar />
+        <Voltar titulo="Feiras" />
 
         <Container maxWidth="false">
           <CssBaseline />
