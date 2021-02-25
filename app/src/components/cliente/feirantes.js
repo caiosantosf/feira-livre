@@ -1,80 +1,47 @@
 import React from 'react';
 import { useHistory } from "react-router-dom"
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { api } from '../../config/api';
-
-function Copyright() {
-  let history = useHistory()
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" 
-      component="button"
-      variant="body2"
-      onClick={() => {
-        history.push('/')
-      }}>
-        Feira-Livre App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../../components/nav/copyright'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
-    width: '100%',
-    justifyContent: "center",
-    flexWrap: "wrap",
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 200,
+    width: '100%'
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   root: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-  },
-  card: {
-    width: '100%',
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  texto: {
-    marginTop: theme.spacing(4),
   },
   footer: {
     padding: theme.spacing(3, 2),
@@ -84,211 +51,116 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImgMediaCard(props) {
+export default function SignUp() {
   const classes = useStyles();
+
+  const [usertype, setUsertype] = React.useState('');
+
+  const handleChange = (event) => {
+    setUsertype(event.target.value);
+  };
 
   let history = useHistory()
 
-  const [feirantes, setFeirante] = React.useState([])
-
-  let { feira_id } = props.match.params
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get(`/feiras/${feira_id}/feirantes`)
-        setFeirante(res.data)
-      } catch (error) {
-        alert(error)
-      }
-    }
-    fetchData()
-  }, [feira_id])
-
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
   return (
     <div className={classes.root}>
-    <Container >
-      <CssBaseline />
-        <Typography component="h1" variant="h6" className={classes.texto}>
-          <Box textAlign="center" m={1}>
-            Aqui você encontra tudo o que procura!
-          </Box>
-        </Typography>
-        <div className={classes.texto}>
-        {feirantes.map((feirante, i) => {
-          return (
-          <Accordion key={i} expanded={expanded === feirante.id} onChange={handleChange(feirante.id)}>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
+      <Container component="main">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Cadastro
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="Nome"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Sobrenome"
+                  name="lastName"
+                  autoComplete="lname"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Endereço de Email"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Senha"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="select-user-type">Tipo de Usuário</InputLabel>
+                <Select
+                  required
+                  fullWidth
+                  labelId="select-user-type"
+                  id="select-user-type"
+                  value={usertype}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={1}>Feira</MenuItem>
+                  <MenuItem value={2}>Feirante</MenuItem>
+                </Select>
+              </FormControl>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
             >
-            <Typography className={classes.heading}>{feirante.nome}</Typography>
-            <Typography className={classes.secondaryHeading}>{feirante.descricao}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <div className={classes.paper}>
-                <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
-                    <Box p={1} css={{ maxWidth: 200 }}>
-                        <Card className={classes.card}>
-                        <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt="Feira Livre 2"
-                            height="140"
-                            image="/images/banca-feira.png"
-                            title="Feira Livre em Major Nicacio"
-                            onClick={() => {
-                            history.push('/')
-                            }}  
-                        />
-                        <CardContent
-                        onClick={() => {
-                            history.push('/')
-                        }}
-                        >
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Feira Livre na Av. Major Nicário
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                            </Typography>
-                        </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Box>
-                    <Box p={1} css={{ maxWidth: 200 }}>
-                        <Card className={classes.card}>
-                        <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt="Feira Livre 2"
-                            height="140"
-                            image="/images/banca-feira.png"
-                            title="Feira Livre em Major Nicacio"
-                            onClick={() => {
-                            history.push('/')
-                            }}  
-                        />
-                        <CardContent
-                        onClick={() => {
-                            history.push('/')
-                        }}
-                        >
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Feira Livre na Av. Major Nicário
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                            </Typography>
-                        </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Box>
-                    <Box p={1} css={{ maxWidth: 200 }}>
-                        <Card className={classes.card}>
-                        <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt="Feira Livre 2"
-                            height="140"
-                            image="/images/banca-feira.png"
-                            title="Feira Livre em Major Nicacio"
-                            onClick={() => {
-                            history.push('/')
-                            }}  
-                        />
-                        <CardContent
-                        onClick={() => {
-                            history.push('/')
-                        }}
-                        >
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Feira Livre na Av. Major Nicário
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                            </Typography>
-                        </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Box>
-                    <Box p={1} css={{ maxWidth: 200 }}>
-                        <Card className={classes.card}>
-                        <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt="Feira Livre 2"
-                            height="140"
-                            image="/images/banca-feira.png"
-                            title="Feira Livre em Major Nicacio"
-                            onClick={() => {
-                            history.push('/')
-                            }}  
-                        />
-                        <CardContent
-                        onClick={() => {
-                            history.push('/')
-                        }}
-                        >
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Feira Livre na Av. Major Nicário
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                            </Typography>
-                        </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Box>
-                    <Box p={1} css={{ maxWidth: 200 }}>
-                        <Card className={classes.card}>
-                        <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt="Feira Livre 2"
-                            height="140"
-                            image="/images/banca-feira.png"
-                            title="Feira Livre em Major Nicacio"
-                            onClick={() => {
-                            history.push('/')
-                            }}  
-                        />
-                        <CardContent
-                        onClick={() => {
-                            history.push('/')
-                        }}
-                        >
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Feira Livre na Av. Major Nicário
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Tradicional Feira Livre na Av. Major Nicário ao domingos na cidade de Franca
-                            </Typography>
-                        </CardContent>
-                        </CardActionArea>
-                        </Card>
-                    </Box>
-                </Box>
-                </div>
-            </AccordionDetails>
-          </Accordion>
-          )
-        })}
+              Cadastrar
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link 
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  history.push('/login')
+                }}>
+                  Já possui uma conta? Acessar
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
         </div>
-    </Container>
-
-    <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Copyright />
-        </Container>
-    </footer>
+      </Container>
+      
+      <footer className={classes.footer}>
+          <Container maxWidth="sm">
+            <Copyright />
+          </Container>
+      </footer>
     </div>
   );
 }
