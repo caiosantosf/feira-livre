@@ -9,10 +9,8 @@ module.exports = {
                           .where('feira_id', feira_id)
                           .orderBy('id', 'desc')
                           
-    if (locais.hasOwnProperty('data')) {
-      if (locais.data.length) {
-        return res.status(200).json(locais)
-      }
+    if (locais.length) {
+      return res.status(200).json(locais)
     }
 
     return res.status(204).json({ message: 'Não existem locais cadastrados' })
