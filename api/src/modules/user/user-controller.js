@@ -1,6 +1,6 @@
 const db = require('../../database/connection')
 const { encrypt, compareCrypt, token } = require('../../config/security')
-const sendMail = require('../../config/email')
+//const sendMail = require('../../../config/email')
 
 const dbErrors = error => {
   let message = { message : 'Ocorreu um erro não identificado', error}
@@ -14,41 +14,18 @@ const dbErrors = error => {
 
 module.exports = {
   async auth (req, res) {
-    const { cpf , password : reqPassword } = req.body
-    const user = await db('users').where({ cpf })
+    const { email , password : reqPassword } = req.body
+    const user = await db('users').where({ email })
 
     if (user.length) {
-      const { id , password: dbPassword, type } = user[0]
+      const { id , password: dbPassword, tipo } = user[0]
 
       if (await compareCrypt(reqPassword, dbPassword)) {
-        return res.status(200).json({ auth: true, token: token(id, type), id, type })
+        return res.status(200).json({ auth: true, token: token(id, tipo), id, tipo })
       }
       return res.status(400).json({ password: 'Senha inválida' })
     }
-
-    if (req.originalUrl.search('admin')) {
-      const user = await db('users').where({ type : 'admin' })
-
-      if (!user.length) {
-        const password = await encrypt(reqPassword)
-        const type = 'admin'
-        try {
-          const id = await db('users').insert({
-            name : 'admin',
-            cpf,
-            password,
-            type
-          }).returning('id')
-    
-          return res.status(201).json({ id: id[0], type, token: token(id, type) })
-        } catch (error) {
-          const message = dbErrors(error)
-          return res.status(500).json(message)
-        }
-      }
-    }
-
-    return res.status(404).json({ cpf: 'CPF não cadastrado' })
+    return res.status(404).json({ email: 'Email não cadastrado' })
   },
 
   async getMany (req, res) {
@@ -82,7 +59,7 @@ module.exports = {
 
     try {
       const id = await db('users').insert(data).returning('id')
-      return res.status(201).json({ id: id[0], token: token(id, 'regular'), type: 'regular' })
+      return res.status(201).json({ id: id[0], token: token(id[0], data.tipo), tipo: data.tipo })
     } catch (error) {
       const message = dbErrors(error)
       return res.status(400).json(message)
@@ -113,9 +90,9 @@ module.exports = {
       const { id } = user[0]
       const domain = process.env.APP_LOCATION
       const link = `${domain}redefine-senha/${id}?token=${token(id)}`
-      if (await sendMail(email, link)) {
-        return res.status(200).json({ email: 'Enviamos um link de recuperação de senha para o seu email. Verifique se não foi para o Spam ou lixo eletrônico'})
-      }
+      //if (await sendMail(email, link)) {
+        //return res.status(200).json({ email: 'Enviamos um link de recuperação de senha para o seu email. Verifique se não foi para o Spam ou lixo eletrônico'})
+      //}
       return res.status(400).json({ email: 'Houve um problema ao enviar o email de recuperação de senha. Contate a empresa.'})
     }
     return res.status(404).json({ email: 'Não foi encontrato nenhum Usuário com esse email'})

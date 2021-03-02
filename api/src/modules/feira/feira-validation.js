@@ -1,6 +1,6 @@
 const validation = (fields) => {
   return (req, res, next) => {
-    const { id, descricao, cidade, estado } = req.body
+    const { nome, id, descricao, cidade, estado } = req.body
     const messages = {}
     const regExpNumbers = /^[0-9]+$/
 
@@ -11,6 +11,16 @@ const validation = (fields) => {
         }
       } else {
         messages.id = 'O Id é obrigatório'
+      }
+    }
+
+    if (fields.includes('nome')) {
+      if ( (typeof nome !== 'undefined') && (nome.trim() !== '') ) {
+        if (nome.length > 255) {
+          nome.nome = 'O Nome não pode ter mais do que 255 caracteres'
+        }
+      } else {
+        messages.nome = 'O Nome é obrigatória'
       }
     }
 
@@ -35,7 +45,7 @@ const validation = (fields) => {
     }
 
     if (fields.includes('estado')) {
-      if ( (typeof estado !== 'undefined') && (state.trim() !== '') ) {
+      if ( (typeof estado !== 'undefined') && (estado.trim() !== '') ) {
         if (estado.length !== 2) {
           messages.estado = 'O Estado deve ter 2 caracteres'
         }

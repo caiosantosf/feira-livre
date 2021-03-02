@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 module.exports = {
-  routeSecurity (type) {  
+  routeSecurity (tipo) {  
     return (req, res, next) => {
 
       const token = req.headers['x-access-token'] || req.query.token
@@ -21,20 +21,20 @@ module.exports = {
           }
         }
 
-        if (!type.includes(decoded.type)) {
+        if (!tipo.includes(decoded.tipo)) {
           return res.status(401).json({ auth: false, message: 'Usuário não tem permissão para essa ação' })
         }
 
         req.userId = decoded.id
-        req.userType = decoded.type
+        req.usertipo = decoded.tipo
         
         next()
       })
     }
   },
 
-  token(id, type) {
-    return jwt.sign({ id, type }, process.env.SECRET, { expiresIn: 86400 })
+  token(id, tipo) {
+    return jwt.sign({ id, tipo }, process.env.SECRET, { expiresIn: 86400 })
   },
 
   async encrypt (value){

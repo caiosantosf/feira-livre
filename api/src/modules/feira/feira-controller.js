@@ -56,7 +56,6 @@ module.exports = {
 
   async post (req, res) {
     const data = req.body
-    data.password = await encrypt(data.password)
 
     try {
       const id = await db('feiras').insert(data).returning('id')
@@ -89,5 +88,21 @@ module.exports = {
       return res.status(200).json({ message: 'feira excluída' })
     }
     return res.status(404).json({ message: 'feira não encontrada' })
-  }
+  },
+
+  async patchImage (req, res) {
+    const { id } = req.params
+    
+    const { filename : image} = req.file
+    
+    try {
+      const result = await db('feiras').where({ id }).update({ image })
+      if (result) {
+        return res.status(200).json({ message : 'Imagem salva com sucesso'})
+      }
+      return res.status(404).json({ message: 'Feira não encontrada'})
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro não conhecido'})
+    }
+  },
 }

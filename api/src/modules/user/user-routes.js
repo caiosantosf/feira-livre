@@ -6,12 +6,7 @@ const validation = require('./user-validation')
 const routes = express.Router()
 
 routes.post('/users/login', 
-  validation(['cpf', 'password']), 
-  auth
-)
-
-routes.post('/users/login/admin', 
-  validation(['cpf', 'password']), 
+  validation(['email', 'password']), 
   auth
 )
 
@@ -21,38 +16,29 @@ routes.post('/users/login/emailresetpassword',
 )
 
 routes.patch('/users/login/resetpassword/:id', 
-  security(['regular', 'admin']), 
+  security(['feira', 'feirante']), 
   validation(['password']), 
   put
 )
 
-routes.get('/users', 
-  security(['admin']), 
-  getMany
-)
-
 routes.post('/users', 
-  validation(['name', 'cpf', 'phone', 'email', 'password', 'documentType', 
-              'document', 'cep', 'homeAddress', 'addressNumber',
-              'neighborhood', 'city', 'state', 'birth']), 
+  validation(['nome', 'email', 'password']), 
   post
 )
 
 routes.get('/users/:id', 
-  security(['regular', 'admin']), 
+  security(['feira', 'feirante']), 
   getOne
 )
 
 routes.put('/users/:id', 
-  security(['regular', 'admin']), 
-  validation(['name', 'cpf', 'phone', 'email', 'password', 'documentType', 
-              'document', 'cep', 'homeAddress', 'addressNumber',
-              'neighborhood', 'city', 'state', 'birth']),
+  security(['feira', 'feirante']), 
+  validation(['nome', 'email', 'password']), 
   put
 )
 
 routes.delete('/users/:id', 
-  security(['regular', 'admin']), 
+  security(['feira', 'feirante']), 
   destroy
 )
 
