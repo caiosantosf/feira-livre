@@ -9,12 +9,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
+import { api } from '../../config/api';
+import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,116 +48,219 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function Cadastro(props) {
   const classes = useStyles();
 
-  const [usertype, setUsertype] = React.useState('');
+  const [user, setUser] = React.useState({})
+  const [error, setError] = React.useState({})
 
-  const handleChange = (event) => {
-    setUsertype(event.target.value);
-  };
+  const { state } = props.location
+  let user_id = ''
+  if (state) {
+    user_id = state.user_id
+  }
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get(`/users/${user_id}`, 
+          { headers :{
+            'x-access-token' : sessionStorage.getItem('token')
+          }})
+
+        const { data } = res
+        delete data.password
+
+        setUser(data)
+      } catch (error) {
+        console.log(error)
+        /*const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setMessage(errorHandled.error)
+          }
+        }*/
+      }
+    }
+    if (user_id) {
+      fetchData()
+    }
+  }, [user_id])
 
   let history = useHistory()
 
+  const handleSave = async () => {
+    try {
+      setError({})
+
+      if (user.password !== user.passwordConfirm) {
+        setError({passwordConfirm: "Confirmação de Senha está diferente da Senha"})
+      } else {
+        const { passwordConfirm, id, ...userData } = user
+
+        const config = { headers :{
+          'x-access-token' : sessionStorage.getItem('token'),
+        }}
+
+        let res = ''
+        
+        if (user_id) {
+          await api.put(`/users/${id}`, userData, config)
+
+          history.push('/home')
+        } else {
+          res = await api.post('/users/', userData)
+          const { token, id: idCreated } = res.data
+
+          if (token) {
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user_id', idCreated)
+            if (user.tipo === 'feira') {
+              history.push('/cadastro-feira', {user_id: id ? id : idCreated})
+            } else {
+              if (user.tipo === 'feirante') {
+                history.push('/cadastro-feirante', {user_id: id ? id : idCreated})
+              } else {
+                setError({tipo: "Não foi selecionado o tipo de usuario!"})
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <React.Fragment>
-      <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
-        <Paper elevation={3}>
-          <CssBaseline />
-          <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Cadastro
-          </Typography>
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Nome"
-                  autoFocus
-                />
+      <div className={classes.root}>
+        <Voltar titulo="Cadastro" />
+        <Container component="main" maxWidth="false">
+          <Paper className="paperApp" elevation={3}>
+            <CssBaseline />
+            <div className={classes.paper}>
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    autoComplete="fname"
+                    name="nome"
+                    required
+                    fullWidth
+                    id="nome"
+                    label="Nome"
+                    autoFocus
+                    value={user.nome || ''}
+                    onChange={e => {
+                      setUser({ ...user,
+                        nome: e.target.value
+                      })
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Endereço de Email"
+                    name="email"
+                    autoComplete="email"
+                    value={user.email || ''}
+                    onChange={e => {
+                      setUser({ ...user,
+                        email: e.target.value
+                      })
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Senha"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={user.password || ''}
+                    onChange={e => {
+                      setUser({ ...user,
+                        password: e.target.value
+                      })
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="passwordConfirm"
+                    label="Confirme a Senha"
+                    type="password"
+                    id="password"
+                    autoComplete="confirmation-password"
+                    value={user.passwordConfirm || ''}
+                    onChange={e => {
+                      setUser({ ...user,
+                        passwordConfirm: e.target.value
+                      })
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} style={user_id ? { display: 'none' } : {}}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="select-tipo">Tipo de Usuário</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    labelId="select-user-tipo"
+                    id="select-user-tipo"
+                    value={user.tipo || ''}
+                    onChange={e => {
+                      setUser({ ...user,
+                        tipo: e.target.value
+                      })
+                    }}
+                  >
+                    <MenuItem value={'feira'}>Feira</MenuItem>
+                    <MenuItem value={'feirante'}>Feirante</MenuItem>
+                  </Select>
+                </FormControl>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Sobrenome"
-                  name="lastName"
-                  autoComplete="lname"
-                />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleSave}
+              >
+                Salvar
+              </Button>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link 
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/login')
+                  }}>
+                    Já possui uma conta? Acessar
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Endereço de Email"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Senha"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="select-user-type">Tipo de Usuário</InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  labelId="select-user-type"
-                  id="select-user-type"
-                  value={usertype}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={1}>Feira</MenuItem>
-                  <MenuItem value={2}>Feirante</MenuItem>
-                </Select>
-              </FormControl>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Cadastrar
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </div>
-        </Paper>
-      </Container>  
+            </form>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </div>
+          </Paper>
+        </Container>  
+      </div>
     </React.Fragment>
   );
 }

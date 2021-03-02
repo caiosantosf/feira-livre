@@ -14,6 +14,8 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
+import Voltar from '../../components/nav/voltar'
+import { api } from '../../config/api';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,89 +43,110 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-  const classes = useStyles();
+  const classes = useStyles()
+
+  const [error, setError] = React.useState({})
+  const [auth, setAuth] = React.useState({})
 
   let history = useHistory()
 
+  const handleAuth = async () => {
+    try {
+      setError({})
+      const res = await api.post('/users/login/', auth)
+      const { token, id } = res.data
+
+      sessionStorage.setItem('user_id', id)
+      sessionStorage.setItem('token', token)
+      
+      history.push('/home')
+    } catch (error) {
+      setError(error)
+    }
+  }
+
   return (
     <React.Fragment>
-      <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
-        <Paper elevation={3}>
-          <CssBaseline />
-          <div className={classes.paper}>
-          
-           <Avatar alt="Banca de Feira" src="/images/banca-feira.png" />
-
-          <Typography component="h1" variant="h5">
-            Acessar Conta
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Endereço de Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Senha"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Continuar Conectado"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => {
-                history.push('/feirantegrid')
-              }}
-            >
-              Acessar
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/novasenha')
-                }}>
-                  Esqueceu a Senha?
-                </Link>
+      <div className={classes.root}>
+        <Voltar titulo="Acessar Conta" />
+        <Container component="main" maxWidth="false">
+          <Paper className="paperApp" elevation={3}>
+            <CssBaseline />
+            <div className={classes.paper}>
+            <form className={classes.form} noValidate>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Endereço de Email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={e => {
+                  setAuth({ ...auth,
+                    email: e.target.value
+                  })
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Senha"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => {
+                  setAuth({ ...auth,
+                    password: e.target.value
+                  })
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Continuar Conectado"
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleAuth}
+              >
+                Acessar
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link 
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/novasenha')
+                  }}>
+                    Esqueceu a Senha?
+                  </Link>
+                </Grid>
+                <Grid item style={}>
+                  <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/cadastro')
+                  }}>
+                    {"Não tem uma conta? Crie uma!"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/cadastro')
-                }}>
-                  {"Não tem uma conta? Crie uma!"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </div>
-        </Paper>
-      </Container>  
+            </form>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </div>
+          </Paper>
+        </Container>  
+      </div>
     </React.Fragment>
   );
 }
