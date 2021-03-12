@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -124,6 +124,7 @@ export default function Cadastro(props) {
                 history.push('/cadastro-feirante', {user_id: id ? id : idCreated})
               } else {
                 setError({tipo: "Não foi selecionado o tipo de usuario!"})
+                console.log(error)
               }
             }
           }
@@ -143,6 +144,7 @@ export default function Cadastro(props) {
             <CssBaseline />
             <div className={classes.paper}>
             <form className={classes.form} noValidate>
+              <Alert severity="error" style={error ? { } : {display: 'none' }}>{setError.toString}</Alert>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -241,18 +243,6 @@ export default function Cadastro(props) {
               >
                 Salvar
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link 
-                  component="button"
-                  variant="body2"
-                  onClick={() => {
-                    history.push('/login')
-                  }}>
-                    Já possui uma conta? Acessar
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
             <Box mt={8}>
               <Copyright />

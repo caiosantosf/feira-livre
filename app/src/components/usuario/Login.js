@@ -128,7 +128,7 @@ export default function SignIn() {
                     Esqueceu a Senha?
                   </Link>
                 </Grid>
-                <Grid item style={}>
+                <Grid item>
                   <Link
                   component="button"
                   variant="body2"
