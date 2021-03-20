@@ -16,6 +16,7 @@ import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
 import { api } from '../../config/api';
 import Voltar from '../../components/nav/voltar'
+import { errorApi } from '../../config/handleErrors'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -46,13 +46,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     minHeight: '100vh',
   },
+  Alert: {
+    marginTop: theme.spacing(10)
+  }
 }));
 
 export default function Cadastro(props) {
   const classes = useStyles();
 
   const [user, setUser] = React.useState({})
-  const [error, setError] = React.useState({})
+  const [error, setError] = React.useState([])
 
   const { state } = props.location
   let user_id = ''
@@ -60,6 +63,8 @@ export default function Cadastro(props) {
     user_id = state.user_id
   }
 
+  let history = useHistory()
+  
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,30 +78,27 @@ export default function Cadastro(props) {
 
         setUser(data)
       } catch (error) {
-        console.log(error)
-        /*const errorHandled = errorApi(error)
+        const errorHandled = errorApi(error)
         if (errorHandled.forbidden) {
           history.push('/')
         } else {
           if (errorHandled.general) {
-            setMessage(errorHandled.error)
+            setError([errorHandled.error])
           }
-        }*/
+        }
       }
     }
     if (user_id) {
       fetchData()
     }
-  }, [user_id])
-
-  let history = useHistory()
+  }, [user_id, history])
 
   const handleSave = async () => {
     try {
-      setError({})
+      setError([])
 
       if (user.password !== user.passwordConfirm) {
-        setError({passwordConfirm: "Confirmação de Senha está diferente da Senha"})
+        setError(['Confirmação de Senha está diferente da Senha'])
       } else {
         const { passwordConfirm, id, ...userData } = user
 
@@ -123,15 +125,23 @@ export default function Cadastro(props) {
               if (user.tipo === 'feirante') {
                 history.push('/cadastro-feirante', {user_id: id ? id : idCreated})
               } else {
-                setError({tipo: "Não foi selecionado o tipo de usuario!"})
-                console.log(error)
+                setError(['Não foi selecionado o tipo de usuario!'])
               }
             }
           }
         }
       }
     } catch (error) {
-      console.log(error)
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
     }
   }
 
@@ -144,7 +154,13 @@ export default function Cadastro(props) {
             <CssBaseline />
             <div className={classes.paper}>
             <form className={classes.form} noValidate>
-              <Alert severity="error" style={error ? { } : {display: 'none' }}>{setError.toString}</Alert>
+              <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+                {error.map((err, i) => {
+                  return (
+                    <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                  )
+                })}
+              </Alert>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField

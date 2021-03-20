@@ -22,7 +22,7 @@ routes.patch('/users/login/resetpassword/:id',
 )
 
 routes.post('/users', 
-  validation(['nome', 'email', 'password']), 
+  validation(['nome', 'email', 'password', 'tipo']), 
   post
 )
 
@@ -33,7 +33,7 @@ routes.get('/users/:id',
 
 routes.put('/users/:id', 
   security(['feira', 'feirante']), 
-  validation(['nome', 'email', 'password']), 
+  validation(['nome', 'email', 'password', 'tipo']), 
   put
 )
 

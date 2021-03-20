@@ -49,3 +49,7 @@ main {
 .iconLocais {
   margin-right: 5px;
 }
+
+.MuiAlert-root {
+  margin-bottom: 10px;
+}
