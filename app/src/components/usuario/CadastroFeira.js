@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
@@ -15,9 +16,11 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
-import { api, apiCidades } from '../../config/api';
+import { api, apiCidades, apiUrl } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
 import Voltar from '../../components/nav/voltar'
+import { errorApi } from '../../config/handleErrors'
+import LoadingOverlay from 'react-loading-overlay';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -53,18 +55,53 @@ const useStyles = makeStyles((theme) => ({
 export default function CadastroFeira(props) {
   const classes = useStyles();
 
-  const { user_id } = props.location.state
+  const { state } = props.location
+  let user_id = ''
+  if (state) {
+    user_id = state.user_id
+  }
 
   const [image, setImage] = React.useState()
   const [cidades, setCidades] = React.useState([])
   const [feira, setFeira] = React.useState({})
-  const [error, setError] = React.useState({})
+  const [error, setError] = React.useState([])
+  const [isActive, setisActive] = React.useState(false)
 
   let history = useHistory()
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/feiras/', 
+          { headers :{
+            'x-access-token' : sessionStorage.getItem('token'),
+            'user_id' : user_id
+          }})
+
+        const data = res.data[0]
+        delete data.password
+
+        handleGetCidades(data.estado)
+        setFeira(data)        
+      } catch (error) {
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
+      }
+    }
+    if (user_id) {
+      fetchData()
+    }
+  }, [user_id, history])
+
   const handleSave = async () => {
     try {
-      setError({})
+      setError([])
 
       let { id, ...feiraData } = feira
       feiraData = { ...feiraData, user_id }
@@ -79,27 +116,32 @@ export default function CadastroFeira(props) {
       const { id: idCreated } = res.data
 
       if (image) {
-        try {
-          const data = new FormData()
-  
-          data.append("name", image[0].file.name)
-          data.append("file", image[0].file)
+        const data = new FormData()
 
-          await api.patch(`/feiras/image/${idCreated}`, data, config)
-        } catch (error) {
-          console.log(error)
-        }
+        data.append("name", image[0].file.name)
+        data.append("file", image[0].file)
+
+        await api.patch(`/feiras/image/${idCreated ? idCreated : id}`, data, config)
       }
 
       history.push('/home', {tipo: 'feira', data: feiraData})
-
     } catch (error) {
-
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
     }
   }
 
   const handleGetCidades = async (estado) => {
     try {
+      setisActive(true)
       const res = await apiCidades(estado)
       const { data } = res
       if (data) {
@@ -110,7 +152,9 @@ export default function CadastroFeira(props) {
         }
         setCidades(cidadesAux)
       }
+      setisActive(false)
     } catch (error) {
+      setisActive(false)
       setError({estado: "Estado Inválido!"})
     }
   }
@@ -121,6 +165,11 @@ export default function CadastroFeira(props) {
 
   return (
     <React.Fragment>
+      <LoadingOverlay
+        active={isActive}
+        spinner
+        text='Carregando Cidades...'
+        >
       <div className={classes.root}>
         <Voltar titulo="Dados da Feira" />
         <Container component="main" maxWidth="false">
@@ -128,6 +177,13 @@ export default function CadastroFeira(props) {
             <CssBaseline />
             <div className={classes.paper}>
             <form className={classes.form} noValidate>
+              <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+                {error.map((err, i) => {
+                  return (
+                    <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                  )
+                })}
+              </Alert>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -138,6 +194,7 @@ export default function CadastroFeira(props) {
                     id="nome"
                     label="Nome"
                     autoFocus
+                    value={feira.nome || ''}
                     onChange={e => {
                       setFeira({ ...feira,
                         nome: e.target.value
@@ -153,6 +210,7 @@ export default function CadastroFeira(props) {
                     label="Descrição"
                     name="descricao"
                     autoComplete="descricao"
+                    value={feira.descricao || ''}
                     onChange={e => {
                       setFeira({ ...feira,
                         descricao: e.target.value
@@ -167,6 +225,7 @@ export default function CadastroFeira(props) {
                       required
                       fullWidth
                       labelId="select-estado"
+                      value={feira.estado || ''}
                       onChange={e => {
                         handleGetCidades(e.target.value)
                         setFeira({ ...feira,
@@ -211,6 +270,7 @@ export default function CadastroFeira(props) {
                       required
                       fullWidth
                       labelId="select-cidade"
+                      value={feira.cidade || ''}
                       onChange={e => {
                         setFeira({ ...feira,
                           cidade: e.target.value
@@ -248,20 +308,30 @@ export default function CadastroFeira(props) {
                           variant="contained"
                           color="secondary"
                           style={isDragging ? { color: 'red' } : undefined}
-                          onClick={onImageUpload}
+                          onClick={() => {
+                              if (imageList.length) {
+                                onImageUpdate(0)
+                              } else {
+                                onImageUpload()
+                              }
+                          }}
                           {...dragProps}
                         >
                           Selecione uma foto da feira
                         </Button>
                         &nbsp;
+                        <div className="image-item" style={imageList.length || !feira.image ? { display: 'none'} : { display : 'block' }}>
+                          <img src={`${apiUrl}uploads/${feira.image}`} alt="" width="100" />
+                          <div className="image-item__btn-wrapper">
+                            <Button
+                              variant="contained"
+                              color="secondary" onClick={() => setFeira({...feira, image:''})}>Remover</Button>
+                          </div>
+                        </div>
                         {imageList.map((image, index) => (
                           <div key={index} className="image-item">
-                            <img src={image['data_url']} alt="" width="100" />
+                            <img src={ image['data_url']} alt="" width="100" />
                             <div className="image-item__btn-wrapper">
-                              <Button
-                                variant="contained"
-                                color="secondary" onClick={() => onImageUpdate(index)}>Trocar</Button>
-                              {' '}
                               <Button
                                 variant="contained"
                                 color="secondary" onClick={() => onImageRemove(index)}>Remover</Button>
@@ -281,7 +351,7 @@ export default function CadastroFeira(props) {
                 className={classes.submit}
                 onClick={handleSave}
               >
-                Cadastrar
+                Salvar
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
@@ -303,6 +373,7 @@ export default function CadastroFeira(props) {
           </Paper>
         </Container>  
       </div>
+      </LoadingOverlay>
     </React.Fragment>
   );
 }

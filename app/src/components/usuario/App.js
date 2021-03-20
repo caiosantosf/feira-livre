@@ -57,7 +57,9 @@ export default function App() {
     const fetchData = async () => {
       try {
         const res = await api.get('/feiras/estados/')
-        setEstados(res.data)
+        if (res.status === 200) {
+          setEstados(res.data)
+        }
       } catch (error) {
         alert(error)
       }
@@ -68,7 +70,9 @@ export default function App() {
   const handleGetCidades = async (estado) => {
     try {
       const res = await api.get(`/feiras/estados/${estado}/cidades`)
-      setCidades(res.data)
+      if (res.status === 200) {
+        setCidades(res.data)
+      }
     } catch (error) {
       alert(error)
     }

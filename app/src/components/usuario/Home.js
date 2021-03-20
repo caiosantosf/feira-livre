@@ -77,7 +77,7 @@ export default function Cadastro() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro-feira', {id: sessionStorage.getItem('user_id')})}}
+                onClick={() => {history.push('/cadastro-feira', {user_id: sessionStorage.getItem('user_id')})}}
               >
                 Alterar dados da feira
               </Button>
