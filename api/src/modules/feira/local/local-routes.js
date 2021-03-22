@@ -5,29 +5,29 @@ const validation = require('./local-validation')
 
 const routes = express.Router()
 
-routes.get('/feiras/:feira_id/locais',
+routes.get('/feiras/:feiraId/locais',
   getMany
 )
 
-routes.post('/feiras/:feira_id/locais', 
+routes.post('/feiras/:feiraId/locais', 
   security(['feira']), 
   validation(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'diaSemana', 
               'horarioInicio', 'horarioTermino']), 
   post
 )
 
-routes.get('/feiras/:feira_id/locais/:id', 
+routes.get('/feiras/:feiraId/locais/:id', 
   getOne
 )
 
-routes.put('/feiras/:feira_id/locais/:id', 
+routes.put('/feiras/:feiraId/locais/:id', 
   security(['feira']), 
   validation(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'diaSemana', 
               'horarioInicio', 'horarioTermino']),
   put
 )
 
-routes.delete('/feiras/:feira_id/locais/:id', 
+routes.delete('/feiras/:feiraId/locais/:id', 
   security(['feira']), 
   destroy
 )

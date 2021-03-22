@@ -53,11 +53,12 @@ export default function SignIn() {
   const handleAuth = async () => {
     try {
       setError({})
-      const res = await api.post('/users/login/', auth)
-      const { token, id } = res.data
+      const res = await api.post('/usuarios/login/', auth)
+      const { token, id, tipo } = res.data
 
-      sessionStorage.setItem('user_id', id)
+      sessionStorage.setItem('usuarioId', id)
       sessionStorage.setItem('token', token)
+      sessionStorage.setItem('tipo', tipo)
       
       history.push('/home')
     } catch (error) {
@@ -100,7 +101,7 @@ export default function SignIn() {
                 autoComplete="current-password"
                 onChange={e => {
                   setAuth({ ...auth,
-                    password: e.target.value
+                    senha: e.target.value
                   })
                 }}
               />

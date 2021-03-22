@@ -68,7 +68,7 @@ export default function Cadastro() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro', {user_id: sessionStorage.getItem('user_id')})}}
+                onClick={() => {history.push('/cadastro', {usuarioId: sessionStorage.getItem('usuarioId')})}}
               >
                 Alterar dados do usuário
               </Button>
@@ -76,8 +76,9 @@ export default function Cadastro() {
                 fullWidth
                 variant="contained"
                 color="primary"
+                style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro-feira', {user_id: sessionStorage.getItem('user_id')})}}
+                onClick={() => {history.push('/cadastro-feira', {usuarioId: sessionStorage.getItem('usuarioId')})}}
               >
                 Alterar dados da feira
               </Button>
@@ -85,6 +86,17 @@ export default function Cadastro() {
                 fullWidth
                 variant="contained"
                 color="primary"
+                style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
+                className={classes.submit}
+                onClick={() => {history.push('/cadastro-feirante', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+              >
+                Alterar dados do feirante
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
                 onClick={() => {}}
               >
@@ -93,10 +105,30 @@ export default function Cadastro() {
               <Button
                 fullWidth
                 variant="contained"
+                color="primary"
+                style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
+                className={classes.submit}
+                onClick={() => {}}
+              >
+                Solicitações de Feirantes
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
+                className={classes.submit}
+                onClick={() => {}}
+              >
+                Produtos
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
                 color="secondary"
                 className={classes.submit}
                 onClick={() => {
-                  sessionStorage.setItem('user_id', '')
+                  sessionStorage.setItem('usuarioId', '')
                   sessionStorage.setItem('token', '')
                   history.push('/')
                 }}

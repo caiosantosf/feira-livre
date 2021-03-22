@@ -2,12 +2,12 @@ const db = require('../../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { feira_id } = req.params
+    const { feiraId } = req.params
     const produtos = await db('feiranteProdutos')
-                            .join('feirante', 'feiranteProdutos.feirante_id', '=', 'feirante.id')
-                            .where({ 'feirante.feira_id': feira_id })
+                            .join('feirante', 'feiranteProdutos.feiranteId', '=', 'feirante.id')
+                            .where({ 'feirante.feiraId': feiraId })
                             .select('feiranteProdutos.nome', 'feiranteProdutos.descricao', 'feiranteProdutos.unidadeMedida', 
-                                    'feiranteProdutos.imagemUrl', 'feiranteProdutos.feirante_id', 'feiranteProdutos.valor')
+                                    'feiranteProdutos.imagemUrl', 'feiranteProdutos.feiranteId', 'feiranteProdutos.valor')
                             .orderBy('feiranteProdutos.descricao')
                         
     if (produtos.length) {
@@ -29,7 +29,7 @@ module.exports = {
 
   async post (req, res) {
     const data = req.body
-    data.password = await encrypt(data.password)
+    data.senha = await encrypt(data.senha)
 
     try {
       const id = await db('feirantes').insert(data).returning('id')
@@ -43,7 +43,7 @@ module.exports = {
   async put (req, res) {
     const { id } = req.params
     const data = req.body
-    data.password = await encrypt(data.password)
+    data.senha = await encrypt(data.senha)
     try {
       const result = await db('feirantes').where({ id }).update({ id, ...data })
       if (result) {

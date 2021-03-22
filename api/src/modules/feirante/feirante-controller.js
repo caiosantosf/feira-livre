@@ -2,9 +2,9 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { feira_id } = req.params
-    const feirantes = await db('feirante')
-                            .where({ feira_id }) 
+    const { feiraId } = req.params
+    const feirantes = await db('feirantes')
+                            .where({ feiraId }) 
                             .orderBy('descricao')
                         
     if (feirantes.length) {
@@ -26,21 +26,19 @@ module.exports = {
 
   async post (req, res) {
     const data = req.body
-    data.password = await encrypt(data.password)
 
     try {
       const id = await db('feirantes').insert(data).returning('id')
       return res.status(201).json({ id: id[0] })
     } catch (error) {
-      const message = dbErrors(error)
-      return res.status(400).json(message)
+      return res.status(500).json(error)
     }
   },
 
   async put (req, res) {
     const { id } = req.params
     const data = req.body
-    data.password = await encrypt(data.password)
+    data.senha = await encrypt(data.senha)
     try {
       const result = await db('feirantes').where({ id }).update({ id, ...data })
       if (result) {

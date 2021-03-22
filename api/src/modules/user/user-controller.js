@@ -5,7 +5,7 @@ const { encrypt, compareCrypt, token } = require('../../config/security')
 const dbErrors = error => {
   let message = { message : 'Ocorreu um erro não identificado', error}
   if (error.hasOwnProperty('constraint')) {
-    if (error.constraint === 'users_email_unique') {
+    if (error.constraint === 'usuarios_email_unique') {
       message = { email : 'Email já cadastrado!' }
     }
   }
@@ -14,30 +14,30 @@ const dbErrors = error => {
 
 module.exports = {
   async auth (req, res) {
-    const { email , password : reqPassword } = req.body
-    const user = await db('users').where({ email })
+    const { email , senha : reqSenha } = req.body
+    const usuario = await db('usuarios').where({ email })
 
-    if (user.length) {
-      const { id , password: dbPassword, tipo } = user[0]
+    if (usuario.length) {
+      const { id , senha: dbSenha, tipo } = usuario[0]
 
-      if (await compareCrypt(reqPassword, dbPassword)) {
+      if (await compareCrypt(reqSenha, dbSenha)) {
         return res.status(200).json({ auth: true, token: token(id, tipo), id, tipo })
       }
-      return res.status(400).json({ password: 'Senha inválida' })
+      return res.status(400).json({ senha: 'Senha inválida' })
     }
     return res.status(404).json({ email: 'Email não cadastrado' })
   },
 
   async getMany (req, res) {
     const { currentPage } = req.headers
-    const users = await db('users')
+    const usuarios = await db('usuarios')
                           .whereNot({ 'name' : 'admin'})
                           .orderBy('name')
                           .paginate({ perPage: 10, currentPage, isLengthAware: true  })
 
-    if (users.hasOwnProperty('data')) {
-      if (users.data.length) {
-        return res.status(200).json(users)
+    if (usuarios.hasOwnProperty('data')) {
+      if (usuarios.data.length) {
+        return res.status(200).json(usuarios)
       }
     }
     return res.status(204).json({ message: 'Não existem usuários cadastrados' })
@@ -45,21 +45,21 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const user = await db('users').where({ id })
+    const usuario = await db('usuarios').where({ id })
 
-    if (user.length) {
-      return res.status(200).json(user[0])
+    if (usuario.length) {
+      return res.status(200).json(usuario[0])
     }
     return res.status(404).json({ message: 'Usuário não encontrato'})
   },
 
   async post (req, res) {
     const data = req.body
-    data.password = await encrypt(data.password)
+    data.senha = await encrypt(data.senha)
 
     try {
-      const id = await db('users').insert(data).returning('id')
-      return res.status(201).json({ id: id[0], token: token(id[0], data.tipo), tipo: data.tipo })
+      const id = await db('usuarios').insert(data).returning('id')
+      return res.status(201).json({ id: id[0], tipo: data.tipo, token: token(id[0], data.tipo), tipo: data.tipo })
     } catch (error) {
       const message = dbErrors(error)
       return res.status(400).json(message)
@@ -69,9 +69,9 @@ module.exports = {
   async put (req, res) {
     const { id } = req.params
     const data = req.body
-    data.password = await encrypt(data.password)
+    data.senha = await encrypt(data.senha)
     try {
-      const result = await db('users').where({ id }).update({ id, ...data })
+      const result = await db('usuarios').where({ id }).update({ id, ...data })
       if (result) {
         return res.status(200).json({ message : 'Usuário alterado'})
       }
@@ -82,12 +82,12 @@ module.exports = {
     }
   },
 
-  async emailResetPassword (req, res) {
+  async emailResetSenha (req, res) {
     const { email } = req.body
-    const user = await db('users').where({ email })
+    const usuario = await db('usuarios').where({ email })
     
-    if (user.length) {
-      const { id } = user[0]
+    if (usuario.length) {
+      const { id } = usuario[0]
       const domain = process.env.APP_LOCATION
       const link = `${domain}redefine-senha/${id}?token=${token(id)}`
       //if (await sendMail(email, link)) {
@@ -101,7 +101,7 @@ module.exports = {
 
   async destroy (req, res) {
     const { id } = req.params
-    const result = await db('users').where({ id }).del()
+    const result = await db('usuarios').where({ id }).del()
 
     if (result) {
       return res.status(200).json({ message: 'Usuário excluído'})

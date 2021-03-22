@@ -56,9 +56,9 @@ export default function CadastroFeira(props) {
   const classes = useStyles();
 
   const { state } = props.location
-  let user_id = ''
+  let usuarioId = ''
   if (state) {
-    user_id = state.user_id
+    usuarioId = state.usuarioId
   }
 
   const [image, setImage] = React.useState()
@@ -75,11 +75,10 @@ export default function CadastroFeira(props) {
         const res = await api.get('/feiras/', 
           { headers :{
             'x-access-token' : sessionStorage.getItem('token'),
-            'user_id' : user_id
+            'usuarioId' : usuarioId
           }})
 
         const data = res.data[0]
-        delete data.password
 
         handleGetCidades(data.estado)
         setFeira(data)        
@@ -94,17 +93,17 @@ export default function CadastroFeira(props) {
         }
       }
     }
-    if (user_id) {
+    if (usuarioId) {
       fetchData()
     }
-  }, [user_id, history])
+  }, [usuarioId, history])
 
   const handleSave = async () => {
     try {
       setError([])
 
       let { id, ...feiraData } = feira
-      feiraData = { ...feiraData, user_id }
+      feiraData = { ...feiraData, usuarioId }
 
       const config = { headers :{
         'x-access-token' : sessionStorage.getItem('token'),
@@ -124,6 +123,7 @@ export default function CadastroFeira(props) {
         await api.patch(`/feiras/image/${idCreated ? idCreated : id}`, data, config)
       }
 
+      sessionStorage.setItem('tipo', 'feira')
       history.push('/home', {tipo: 'feira', data: feiraData})
     } catch (error) {
       const errorHandled = errorApi(error)
@@ -320,12 +320,12 @@ export default function CadastroFeira(props) {
                           Selecione uma foto da feira
                         </Button>
                         &nbsp;
-                        <div className="image-item" style={imageList.length || !feira.image ? { display: 'none'} : { display : 'block' }}>
-                          <img src={`${apiUrl}uploads/${feira.image}`} alt="" width="100" />
+                        <div className="image-item" style={imageList.length || !feira.imagemUrl ? { display: 'none'} : { display : 'block' }}>
+                          <img src={`${apiUrl}uploads/${feira.imagemUrl}`} alt="" width="100" />
                           <div className="image-item__btn-wrapper">
                             <Button
                               variant="contained"
-                              color="secondary" onClick={() => setFeira({...feira, image:''})}>Remover</Button>
+                              color="secondary" onClick={() => setFeira({...feira, imagemUrl:''})}>Remover</Button>
                           </div>
                         </div>
                         {imageList.map((image, index) => (

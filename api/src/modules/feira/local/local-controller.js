@@ -3,10 +3,10 @@ const db = require('../../../database/connection')
 module.exports = {
 
   async getMany (req, res) {
-    const { feira_id } = req.params
+    const { feiraId } = req.params
 
     let locais = await db('feiraLocais')
-                          .where('feira_id', feira_id)
+                          .where('feiraId', feiraId)
                           .orderBy('id', 'desc')
                           
     if (locais.length) {
@@ -28,9 +28,9 @@ module.exports = {
 
   async post (req, res) {
     const data = req.body
-    const { feira_id } = req.params
+    const { feiraId } = req.params
 
-    data.feira_id = feira_id
+    data.feiraId = feiraId
 
     try {
       const id = await db('feiraLocais').insert(data).returning('id')
@@ -46,10 +46,10 @@ module.exports = {
   },
 
   async put (req, res) {
-    const { id, feira_id } = req.params
+    const { id, feiraId } = req.params
     const data = req.body
 
-    data.feira_id = feira_id
+    data.feiraId = feiraId
 
     try {
       const result = await db('feiraLocais').where({ id }).update({ id, ...data })

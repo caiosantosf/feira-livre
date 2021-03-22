@@ -82,33 +82,33 @@ export default function Feirantes(props) {
   const [feirantes, setFeirante] = React.useState([])
   const [produtos, setProdutos] = React.useState([])
 
-  let { feira_id } = props.match.params
+  let { feiraId } = props.match.params
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const resLocais = await api.get(`/feiras/${feira_id}/locais`)
+        const resLocais = await api.get(`/feiras/${feiraId}/locais`)
         if (resLocais.status === 200) setLocais(resLocais.data)
       } catch (error) {
         alert(error)
       }
 
       try{
-        const resFeirantes = await api.get(`/feiras/${feira_id}/feirantes`)
+        const resFeirantes = await api.get(`/feiras/${feiraId}/feirantes`)
         if (resFeirantes.status === 200) setFeirante(resFeirantes.data)
       } catch (error) {
         alert(error)
       }
 
       try {
-        const resProdutos = await api.get(`/feiras/${feira_id}/feirantes/produtos`)
+        const resProdutos = await api.get(`/feiras/${feiraId}/feirantes/produtos`)
         if (resProdutos.status === 200) setProdutos(resProdutos.data)
       } catch (error) {
         alert(error)
       }
     }
     fetchData()
-  }, [feira_id])
+  }, [feiraId])
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -169,7 +169,7 @@ export default function Feirantes(props) {
           <div className={classes.paper}>
               <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
                   {produtos.map((produto, i) => {
-                      if (produto.feirante_id === feirante.id) {
+                      if (produto.feiranteId === feirante.id) {
                           return (
                               <Box key={i} p={i} css={{ maxWidth: 200 }}>
                                   <Card className={classes.card}>

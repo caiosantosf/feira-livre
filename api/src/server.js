@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 
-const userRoutes = require('./modules/user/user-routes')
+const usuarioRoutes = require('./modules/user/user-routes')
 const feiraRoutes = require('./modules/feira/feira-routes')
 const feiranteRoutes = require('./modules/feirante/feirante-routes')
 const produtosRoutes = require('./modules/feirante/produto/produto-routes')
@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use(express.static(`${process.cwd()}\\public`))
 
-app.use(userRoutes)
+app.use(usuarioRoutes)
 app.use(feiraRoutes)
 app.use(feiranteRoutes)
 app.use(produtosRoutes)

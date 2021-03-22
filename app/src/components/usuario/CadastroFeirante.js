@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
@@ -15,8 +16,10 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
-import { api, apiCidades } from '../../config/api';
-import ImageUploading from 'react-images-uploading'
+import { api } from '../../config/api';
+import Voltar from '../../components/nav/voltar'
+import { errorApi } from '../../config/handleErrors'
+import LoadingOverlay from 'react-loading-overlay';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -49,258 +51,305 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CadastroFeira(props) {
+export default function CadastroFeirante(props) {
   const classes = useStyles();
 
-  const { user_id } = props.location.state
+  const { state } = props.location
+  let usuarioId = ''
+  if (state) {
+    usuarioId = state.usuarioId
+  }
 
-  const [image, setImage] = React.useState()
   const [cidades, setCidades] = React.useState([])
-  const [feira, setFeira] = React.useState({})
-  const [error, setError] = React.useState({})
+  const [estados, setEstados] = React.useState([])
+  const [feiras, setFeiras] = React.useState([])
+  const [feirante, setFeirante] = React.useState({})
+  const [error, setError] = React.useState([])
+  const [isActive, setisActive] = React.useState(false)
 
   let history = useHistory()
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/feirantes/', 
+          { headers :{
+            'x-access-token' : sessionStorage.getItem('token'),
+            'usuarioId' : usuarioId
+          }})
+
+        const data = res.data[0]
+
+        handleGetCidades(data.estado)
+        setFeirante(data)        
+      } catch (error) {
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
+      }
+    }
+    if (usuarioId) {
+      fetchData()
+    }
+  }, [usuarioId, history])
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/feiras/estados/')
+        if (res.status === 200) {
+          setEstados(res.data)
+        }
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData()
+  }, [])
+
   const handleSave = async () => {
     try {
-      setError({})
+      setError([])
 
-      let { id, ...feiraData } = feira
-      feiraData = { ...feiraData, user_id }
+      let { id, cidade, estado, ...feiranteData } = feirante
+      feiranteData = { ...feiranteData, usuarioId }
 
       const config = { headers :{
         'x-access-token' : sessionStorage.getItem('token'),
       }}
 
-      const res = id ? await api.put(`/feiras/${id}`, feiraData, config)
-                     : await api.post('/feiras/', feiraData)
+      id ? await api.put(`/feirantes/${id}`, feiranteData, config)
+         : await api.post('/feirantes/', feiranteData)
 
-      const { id: idCreated } = res.data
-
-      if (image) {
-        try {
-          const data = new FormData()
-
-          data.append("name", image[0].file.name)
-          data.append("file", image[0].file)
-
-          await api.patch(`/feiras/image/${idCreated}`, data, config)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-
+      sessionStorage.setItem('tipo', 'feirante')
+      history.push('/home', {tipo: 'feirante', data: feiranteData})
     } catch (error) {
-
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
     }
   }
 
   const handleGetCidades = async (estado) => {
     try {
-      const res = await apiCidades(estado)
-      const { data } = res
-      if (data) {
-
-        const cidadesAux = []
-        for (const cidade of data) {
-          cidadesAux.push(cidade.nome)
-        }
-        setCidades(cidadesAux)
+      setisActive(true)
+      const res = await api.get(`/feiras/estados/${estado}/cidades`)
+      if (res.status === 200) {
+        setCidades(res.data)
       }
+      setisActive(false)
     } catch (error) {
-      setError({estado: "Estado Inválido!"})
+      setisActive(false)
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
     }
   }
 
-  const onChangeImage = (imageList, addUpdateIndex) => {
-    setImage(imageList);
+  const handleGetFeiras = async (cidade) => {
+    try {
+      setisActive(true)
+      const res = await api.get('/feiras/', 
+      { headers :{
+        'x-access-token' : sessionStorage.getItem('token'),
+        'cidade' : cidade,
+        'estado' : feirante.estado,
+      }})
+      const { data } = res
+      if (data.length) {
+        const feirasAux = []
+        for (const feira of data) {
+          feirasAux.push(feira)
+        }
+        setFeiras(feirasAux)
+      }
+      setisActive(false)
+    } catch (error) {
+      setisActive(false)
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
+    }
   }
 
   return (
     <React.Fragment>
-      <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
-        <Paper className="paperApp" elevation={3}>
-          <CssBaseline />
-          <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Dados da sua feira
-          </Typography>
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  autoComplete="fname"
-                  name="nome"
-                  required
-                  fullWidth
-                  id="nome"
-                  label="Nome"
-                  autoFocus
-                  onChange={e => {
-                    setFeira({ ...feira,
-                      nome: e.target.value
-                    })
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="descricao"
-                  label="Descrição"
-                  name="descricao"
-                  autoComplete="descricao"
-                  onChange={e => {
-                    setFeira({ ...feira,
-                      descricao: e.target.value
-                    })
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="select-estado">Estado</InputLabel>
-                  <Select
+      <LoadingOverlay
+        active={isActive}
+        spinner
+        text='Carregando...'
+        >
+      <div className={classes.root}>
+        <Voltar titulo="Dados do Feirante" />
+        <Container component="main" maxWidth="false">
+          <Paper className="paperApp" elevation={3}>
+            <CssBaseline />
+            <div className={classes.paper}>
+            <form className={classes.form} noValidate>
+              <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+                {error.map((err, i) => {
+                  return (
+                    <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                  )
+                })}
+              </Alert>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    autoComplete="fname"
+                    name="nome"
                     required
                     fullWidth
-                    labelId="select-estado"
+                    id="nome"
+                    label="Nome"
+                    autoFocus
+                    value={feirante.nome || ''}
                     onChange={e => {
-                      handleGetCidades(e.target.value)
-                      setFeira({ ...feira,
-                        estado: e.target.value
+                      setFeirante({ ...feirante,
+                        nome: e.target.value
                       })
                     }}
-                  >
-                    <MenuItem value="AC">Acre</MenuItem>
-                    <MenuItem value="AL">Alagoas</MenuItem>
-                    <MenuItem value="AP">Amapá</MenuItem>
-                    <MenuItem value="AM">Amazonas</MenuItem>
-                    <MenuItem value="BA">Bahia</MenuItem>
-                    <MenuItem value="CE">Ceará</MenuItem>
-                    <MenuItem value="DF">Distrito Federal</MenuItem>
-                    <MenuItem value="ES">Espírito Santo</MenuItem>
-                    <MenuItem value="GO">Goiás</MenuItem>
-                    <MenuItem value="MA">Maranhão</MenuItem>
-                    <MenuItem value="MT">Mato Grosso</MenuItem>
-                    <MenuItem value="MS">Mato Grosso do Sul</MenuItem>
-                    <MenuItem value="MG">Minas Gerais</MenuItem>
-                    <MenuItem value="PA">Pará</MenuItem>
-                    <MenuItem value="PB">Paraíba</MenuItem>
-                    <MenuItem value="PR">Paraná</MenuItem>
-                    <MenuItem value="PE">Pernambuco</MenuItem>
-                    <MenuItem value="PI">Piauí</MenuItem>
-                    <MenuItem value="RJ">Rio de Janeiro</MenuItem>
-                    <MenuItem value="RN">Rio Grande do Norte</MenuItem>
-                    <MenuItem value="RS">Rio Grande do Sul</MenuItem>
-                    <MenuItem value="RO">Rondônia</MenuItem>
-                    <MenuItem value="RR">Roraima</MenuItem>
-                    <MenuItem value="SC">Santa Catarina</MenuItem>
-                    <MenuItem value="SP">São Paulo</MenuItem>
-                    <MenuItem value="SE">Sergipe</MenuItem>
-                    <MenuItem value="TO">Tocantins</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="select-cidade">Cidade</InputLabel>
-                  <Select
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
                     required
                     fullWidth
-                    labelId="select-cidade"
+                    id="descricao"
+                    label="Descrição"
+                    name="descricao"
+                    autoComplete="descricao"
+                    value={feirante.descricao || ''}
                     onChange={e => {
-                      setFeira({ ...feira,
-                        cidade: e.target.value
+                      setFeirante({ ...feirante,
+                        descricao: e.target.value
                       })
                     }}
-                  >
-                    {cidades.map((cidade, i) => {
-                      return (<MenuItem key={i} value={cidade}>{cidade}</MenuItem>)
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
+                  />
+                </Grid>
 
-              <Grid item xs={12}>
-                <ImageUploading
-                  multiple
-                  value={image}
-                  onChange={onChangeImage}
-                  maxNumber={1}
-                  dataURLKey="data_url"
-                >
-                  {({
-                    imageList,
-                    onImageUpload,
-                    onImageRemoveAll,
-                    onImageUpdate,
-                    onImageRemove,
-                    isDragging,
-                    dragProps,
-                  }) => (
-                    // write your building UI
-                    <div className="upload__image-wrapper">
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        style={isDragging ? { color: 'red' } : undefined}
-                        onClick={onImageUpload}
-                        {...dragProps}
-                      >
-                        Selecione uma foto da feira
-                      </Button>
-                      &nbsp;
-                      {imageList.map((image, index) => (
-                        <div key={index} className="image-item">
-                          <img src={image['data_url']} alt="" width="100" />
-                          <div className="image-item__btn-wrapper">
-                            <Button
-                              variant="contained"
-                              color="secondary" onClick={() => onImageUpdate(index)}>Trocar</Button>
-                            {' '}
-                            <Button
-                              variant="contained"
-                              color="secondary" onClick={() => onImageRemove(index)}>Remover</Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </ImageUploading>
-              </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="select-estado">Estado</InputLabel>
+                    <Select
+                      required
+                      fullWidth
+                      labelId="select-estado"
+                      value={feirante.estado || ''}
+                      onChange={e => {
+                        handleGetCidades(e.target.value)
+                        setFeirante({ ...feirante,
+                          estado: e.target.value
+                        })
+                      }}
+                    >
+                      {estados.map(estado => {
+                        return (
+                        <MenuItem key={estado.estado} value={estado.estado}>{estado.estado}</MenuItem>
+                      )})}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="select-cidade">Cidade</InputLabel>
+                    <Select
+                      required
+                      fullWidth
+                      labelId="select-cidade"
+                      value={feirante.cidade || ''}
+                      onChange={e => {
+                        handleGetFeiras(e.target.value)
+                        setFeirante({ ...feirante,
+                          cidade: e.target.value
+                        })
+                      }}
+                    >
+                      {cidades.map((cidade, i) => {
+                        return (<MenuItem key={i} value={cidade.cidade}>{cidade.cidade}</MenuItem>)
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
 
-            </Grid>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleSave}
-            >
-              Cadastrar
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="select-feira">Feira</InputLabel>
+                    <Select
+                      required
+                      fullWidth
+                      labelId="select-feira"
+                      value={feirante.feiraId || ''}
+                      onChange={e => {
+                        setFeirante({ ...feirante,
+                          feiraId: e.target.value
+                        })
+                      }}
+                    >
+                      {feiras.map((feira, i) => {
+                        return (<MenuItem key={i} value={feira.id}>{feira.nome}</MenuItem>)
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                
               </Grid>
-            </Grid>
-          </form>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </div>
-        </Paper>
-      </Container>  
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleSave}
+              >
+                Salvar
+              </Button>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link 
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/login')
+                  }}>
+                    Já possui uma conta? Acessar
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </div>
+          </Paper>
+        </Container>  
+      </div>
+      </LoadingOverlay>
     </React.Fragment>
   );
 }

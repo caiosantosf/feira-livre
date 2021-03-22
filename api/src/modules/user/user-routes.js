@@ -1,43 +1,43 @@
 const express = require('express')
-const { auth, getMany, post, destroy, getOne, put, emailResetPassword } = require('./user-controller')
+const { auth, getMany, post, destroy, getOne, put, emailResetSenha } = require('./user-controller')
 const { routeSecurity : security } = require('../../config/security')
 const validation = require('./user-validation')
 
 const routes = express.Router()
 
-routes.post('/users/login', 
-  validation(['email', 'password']), 
+routes.post('/usuarios/login', 
+  validation(['email', 'senha']), 
   auth
 )
 
-routes.post('/users/login/emailresetpassword',
+routes.post('/usuarios/login/emailresetsenha',
   validation(['email']), 
-  emailResetPassword
+  emailResetSenha
 )
 
-routes.patch('/users/login/resetpassword/:id', 
+routes.patch('/usuarios/login/resetsenha/:id', 
   security(['feira', 'feirante']), 
-  validation(['password']), 
+  validation(['senha']), 
   put
 )
 
-routes.post('/users', 
-  validation(['nome', 'email', 'password', 'tipo']), 
+routes.post('/usuarios', 
+  validation(['nome', 'email', 'senha', 'tipo']), 
   post
 )
 
-routes.get('/users/:id', 
+routes.get('/usuarios/:id', 
   security(['feira', 'feirante']), 
   getOne
 )
 
-routes.put('/users/:id', 
+routes.put('/usuarios/:id', 
   security(['feira', 'feirante']), 
-  validation(['nome', 'email', 'password', 'tipo']), 
+  validation(['nome', 'email', 'senha', 'tipo']), 
   put
 )
 
-routes.delete('/users/:id', 
+routes.delete('/usuarios/:id', 
   security(['feira', 'feirante']), 
   destroy
 )

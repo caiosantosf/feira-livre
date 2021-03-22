@@ -77,7 +77,7 @@ export default function Feiras() {
                             component="img"
                             alt={feira.nome}
                             height="200"
-                            image={`${apiUrl}uploads/${feira.image}`}
+                            image={`${apiUrl}uploads/${feira.imagemUrl}`}
                             title={feira.nome}
                             onClick={() => {
                               history.push(`/feirantes/${feira.id}`, {titulo: feira.nome})

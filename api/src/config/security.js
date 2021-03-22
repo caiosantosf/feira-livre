@@ -15,7 +15,7 @@ module.exports = {
           return res.status(500).json({ auth: false, message: 'Não foi possível validar o Token de autenticação' })
         } 
 
-        if ( (req.params.id) && (req.url.search('user') > -1) ) {
+        if ( (req.params.id) && (req.url.search('usuario') > -1) ) {
           if (req.params.id != decoded.id) {
             return res.status(401).json({ auth: false, message: 'Usuário não tem permissão nesse registro' })
           }
@@ -25,8 +25,8 @@ module.exports = {
           return res.status(401).json({ auth: false, message: 'Usuário não tem permissão para essa ação' })
         }
 
-        req.userId = decoded.id
-        req.usertipo = decoded.tipo
+        req.usuarioId = decoded.id
+        req.usuariotipo = decoded.tipo
         
         next()
       })

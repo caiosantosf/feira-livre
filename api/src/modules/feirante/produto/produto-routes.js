@@ -5,27 +5,27 @@ const validation = require('./produto-validation')
 
 const routes = express.Router()
 
-routes.get('/feiras/:feira_id/feirantes/produtos',
+routes.get('/feiras/:feiraId/feirantes/produtos',
   getMany
 )
 
-routes.post('/feirante/:feirante_id/produtos', 
+routes.post('/feirante/:feiranteId/produtos', 
   security(['feirante']),
   validation(['descricao', 'imagemUrl', 'valor', 'unidadeMedida']), 
   post
 )
 
-routes.get('/feirante/:feirante_id/produtos/:id',
+routes.get('/feirante/:feiranteId/produtos/:id',
   getOne
 )
 
-routes.put('/feirante/:feirante_id/produtos/:id', 
+routes.put('/feirante/:feiranteId/produtos/:id', 
   security(['feirante']), 
   validation(['descricao', 'imagemUrl', 'valor', 'unidadeMedida']),
   put
 )
 
-routes.delete('/feirante/:feirante_id/produtos/:id', 
+routes.delete('/feirante/:feiranteId/produtos/:id', 
   security(['feirante']), 
   destroy
 )

@@ -1,6 +1,6 @@
 const validation = (fields) => {
   return (req, res, next) => {
-    const { id, nome, email, password, tipo } = req.body
+    const { id, nome, email, senha, tipo } = req.body
     const messages = {}
     const regExpNumbers = /^[0-9]+$/
     const regExpEmail = /\S+@\S+\.\S+/
@@ -35,23 +35,23 @@ const validation = (fields) => {
       }
     }
     
-    if (fields.includes('password')) {
-      if ( (typeof password !== 'undefined') && (password.trim() !== '') ) {
-        if (password.length > 8) {
-          messages.password = 'A senha não pode ter mais do que 8 caracteres.'
+    if (fields.includes('senha')) {
+      if ( (typeof senha !== 'undefined') && (senha.trim() !== '') ) {
+        if (senha.length > 8) {
+          messages.senha = 'A senha não pode ter mais do que 8 caracteres.'
         }
       } else {
-        messages.password = 'A senha é obrigatória.'
+        messages.senha = 'A senha é obrigatória.'
       }
     }
 
     if (fields.includes('tipo')) {
       if ( (typeof tipo !== 'undefined') && (tipo.trim() !== '') ) {
         if (tipo !== 'feira' && tipo !== 'feirante') {
-          messages.password = 'O Tipo de Usuário é inválido.'
+          messages.senha = 'O Tipo de Usuário é inválido.'
         }
       } else {
-        messages.password = 'O Tipo de Usuário é obrigatório'
+        messages.senha = 'O Tipo de Usuário é obrigatório'
       }
     }
 

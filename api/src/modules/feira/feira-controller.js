@@ -2,10 +2,11 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { cidade, estado } = req.headers
+    const { cidade, estado, usuarioId } = req.headers
     const feiras = await db('feiras')
-                          .where({ cidade })
-                          .where({ estado })
+                          .modify(q => { if (cidade) q.where({ cidade }) })
+                          .modify(q => { if (estado) q.where({ estado }) })
+                          .modify(q => { if (usuarioId) q.where({ usuarioId }) })
                           .orderBy('descricao')
 
     if (feiras.length) {
@@ -46,7 +47,7 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const feira = await db('feiras').where({ id })
+    const feira = await db('feiras')
 
     if (feira.length) {
       return res.status(200).json(feira[0])
@@ -93,10 +94,10 @@ module.exports = {
   async patchImage (req, res) {
     const { id } = req.params
     
-    const { filename : image} = req.file
+    const { filename : imagemUrl} = req.file
     
     try {
-      const result = await db('feiras').where({ id }).update({ image })
+      const result = await db('feiras').where({ id }).update({ imagemUrl })
       if (result) {
         return res.status(200).json({ message : 'Imagem salva com sucesso'})
       }

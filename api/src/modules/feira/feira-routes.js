@@ -30,7 +30,7 @@ routes.get('/feiras/estados/:estado/cidades',
 )
 
 routes.post('/feiras', 
-  validation(['cidade', 'estado', 'descricao']), 
+  validation(['cidade', 'estado', 'descricao', 'nome']), 
   post
 )
 
@@ -40,7 +40,7 @@ routes.get('/feiras/:id',
 
 routes.put('/feiras/:id', 
   security(['feira']), 
-  validation(['cidade', 'estado', 'descricao']),
+  validation(['cidade', 'estado', 'descricao', 'nome']),
   put
 )
 
@@ -49,8 +49,7 @@ routes.delete('/feiras/:id',
   destroy
 )
 
-routes.patch('/feiras/image/:id', 
-  //security([ 'feira' ]),
+routes.patch('/feiras/:id', 
   upload.single('file'),
   patchImage
 )

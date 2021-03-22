@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Cadastro(props) {
   const classes = useStyles();
 
-  const [user, setUser] = React.useState({})
+  const [usuario, setUsuario] = React.useState({})
   const [error, setError] = React.useState([])
 
   const { state } = props.location
-  let user_id = ''
+  let usuarioId = ''
   if (state) {
-    user_id = state.user_id
+    usuarioId = state.usuarioId
   }
 
   let history = useHistory()
@@ -68,15 +68,15 @@ export default function Cadastro(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get(`/users/${user_id}`, 
+        const res = await api.get(`/usuarios/${usuarioId}`, 
           { headers :{
             'x-access-token' : sessionStorage.getItem('token')
           }})
 
         const { data } = res
-        delete data.password
+        delete data.senha
 
-        setUser(data)
+        setUsuario(data)
       } catch (error) {
         const errorHandled = errorApi(error)
         if (errorHandled.forbidden) {
@@ -88,19 +88,19 @@ export default function Cadastro(props) {
         }
       }
     }
-    if (user_id) {
+    if (usuarioId) {
       fetchData()
     }
-  }, [user_id, history])
+  }, [usuarioId, history])
 
   const handleSave = async () => {
     try {
       setError([])
 
-      if (user.password !== user.passwordConfirm) {
+      if (usuario.senha !== usuario.senhaConfirm) {
         setError(['Confirmação de Senha está diferente da Senha'])
       } else {
-        const { passwordConfirm, id, ...userData } = user
+        const { senhaConfirm, id, ...usuarioData } = usuarios
 
         const config = { headers :{
           'x-access-token' : sessionStorage.getItem('token'),
@@ -108,22 +108,22 @@ export default function Cadastro(props) {
 
         let res = ''
         
-        if (user_id) {
-          await api.put(`/users/${id}`, userData, config)
+        if (usuarioId) {
+          await api.put(`/usuarios/${id}`, usuarioData, config)
 
           history.push('/home')
         } else {
-          res = await api.post('/users/', userData)
+          res = await api.post('/usuarios/', usuarioData)
           const { token, id: idCreated } = res.data
 
           if (token) {
             sessionStorage.setItem('token', token)
-            sessionStorage.setItem('user_id', idCreated)
-            if (user.tipo === 'feira') {
-              history.push('/cadastro-feira', {user_id: id ? id : idCreated})
+            sessionStorage.setItem('usuarioId', idCreated)
+            if (usuarios.tipo === 'feira') {
+              history.push('/cadastro-feira', {usuarioId: id ? id : idCreated})
             } else {
-              if (user.tipo === 'feirante') {
-                history.push('/cadastro-feirante', {user_id: id ? id : idCreated})
+              if (usuarios.tipo === 'feirante') {
+                history.push('/cadastro-feirante', {usuarioId: id ? id : idCreated})
               } else {
                 setError(['Não foi selecionado o tipo de usuario!'])
               }
@@ -171,9 +171,9 @@ export default function Cadastro(props) {
                     id="nome"
                     label="Nome"
                     autoFocus
-                    value={user.nome || ''}
+                    value={usuario.nome || ''}
                     onChange={e => {
-                      setUser({ ...user,
+                      setUsuario({ ...usuario,
                         nome: e.target.value
                       })
                     }}
@@ -187,9 +187,9 @@ export default function Cadastro(props) {
                     label="Endereço de Email"
                     name="email"
                     autoComplete="email"
-                    value={user.email || ''}
+                    value={usuario.email || ''}
                     onChange={e => {
-                      setUser({ ...user,
+                      setUsuario({ ...usuario,
                         email: e.target.value
                       })
                     }}
@@ -204,10 +204,10 @@ export default function Cadastro(props) {
                     type="password"
                     id="password"
                     autoComplete="current-password"
-                    value={user.password || ''}
+                    value={usuario.senha || ''}
                     onChange={e => {
-                      setUser({ ...user,
-                        password: e.target.value
+                      setUsuario({ ...usuario,
+                        senha: e.target.value
                       })
                     }}
                   />
@@ -221,25 +221,25 @@ export default function Cadastro(props) {
                     type="password"
                     id="password"
                     autoComplete="confirmation-password"
-                    value={user.passwordConfirm || ''}
+                    value={usuario.senhaConfirm || ''}
                     onChange={e => {
-                      setUser({ ...user,
+                      setUsuario({ ...usuario,
                         passwordConfirm: e.target.value
                       })
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} style={user_id ? { display: 'none' } : {}}>
+                <Grid item xs={12} style={usuarioId ? { display: 'none' } : {}}>
                 <FormControl className={classes.formControl}>
                   <InputLabel id="select-tipo">Tipo de Usuário</InputLabel>
                   <Select
                     required
                     fullWidth
-                    labelId="select-user-tipo"
-                    id="select-user-tipo"
-                    value={user.tipo || ''}
+                    labelId="select-usuario-tipo"
+                    id="select-usuario-tipo"
+                    value={usuario.tipo || ''}
                     onChange={e => {
-                      setUser({ ...user,
+                      setUsuario({ ...usuario,
                         tipo: e.target.value
                       })
                     }}

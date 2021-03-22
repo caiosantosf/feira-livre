@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CadastroProduto(props) {
   const classes = useStyles();
 
-  const { user_id } = props.location.state
+  const { usuarioId } = props.location.state
 
   const [image, setImage] = React.useState()
   const [cidades, setCidades] = React.useState([])
@@ -66,7 +66,7 @@ export default function CadastroProduto(props) {
       setError({})
 
       let { id, ...feiraData } = feira
-      feiraData = { ...feiraData, user_id }
+      feiraData = { ...feiraData, usuarioId }
 
       const config = { headers :{
         'x-access-token' : sessionStorage.getItem('token'),
@@ -84,7 +84,7 @@ export default function CadastroProduto(props) {
           data.append("name", image[0].file.name)
           data.append("file", image[0].file)
 
-          await api.patch(`/feiras/image/${idCreated}`, data, config)
+          await api.patch(`/feiras/${idCreated}`, data, config)
         } catch (error) {
           console.log(error)
         }
