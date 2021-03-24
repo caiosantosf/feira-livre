@@ -13,7 +13,7 @@ module.exports = {
       return res.status(200).json(feiras)
     }
 
-    return res.status(204).json({ message: 'Não existem feiras cadastradas' })
+    return res.status(204).json({ message: 'Não foi encontrada nenhuma feira' })
   },
 
   async getEstados (req, res) {
@@ -26,7 +26,7 @@ module.exports = {
       return res.status(200).json(estados)
     }
 
-    return res.status(204).json({ message: 'Não existem feiras cadastradas' })
+    return res.status(204).json({ message: 'Não foi encontrada nenhum estado' })
   },
 
   async getCidades (req, res) {
@@ -42,7 +42,7 @@ module.exports = {
       return res.status(200).json(cidades)
     }
 
-    return res.status(204).json({ message: 'Não existem feiras cadastradas' })
+    return res.status(204).json({ message: 'Não foi encontrada nenhuma cidade' })
   },
 
   async getOne (req, res) {
@@ -52,7 +52,7 @@ module.exports = {
     if (feira.length) {
       return res.status(200).json(feira[0])
     }
-    return res.status(404).json({ message: 'feira não encontrada'})
+    return res.status(204).json({ message: 'feira não encontrada'})
   },
 
   async post (req, res) {

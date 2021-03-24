@@ -100,7 +100,7 @@ export default function Cadastro(props) {
       if (usuario.senha !== usuario.senhaConfirm) {
         setError(['Confirmação de Senha está diferente da Senha'])
       } else {
-        const { senhaConfirm, id, ...usuarioData } = usuarios
+        const { senhaConfirm, id, ...usuarioData } = usuario
 
         const config = { headers :{
           'x-access-token' : sessionStorage.getItem('token'),
@@ -119,10 +119,10 @@ export default function Cadastro(props) {
           if (token) {
             sessionStorage.setItem('token', token)
             sessionStorage.setItem('usuarioId', idCreated)
-            if (usuarios.tipo === 'feira') {
+            if (usuario.tipo === 'feira') {
               history.push('/cadastro-feira', {usuarioId: id ? id : idCreated})
             } else {
-              if (usuarios.tipo === 'feirante') {
+              if (usuario.tipo === 'feirante') {
                 history.push('/cadastro-feirante', {usuarioId: id ? id : idCreated})
               } else {
                 setError(['Não foi selecionado o tipo de usuario!'])

@@ -13,7 +13,7 @@ module.exports = {
       return res.status(200).json(locais)
     }
 
-    return res.status(204).json({ message: 'Não existem locais cadastrados' })
+    return res.status(204).json({ message: 'Não foi encontrada nenhum local' })
   },
 
   async getOne (req, res) {

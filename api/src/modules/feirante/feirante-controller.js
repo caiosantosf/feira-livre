@@ -11,7 +11,7 @@ module.exports = {
       return res.status(200).json(feirantes)
     }
 
-    return res.status(204).json({ message: 'Não existem feirantes cadastrados' })
+    return res.status(204).json({ message: 'Não foi encontrada nenhum feirante' })
   },
 
   async getOne (req, res) {

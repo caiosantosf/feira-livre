@@ -5,7 +5,7 @@ const validation = require('./feirante-validation')
 
 const routes = express.Router()
 
-routes.get('/feiras/:feiraId/feirantes',
+routes.get('/feirantes',///:feiraId/feirantes',
   getMany
 )
 
