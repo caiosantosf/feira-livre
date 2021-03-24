@@ -94,7 +94,11 @@ export default function Feirantes(props) {
       }
 
       try{
-        const resFeirantes = await api.get(`/feiras/${feiraId}/feirantes`)
+        const resFeirantes = await api.get('/feirantes', 
+        { headers :{
+          'feiraId' : feiraId
+        }})
+
         if (resFeirantes.status === 200) setFeirante(resFeirantes.data)
       } catch (error) {
         alert(error)

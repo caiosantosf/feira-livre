@@ -1,12 +1,16 @@
 const express = require('express')
-const { getMany, post, destroy, getOne, put } = require('./produto-controller')
+const { getManyWithFeiraId, getManyWithFeiranteId, post, destroy, getOne, put } = require('./produto-controller')
 const { routeSecurity : security } = require('../../../config/security')
 const validation = require('./produto-validation')
 
 const routes = express.Router()
 
 routes.get('/feirantes/:feiranteId/produtos',
-  getMany
+  getManyWithFeiranteId
+)
+
+routes.get('/feiras/:feiraId/feirantes/produtos',
+  getManyWithFeiraId
 )
 
 routes.post('/feirante/:feiranteId/produtos', 

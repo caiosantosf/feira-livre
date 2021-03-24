@@ -1,7 +1,7 @@
 const db = require('../../../database/connection')
 
 module.exports = {
-  async getMany (req, res) {
+  async getManyWithFeiraId (req, res) {
     const { feiraId } = req.params
     const produtos = await db('feiranteProdutos')
                             .join('feirante', 'feiranteProdutos.feiranteId', '=', 'feirante.id')
@@ -14,7 +14,20 @@ module.exports = {
       return res.status(200).json(produtos)
     }
 
-    return res.status(204).json({ message: 'Não existem produtos cadastrados' })
+    return res.status(204).json({ message: 'Não foi encontrado nenhum produto' })
+  },
+
+  async getManyWithFeiranteId (req, res) {
+    const { feiranteId } = req.params
+    const produtos = await db('feiranteProdutos')
+                            .where({ feiranteId })
+                            .orderBy('descricao')
+                        
+    if (produtos.length) {
+      return res.status(200).json(produtos)
+    }
+
+    return res.status(204).json({ message: 'Não foi encontrado nenhum produto' })
   },
 
   async getOne (req, res) {

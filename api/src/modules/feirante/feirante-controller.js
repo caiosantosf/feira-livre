@@ -2,9 +2,9 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { feiraId } = req.params
+    const { feiraId } = req.headers
     const feirantes = await db('feirantes')
-                            .where({ feiraId }) 
+                            .modify(q => { if (feiraId) q.where({ feiraId }) })
                             .orderBy('descricao')
                         
     if (feirantes.length) {
