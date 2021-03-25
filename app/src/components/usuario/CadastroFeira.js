@@ -10,13 +10,12 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
-import { api, apiCidades, apiUrl } from '../../config/api';
+import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
 import Voltar from '../../components/nav/voltar'
 import { errorApi } from '../../config/handleErrors'
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -57,8 +56,10 @@ export default function CadastroFeira(props) {
 
   const { state } = props.location
   let usuarioId = ''
+  let novo = false
   if (state) {
     usuarioId = state.usuarioId
+    novo = state.novo
   }
 
   const [image, setImage] = React.useState()
@@ -93,16 +94,16 @@ export default function CadastroFeira(props) {
         }
       }
     }
-    if (usuarioId) {
+    if (!novo) {
       fetchData()
     }
-  }, [usuarioId, history])
+  }, [usuarioId, history, novo])
 
   const handleSave = async () => {
     try {
       setError([])
 
-      let { id, ...feiraData } = feira
+      let { id, imagemUrl, ...feiraData } = feira
       feiraData = { ...feiraData, usuarioId }
 
       const config = { headers :{
@@ -120,11 +121,13 @@ export default function CadastroFeira(props) {
         data.append("name", image[0].file.name)
         data.append("file", image[0].file)
 
-        await api.patch(`/feiras/image/${idCreated ? idCreated : id}`, data, config)
+        await api.patch(`/feiras/${idCreated ? idCreated : id}`, data, config)
       }
 
       sessionStorage.setItem('tipo', 'feira')
-      history.push('/home', {tipo: 'feira', data: feiraData})
+      sessionStorage.setItem('feiraId', idCreated)
+
+      history.push('/home')
     } catch (error) {
       const errorHandled = errorApi(error)
       if (errorHandled.general) {
@@ -301,7 +304,6 @@ export default function CadastroFeira(props) {
                       isDragging,
                       dragProps,
                     }) => (
-                      // write your building UI
                       <div className="upload__image-wrapper">
                         <Button
                           fullWidth
@@ -321,7 +323,7 @@ export default function CadastroFeira(props) {
                         </Button>
                         &nbsp;
                         <div className="image-item" style={imageList.length || !feira.imagemUrl ? { display: 'none'} : { display : 'block' }}>
-                          <img src={`${apiUrl}uploads/${feira.imagemUrl}`} alt="" width="100" />
+                          <img src={feira.imagemUrl} alt="" width="100" />
                           <div className="image-item__btn-wrapper">
                             <Button
                               variant="contained"

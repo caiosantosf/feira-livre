@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(1),
   },
   submit: {

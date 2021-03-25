@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { api, apiUrl } from '../../config/api';
+import { api } from '../../config/api';
 import Footer from '../../components/nav/footer';
 import Voltar from '../../components/nav/voltar'
 import { Place, Schedule } from '@material-ui/icons';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -182,7 +182,7 @@ export default function Feirantes(props) {
                                       component="img"
                                       alt={produto.nome}
                                       height="140"
-                                      image={`${apiUrl}uploads/${produto.imagemUrl}`}
+                                      image={produto.imagemUrl}
                                       title={produto.nome}
                                   />
                                   <CardContent>

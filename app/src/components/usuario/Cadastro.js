@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -120,10 +120,10 @@ export default function Cadastro(props) {
             sessionStorage.setItem('token', token)
             sessionStorage.setItem('usuarioId', idCreated)
             if (usuario.tipo === 'feira') {
-              history.push('/cadastro-feira', {usuarioId: id ? id : idCreated})
+              history.push('/cadastro-feira', {usuarioId: id ? id : idCreated, novo: true})
             } else {
               if (usuario.tipo === 'feirante') {
-                history.push('/cadastro-feirante', {usuarioId: id ? id : idCreated})
+                history.push('/cadastro-feirante', {usuarioId: id ? id : idCreated, novo: true})
               } else {
                 setError(['Não foi selecionado o tipo de usuario!'])
               }
@@ -224,7 +224,7 @@ export default function Cadastro(props) {
                     value={usuario.senhaConfirm || ''}
                     onChange={e => {
                       setUsuario({ ...usuario,
-                        passwordConfirm: e.target.value
+                        senhaConfirm: e.target.value
                       })
                     }}
                   />

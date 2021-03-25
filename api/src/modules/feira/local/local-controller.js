@@ -23,7 +23,7 @@ module.exports = {
     if (local.length) {      
       return res.status(200).json(local[0])
     }
-    return res.status(404).json({ message: 'Local não encontrados'})
+    return res.status(204).json({ message: 'Local não encontrados'})
   },
 
   async post (req, res) {
@@ -58,7 +58,7 @@ module.exports = {
         return res.status(200).json({ message : 'Local salvo com sucesso'})
       }
 
-      return res.status(404).json({ message: 'Local não encontrado'})
+      return res.status(204).json({ message: 'Local não encontrado'})
     } catch (error) {
       return res.status(500).json(error)
     }
@@ -71,6 +71,6 @@ module.exports = {
     if (result) {
       return res.status(200).json({ message: 'Local excluído com sucesso'})
     }
-    return res.status(404).json({ message: 'Local não encontrado'})
+    return res.status(204).json({ message: 'Local não encontrado'})
   }
 }

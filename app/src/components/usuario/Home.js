@@ -2,14 +2,6 @@ import React from 'react';
 import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
@@ -17,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
 import { api } from '../../config/api';
 import Voltar from '../../components/nav/voltar'
+import { errorApi } from '../../config/handleErrors'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -49,10 +42,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Cadastro() {
-  const classes = useStyles();
+export default function Home(props) {
+  const classes = useStyles()
+
+  const [solicitacoes, setSolicitacoes] = React.useState(0)
+  const [error, setError] = React.useState([])
 
   let history = useHistory()
+
+  const { state } = props.location
+  let feiraId = 0
+  if (state) {
+    feiraId = state.feiraId
+  }
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resFeirantes = await api.get('/feirantes', 
+        { headers :{
+          'feiraId' : feiraId
+        }})
+
+        if (resFeirantes.status === 200) {
+          let conta = 0
+          for (let feirante in resFeirantes.data) {
+            if (!feirante.confirmado) {
+              conta++
+            }
+          }
+          setSolicitacoes(conta)
+        }
+      } catch (error) {
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
+      }
+    }
+    if (sessionStorage.getItem('tipo') === 'feira') {
+      fetchData()
+    }
+  }, [feiraId, history])
 
   return (
     <React.Fragment>
@@ -110,7 +145,7 @@ export default function Cadastro() {
                 className={classes.submit}
                 onClick={() => {}}
               >
-                Solicitações de Feirantes
+                {`Solicitações de Feirantes (${solicitacoes})`}
               </Button>
               <Button
                 fullWidth

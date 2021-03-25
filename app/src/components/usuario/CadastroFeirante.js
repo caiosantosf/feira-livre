@@ -10,7 +10,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -56,8 +55,10 @@ export default function CadastroFeirante(props) {
 
   const { state } = props.location
   let usuarioId = ''
+  let novo = false
   if (state) {
     usuarioId = state.usuarioId
+    novo = state.novo
   }
 
   const [cidades, setCidades] = React.useState([])
@@ -68,35 +69,6 @@ export default function CadastroFeirante(props) {
   const [isActive, setisActive] = React.useState(false)
 
   let history = useHistory()
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get('/feirantes/', 
-          { headers :{
-            'x-access-token' : sessionStorage.getItem('token'),
-            'usuarioId' : usuarioId
-          }})
-
-        const data = res.data[0]
-
-        handleGetCidades(data.estado)
-        setFeirante(data)        
-      } catch (error) {
-        const errorHandled = errorApi(error)
-        if (errorHandled.forbidden) {
-          history.push('/')
-        } else {
-          if (errorHandled.general) {
-            setError([errorHandled.error])
-          }
-        }
-      }
-    }
-    if (usuarioId) {
-      fetchData()
-    }
-  }, [usuarioId, history])
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -112,6 +84,63 @@ export default function CadastroFeirante(props) {
     fetchData()
   }, [])
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resFeirantes = await api.get('/feirantes/', 
+          { headers :{
+            'x-access-token' : sessionStorage.getItem('token'),
+            'usuarioId' : usuarioId
+          }})
+
+        if (resFeirantes.status === 200) {
+          const data = resFeirantes.data[0]
+          const resFeira = await api.get(`/feiras/${data.feiraId}`, 
+            { headers :{
+              'x-access-token' : sessionStorage.getItem('token'),
+              'usuarioId' : usuarioId
+            }})
+          
+          data.estado = resFeira.data.estado
+          data.cidade = resFeira.data.cidade
+
+          handleGetCidades(resFeira.data.estado)
+          
+          setisActive(true)
+          const resFeiras = await api.get('/feiras/', 
+          { headers :{
+            'x-access-token' : sessionStorage.getItem('token'),
+            'cidade' : resFeira.data.cidade,
+            'estado' : resFeira.data.estado,
+          }})
+          const { data: dataFeiras } = resFeiras
+          if (dataFeiras.length) {
+            const feirasAux = []
+            for (const feira of dataFeiras) {
+              feirasAux.push(feira)
+            }
+            setFeiras(feirasAux)
+          }
+          setisActive(false)
+
+          setFeirante(data)
+        }
+      } catch (error) {
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
+      }
+    }
+    if (!novo) {
+      fetchData()
+    }
+  }, [usuarioId, history, novo])
+
   const handleSave = async () => {
     try {
       setError([])
@@ -123,11 +152,15 @@ export default function CadastroFeirante(props) {
         'x-access-token' : sessionStorage.getItem('token'),
       }}
 
-      id ? await api.put(`/feirantes/${id}`, feiranteData, config)
-         : await api.post('/feirantes/', feiranteData)
+      const res = id ? await api.put(`/feirantes/${id}`, feiranteData, config)
+                     : await api.post('/feirantes/', feiranteData, config)
+
+      const { id: idCreated } = res.data
 
       sessionStorage.setItem('tipo', 'feirante')
-      history.push('/home', {tipo: 'feirante', data: feiranteData})
+      sessionStorage.setItem('feiranteId', idCreated)
+
+      history.push('/home')
     } catch (error) {
       const errorHandled = errorApi(error)
       if (errorHandled.general) {

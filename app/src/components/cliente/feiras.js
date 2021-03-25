@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { api, apiUrl } from '../../config/api';
+import { api } from '../../config/api';
 import Footer from '../../components/nav/footer';
 import Voltar from '../../components/nav/voltar'
 
@@ -77,7 +77,7 @@ export default function Feiras() {
                             component="img"
                             alt={feira.nome}
                             height="200"
-                            image={`${apiUrl}uploads/${feira.imagemUrl}`}
+                            image={feira.imagemUrl}
                             title={feira.nome}
                             onClick={() => {
                               history.push(`/feirantes/${feira.id}`, {titulo: feira.nome})

@@ -21,11 +21,13 @@ module.exports = {
     if (feirante.length) {
       return res.status(200).json(feirante[0])
     }
-    return res.status(404).json({ message: 'Feirante não encontrado'})
+    return res.status(204).json({ message: 'Feirante não encontrado'})
   },
 
   async post (req, res) {
     const data = req.body
+
+    data.confirmado = false
 
     try {
       const id = await db('feirantes').insert(data).returning('id')
@@ -38,13 +40,28 @@ module.exports = {
   async put (req, res) {
     const { id } = req.params
     const data = req.body
-    data.senha = await encrypt(data.senha)
+
     try {
       const result = await db('feirantes').where({ id }).update({ id, ...data })
       if (result) {
         return res.status(200).json({ message : 'Feirante alterado'})
       }
-      return res.status(404).json({ message: 'Feriante não encontrato'})
+      return res.status(204).json({ message: 'Feriante não encontrato'})
+    } catch (error) {
+      return res.status(500).json(error)     
+    }
+  },
+
+  async patchConfirmado (req, res) {
+    const { id } = req.params
+    const data = req.body
+  
+    try {
+      const result = await db('feirantes').where({ id }).update({ id, ...data })
+      if (result) {
+        return res.status(200).json({ message : 'Feirante alterado'})
+      }
+      return res.status(204).json({ message: 'Feriante não encontrato'})
     } catch (error) {
       return res.status(500).json(error)     
     }
@@ -57,6 +74,6 @@ module.exports = {
     if (result) {
       return res.status(200).json({ message: 'Feirante excluído'})
     }
-    return res.status(404).json({ message: 'Feirante não encontrato'})
+    return res.status(204).json({ message: 'Feirante não encontrato'})
   }
 }

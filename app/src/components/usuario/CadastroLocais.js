@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -66,7 +66,7 @@ export default function CadastroLocais(props) {
       setError({})
 
       let { id, ...feiraData } = feira
-      feiraData = { ...feiraData, usuarioId }
+      feiraData = { ...feiraData, feiraId }
 
       const config = { headers :{
         'x-access-token' : sessionStorage.getItem('token'),
@@ -240,7 +240,7 @@ export default function CadastroLocais(props) {
                     isDragging,
                     dragProps,
                   }) => (
-                    // write your building UI
+                    
                     <div className="upload__image-wrapper">
                       <Button
                         fullWidth

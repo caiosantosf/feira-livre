@@ -10,6 +10,8 @@ routes.get('/feirantes',///:feiraId/feirantes',
 )
 
 routes.post('/feirantes', 
+  security(['feirante']), 
+  validation(['usuarioId', 'feiraId', 'nome', 'descricao', 'confirmado']),
   post
 )
 
@@ -19,7 +21,13 @@ routes.get('/feirantes/:id',
 
 routes.put('/feirantes/:id', 
   security(['feirante']), 
-  validation(['descricao']),
+  validation(['usuarioId', 'feiraId', 'nome', 'descricao', 'confirmado']),
+  put
+)
+
+routes.patch('/feirantes/:id', 
+  security(['feira']), 
+  validation(['confirmado']),
   put
 )
 

@@ -11,6 +11,10 @@ module.exports = {
                             .orderBy('feiranteProdutos.descricao')
                         
     if (produtos.length) {
+      produtos.forEach(produto => {
+        produto.imagemUrl = `${req.protocol}://${req.get('host')}/uploads/${produto.imagemUrl}`
+      })
+
       return res.status(200).json(produtos)
     }
 
@@ -24,6 +28,9 @@ module.exports = {
                             .orderBy('descricao')
                         
     if (produtos.length) {
+      produtos.forEach(produto => {
+        produto.imagemUrl = `${req.protocol}://${req.get('host')}/uploads/${produto.imagemUrl}`
+      })
       return res.status(200).json(produtos)
     }
 
@@ -32,12 +39,12 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const feirante = await db('feirantes').where({ id })
+    const produto = await db('feiranteProdutos').where({ id })
 
     if (feirante.length) {
       return res.status(200).json(feirante[0])
     }
-    return res.status(404).json({ message: 'Feirante não encontrado'})
+    return res.status(204).json({ message: 'Produto não encontrado'})
   },
 
   async post (req, res) {
@@ -45,7 +52,7 @@ module.exports = {
     data.senha = await encrypt(data.senha)
 
     try {
-      const id = await db('feirantes').insert(data).returning('id')
+      const id = await db('feiranteProdutos').insert(data).returning('id')
       return res.status(201).json({ id: id[0] })
     } catch (error) {
       const message = dbErrors(error)
@@ -58,11 +65,11 @@ module.exports = {
     const data = req.body
     data.senha = await encrypt(data.senha)
     try {
-      const result = await db('feirantes').where({ id }).update({ id, ...data })
+      const result = await db('feiranteProdutos').where({ id }).update({ id, ...data })
       if (result) {
-        return res.status(200).json({ message : 'Feirante alterado'})
+        return res.status(200).json({ message : 'Produto alterado'})
       }
-      return res.status(404).json({ message: 'Feriante não encontrato'})
+      return res.status(204).json({ message: 'Produto não encontrato'})
     } catch (error) {
       return res.status(500).json(error)     
     }
@@ -70,11 +77,11 @@ module.exports = {
 
   async destroy (req, res) {
     const { id } = req.params
-    const result = await db('feirantes').where({ id }).del()
+    const result = await db('feiranteProdutos').where({ id }).del()
 
     if (result) {
-      return res.status(200).json({ message: 'Feirante excluído'})
+      return res.status(200).json({ message: 'Produto excluído'})
     }
-    return res.status(404).json({ message: 'Feirante não encontrato'})
+    return res.status(204).json({ message: 'Produto não encontrato'})
   }
 }

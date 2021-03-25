@@ -10,6 +10,10 @@ module.exports = {
                           .orderBy('descricao')
 
     if (feiras.length) {
+      feiras.forEach(feira => {
+        feira.imagemUrl = `${req.protocol}://${req.get('host')}/uploads/${feira.imagemUrl}`
+      })
+      
       return res.status(200).json(feiras)
     }
 
@@ -47,9 +51,10 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const feira = await db('feiras')
+    const feira = await db('feiras').where({ id })
 
     if (feira.length) {
+      feira.imagemUrl = `${req.protocol}://${req.get('host')}/uploads/${feira.imagemUrl}`
       return res.status(200).json(feira[0])
     }
     return res.status(204).json({ message: 'feira não encontrada'})
@@ -75,7 +80,7 @@ module.exports = {
       if (result) {
         return res.status(200).json({ message : 'feira alterada' })
       }
-      return res.status(404).json({ message: 'feira não encontrada' })
+      return res.status(204).json({ message: 'feira não encontrada' })
     } catch (error) {
       return res.status(500).json(error)     
     }
@@ -88,7 +93,7 @@ module.exports = {
     if (result) {
       return res.status(200).json({ message: 'feira excluída' })
     }
-    return res.status(404).json({ message: 'feira não encontrada' })
+    return res.status(204).json({ message: 'feira não encontrada' })
   },
 
   async patchImage (req, res) {
@@ -101,7 +106,7 @@ module.exports = {
       if (result) {
         return res.status(200).json({ message : 'Imagem salva com sucesso'})
       }
-      return res.status(404).json({ message: 'Feira não encontrada'})
+      return res.status(204).json({ message: 'Feira não encontrada'})
     } catch (error) {
       return res.status(500).json({ message: 'Erro não conhecido'})
     }

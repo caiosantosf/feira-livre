@@ -1,6 +1,6 @@
 const validation = (fields) => {
   return (req, res, next) => {
-    const { id, desricao } = req.body
+    const { id, descricao, nome, usuarioId, feiraId, confirmado } = req.body
     const messages = {}
     const regExpNumbers = /^[0-9]+$/
 
