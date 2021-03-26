@@ -282,18 +282,6 @@ export default function CadastroLocais(props) {
             >
               Cadastrar
             </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
-              </Grid>
-            </Grid>
           </form>
           <Box mt={8}>
             <Copyright />

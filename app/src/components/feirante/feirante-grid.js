@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -71,14 +70,9 @@ export default function SignUp() {
 
   return (
     <div className={classes.root}>
-      <Voltar />
+      <Voltar titulo="Cadastro de Produtos" />
       <Container maxWidth="sm">
         <CssBaseline />
-        <div className={classes.selectEmpty}>
-          <Typography component="h1" variant="h5">
-            Cadastro de Produtos
-          </Typography>
-        </div>
       
       <List dense className={classes.rootList}>
       {[0, 1, 2, 3].map((value) => {
@@ -94,18 +88,14 @@ export default function SignUp() {
             <ListItemText 
               id={labelId} 
               primary={`Line item ${value + 1}`} 
-              onClick={() => {
-                history.push('/produto')
-              }}/>
+              onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}}/>
           </ListItem>
         );
       })}
     </List>
     <div className={classes.rootFab}>
       <Fab color="primary" aria-label="add">
-        <AddIcon onClick={() => {
-                history.push('/produto')
-              }} />
+        <AddIcon onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}} />
       </Fab>
     </div>
       </Container>

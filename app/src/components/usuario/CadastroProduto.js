@@ -1,9 +1,7 @@
 import React from 'react';
-import { useHistory } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,6 +15,7 @@ import Box from '@material-ui/core/Box';
 import Copyright from '../../components/nav/copyright'
 import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
+import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -58,8 +57,6 @@ export default function CadastroProduto(props) {
   const [cidades, setCidades] = React.useState([])
   const [feira, setFeira] = React.useState({})
   const [error, setError] = React.useState({})
-
-  let history = useHistory()
 
   const handleSave = async () => {
     try {
@@ -282,18 +279,6 @@ export default function CadastroProduto(props) {
             >
               Cadastrar
             </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link 
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  Já possui uma conta? Acessar
-                </Link>
-              </Grid>
-            </Grid>
           </form>
           <Box mt={8}>
             <Copyright />

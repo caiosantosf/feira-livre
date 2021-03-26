@@ -133,7 +133,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {}}
+                onClick={() => {history.push('/feira', {usuarioId: sessionStorage.getItem('usuarioId')})}}
               >
                 Locais e horários da feira
               </Button>
@@ -153,7 +153,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {}}
+                onClick={() => {history.push('/feirantegrid', {usuarioId: sessionStorage.getItem('usuarioId')})}}
               >
                 Produtos
               </Button>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from "react-router-dom"
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -75,8 +74,6 @@ export default function Feirantes(props) {
   const classes = useStyles();
 
   const { titulo } = props.location.state
-
-  let history = useHistory()
 
   const [locais, setLocais] = React.useState([])
   const [feirantes, setFeirante] = React.useState([])

@@ -7,6 +7,7 @@ import NovaSenha  from './components/usuario/NovaSenha'
 import Cadastro   from './components/usuario/Cadastro'
 import CadastroFeira   from './components/usuario/CadastroFeira'
 import CadastroFeirante   from './components/usuario/CadastroFeirante'
+import CadastroProduto   from './components/usuario/CadastroProduto'
 import Home   from './components/usuario/Home'
 import Feiras     from './components/cliente/feiras'
 import Feirantes  from './components/cliente/feirantes'
@@ -33,7 +34,7 @@ export default function Routes() {
         <Route path="/feirante" exact component={Feirante} />
         <Route path="/feiragrid" exact component={FeiraGrid} />
         <Route path="/feirantegrid" exact component={FeiranteGrid} />
-        <Route path="/produto" exact component={Produto} />
+        <Route path="/cadastro-produto" exact component={Produto} />
       </Switch>
     </BrowserRouter>
   )
