@@ -143,7 +143,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/solicitacoes-feirantes', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+                onClick={() => {}}
               >
                 {`Solicitações de Feirantes (${solicitacoes})`}
               </Button>
