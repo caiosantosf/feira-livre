@@ -7,6 +7,8 @@ module.exports = {
                           .modify(q => { if (cidade) q.where({ cidade }) })
                           .modify(q => { if (estado) q.where({ estado }) })
                           .modify(q => { if (usuarioId) q.where({ usuarioId }) })
+                          .join('usuarios', 'usuarios.id', 'feiras.usuarioId')
+                          .select('feiras.*', 'usuarios.nome as nomeUsuario')
                           .orderBy('descricao')
 
     if (feiras.length) {
@@ -51,7 +53,10 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const feira = await db('feiras').where({ id })
+    const feira = await db('feiras')
+                        .where({ id })
+                        .join('usuarios', 'usuarios.id', 'feiras.usuarioId')
+                        .select('feiras.*', 'usuarios.nome as nomeUsuario')
 
     if (feira.length) {
       feira.imagemUrl = `${req.protocol}://${req.get('host')}/uploads/${feira.imagemUrl}`

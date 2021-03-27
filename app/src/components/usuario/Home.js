@@ -61,17 +61,12 @@ export default function Home(props) {
       try {
         const resFeirantes = await api.get('/feirantes', 
         { headers :{
-          'feiraId' : feiraId
+          'feiraId' : feiraId,
+          'confirmado' : false
         }})
 
         if (resFeirantes.status === 200) {
-          let conta = 0
-          for (let feirante in resFeirantes.data) {
-            if (!feirante.confirmado) {
-              conta++
-            }
-          }
-          setSolicitacoes(conta)
+          setSolicitacoes(resFeirantes.data.length)
         }
       } catch (error) {
         const errorHandled = errorApi(error)
@@ -143,7 +138,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {}}
+                onClick={() => {history.push('/solicitacoes', { feiraId })}}
               >
                 {`Solicitações de Feirantes (${solicitacoes})`}
               </Button>

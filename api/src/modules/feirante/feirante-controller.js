@@ -2,9 +2,12 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { feiraId } = req.headers
+    const { feiraId, confirmado } = req.headers
     const feirantes = await db('feirantes')
                             .modify(q => { if (feiraId) q.where({ feiraId }) })
+                            .modify(q => { if (confirmado) q.where({ confirmado }) })
+                            .join('usuarios', 'usuarios.id', 'feirantes.usuarioId')
+                            .select('feirantes.*', 'usuarios.nome as nomeUsuario')
                             .orderBy('descricao')
                         
     if (feirantes.length) {
@@ -16,7 +19,10 @@ module.exports = {
 
   async getOne (req, res) {
     const { id } = req.params
-    const feirante = await db('feirantes').where({ id })
+    const feirante = await db('feirantes')
+                            .where({ id })
+                            .join('usuarios', 'usuarios.id', 'feirantes.usuarioId')
+                            .select('feirantes.*', 'usuarios.nome as nomeUsuario')
 
     if (feirante.length) {
       return res.status(200).json(feirante[0])

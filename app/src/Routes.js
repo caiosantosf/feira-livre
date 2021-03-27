@@ -8,6 +8,7 @@ import Cadastro   from './components/usuario/Cadastro'
 import CadastroFeira   from './components/usuario/CadastroFeira'
 import CadastroFeirante   from './components/usuario/CadastroFeirante'
 import Home   from './components/usuario/Home'
+import Solicitacoes   from './components/usuario/Solicitacoes'
 import Feiras     from './components/cliente/feiras'
 import Feirantes  from './components/cliente/feirantes'
 import Feira      from './components/feira/feira'
@@ -27,6 +28,7 @@ export default function Routes() {
         <Route path="/cadastro-feirante" exact component={CadastroFeirante} />
         <Route path="/novasenha" exact component={NovaSenha} />
         <Route path="/home" exact component={Home} />
+        <Route path="/solicitacoes" exact component={Solicitacoes} />
         <Route path="/feiras" exact component={Feiras} />
         <Route path="/feirantes/:feiraId" exact component={Feirantes} />
         <Route path="/feira" exact component={Feira} />

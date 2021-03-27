@@ -81,26 +81,26 @@ export default function SignUp() {
         </div>
       
       <List dense className={classes.rootList}>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value}`;
-        return (
-          <ListItem key={value} button>
-            <ListItemAvatar>
-              <Avatar
-                alt={`Avatar n°${value + 1}`}
-                src={`/static/images/avatar/${value + 1}.jpg`}
-              />
-            </ListItemAvatar>
-            <ListItemText 
-              id={labelId} 
-              primary={`Line item ${value + 1}`} 
-              onClick={() => {
-                history.push('/feira')
-              }}/>
-          </ListItem>
-        );
-      })}
-    </List>
+        {[0, 1, 2, 3].map((value) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem key={value} button>
+              <ListItemAvatar>
+                <Avatar
+                  alt={`Avatar n°${value + 1}`}
+                  src={`/static/images/avatar/${value + 1}.jpg`}
+                />
+              </ListItemAvatar>
+              <ListItemText 
+                id={labelId} 
+                primary={`Line item ${value + 1}`} 
+                onClick={() => {
+                  history.push('/feira')
+                }}/>
+            </ListItem>
+          );
+        })}
+      </List>
     <div className={classes.rootFab}>
       <Fab color="primary" aria-label="add">
         <AddIcon onClick={() => {
