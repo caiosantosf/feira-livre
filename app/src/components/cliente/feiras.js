@@ -10,8 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { api } from '../../config/api';
-import Footer from '../../components/nav/footer';
-import Voltar from '../../components/nav/voltar'
+import Voltar from '../nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -103,8 +102,6 @@ export default function Feiras() {
             })}
           </div>
         </Container>
-
-        <Footer/>
 
       </div>
     </React.Fragment>

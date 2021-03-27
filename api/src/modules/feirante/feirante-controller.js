@@ -58,21 +58,6 @@ module.exports = {
     }
   },
 
-  async patchConfirmado (req, res) {
-    const { id } = req.params
-    const data = req.body
-  
-    try {
-      const result = await db('feirantes').where({ id }).update({ id, ...data })
-      if (result) {
-        return res.status(200).json({ message : 'Feirante alterado'})
-      }
-      return res.status(204).json({ message: 'Feriante não encontrato'})
-    } catch (error) {
-      return res.status(500).json(error)     
-    }
-  },
-
   async destroy (req, res) {
     const { id } = req.params
     const result = await db('feirantes').where({ id }).del()

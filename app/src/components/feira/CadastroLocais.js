@@ -7,10 +7,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Footer from '../../components/nav/footer';
 import Voltar from '../../components/nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function CadastroLocais() {
   const classes = useStyles();
 
   const [usertype, setUsertype] = React.useState('');
@@ -192,7 +190,6 @@ export default function SignUp() {
         </div>
       </Container>
       
-      <Footer/>
     </div>
   );
 }

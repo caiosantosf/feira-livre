@@ -7,16 +7,14 @@ import NovaSenha  from './components/usuario/NovaSenha'
 import Cadastro   from './components/usuario/Cadastro'
 import CadastroFeira   from './components/usuario/CadastroFeira'
 import CadastroFeirante   from './components/usuario/CadastroFeirante'
-import CadastroProduto   from './components/usuario/CadastroProduto'
+import CadastroProduto   from './components/feirante/CadastroProdutos'
+import Produtos   from './components/feirante/Produtos'
+import CadastroLocais   from './components/feira/CadastroLocais'
+import Locais   from './components/feira/Locais'
 import Home   from './components/usuario/Home'
 import Solicitacoes   from './components/usuario/Solicitacoes'
 import Feiras     from './components/cliente/feiras'
 import Feirantes  from './components/cliente/feirantes'
-import Feira      from './components/feira/feira'
-import Feirante   from './components/feirante/feirante'
-import FeiraGrid from './components/feira/feira-grid'
-import FeiranteGrid from './components/feirante/feirante-grid'
-import Produto from './components/produto/produto'
 
 export default function Routes() {
   return (
@@ -32,11 +30,10 @@ export default function Routes() {
         <Route path="/solicitacoes" exact component={Solicitacoes} />
         <Route path="/feiras" exact component={Feiras} />
         <Route path="/feirantes/:feiraId" exact component={Feirantes} />
-        <Route path="/feira" exact component={Feira} />
-        <Route path="/feirante" exact component={Feirante} />
-        <Route path="/feiragrid" exact component={FeiraGrid} />
-        <Route path="/feirantegrid" exact component={FeiranteGrid} />
-        <Route path="/cadastro-produto" exact component={Produto} />
+        <Route path="/locais" exact component={Locais} />
+        <Route path="/cadastro-locais" exact component={CadastroLocais} /> 
+        <Route path="/produtos" exact component={Produtos} />
+        <Route path="/cadastro-produto" exact component={CadastroProduto} /> 
       </Switch>
     </BrowserRouter>
   )

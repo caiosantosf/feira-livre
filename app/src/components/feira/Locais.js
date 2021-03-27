@@ -1,10 +1,9 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Footer from '../../components/nav/footer';
 import Voltar from '../../components/nav/voltar'
+
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -55,49 +54,51 @@ const useStyles = makeStyles((theme) => ({
     width: 60,  
     height: 60,   
     borderRadius: 30,                                              
-    position: 'fixed',                                          
+    position: 'absolute',                                          
     bottom: 10,                                                    
     right: 10, 
   },
 }));
 
-export default function SignUp() {
+export default function Locais() {
   const classes = useStyles();
 
   let history = useHistory()
 
   return (
     <div className={classes.root}>
-      <Voltar titulo="Cadastro de Produtos" />
+      <Voltar titulo="Locais e Horários"/>
       <Container maxWidth="sm">
-        <CssBaseline />
-      
+
       <List dense className={classes.rootList}>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value}`;
-        return (
-          <ListItem key={value} button>
-            <ListItemAvatar>
-              <Avatar
-                alt={`Avatar n°${value + 1}`}
-                src={`/static/images/avatar/${value + 1}.jpg`}
-              />
-            </ListItemAvatar>
-            <ListItemText 
-              id={labelId} 
-              primary={`Line item ${value + 1}`} 
-              onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}}/>
-          </ListItem>
-        );
-      })}
-    </List>
+        {[0, 1, 2, 3].map((value) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem key={value} button>
+              <ListItemAvatar>
+                <Avatar
+                  alt={`Avatar n°${value + 1}`}
+                  src={`/static/images/avatar/${value + 1}.jpg`}
+                />
+              </ListItemAvatar>
+              <ListItemText 
+                id={labelId} 
+                primary={`Line item ${value + 1}`} 
+                onClick={() => {
+                  history.push('/cadastro-locais')
+                }}/>
+            </ListItem>
+          );
+        })}
+      </List>
     <div className={classes.rootFab}>
       <Fab color="primary" aria-label="add">
-        <AddIcon onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}} />
+        <AddIcon onClick={() => {
+                history.push('/cadastro-locais')
+              }} />
       </Fab>
     </div>
       </Container>
-      <Footer/>
     </div>
   );
 }

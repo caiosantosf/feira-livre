@@ -10,7 +10,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Copyright from '../../components/nav/copyright'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function NovaSenha() {
   const classes = useStyles();
 
   let history = useHistory()
@@ -83,9 +82,6 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </form>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
         </div>
         </Paper>
       </Container>  

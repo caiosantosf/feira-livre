@@ -13,7 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Copyright from '../../components/nav/copyright'
 import { api } from '../../config/api';
 import Voltar from '../../components/nav/voltar'
 import { errorApi } from '../../config/handleErrors'
@@ -260,9 +259,6 @@ export default function Cadastro(props) {
                 Salvar
               </Button>
             </form>
-            <Box mt={8}>
-              <Copyright />
-            </Box>
           </div>
           </Paper>
         </Container>  

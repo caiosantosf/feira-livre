@@ -12,7 +12,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper'
 import { api } from '../../config/api';
-import Copyright from '../../components/nav/copyright'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -157,10 +156,7 @@ export default function App() {
                 </Button>
             </form>
             
-            <Box mt={8}>
-              <Copyright />
-            </Box>
-        
+      
             </Box>
           </div>
         </Paper>

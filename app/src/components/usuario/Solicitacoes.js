@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Copyright from '../../components/nav/copyright'
 import { api } from '../../config/api';
 import Voltar from '../../components/nav/voltar'
 import { errorApi } from '../../config/handleErrors'
@@ -14,10 +13,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -98,20 +95,15 @@ export default function Solicitacoes(props) {
         'x-access-token' : sessionStorage.getItem('token'),
       }}
 
-      const res = id ? await api.put(`/feiras/${id}`, feiraData, config)
+      for (let sol of solicitacoes) {
+        const { id } = sol
+        
+        delete sol.id
+        delete sol.nomeUsuario
 
-      if (image) {
-        const data = new FormData()
-
-        data.append("name", image[0].file.name)
-        data.append("file", image[0].file)
-
-        await api.patch(`/feiras/${idCreated ? idCreated : id}`, data, config)
+        await api.patch(`/feirantes/${id}`, sol, config)
       }
-
-      sessionStorage.setItem('tipo', 'feira')
-      sessionStorage.setItem('feiraId', idCreated)
-
+      
       history.push('/home')
     } catch (error) {
       const errorHandled = errorApi(error)
@@ -119,7 +111,7 @@ export default function Solicitacoes(props) {
         setError([errorHandled.error])
       } else {
         let errorMessage = []
-        Object.keys(errorHandled.error).forEach(function(key, i) {
+        Object.keys(errorHandled.error).forEach((key, i) => {
           errorMessage.push(errorHandled.error[key])
         })
         setError(errorMessage)
@@ -136,6 +128,14 @@ export default function Solicitacoes(props) {
             <CssBaseline />
             <div className={classes.paper}>
               <form className={classes.form} noValidate>
+
+              <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+                {error.map((err, i) => {
+                  return (
+                    <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                  )
+                })}
+              </Alert>
 
               <List dense className={classes.rootList}>
                 {solicitacoes.map((feirante, index) => {
@@ -176,9 +176,6 @@ export default function Solicitacoes(props) {
               </List>
                 
               </form>
-            <Box mt={8}>
-              <Copyright />
-            </Box>
           </div>
           </Paper>
         </Container>  

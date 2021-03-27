@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Copyright from '../../components/nav/copyright'
 import Voltar from '../../components/nav/voltar'
 import { api } from '../../config/api';
 
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles()
 
   const [error, setError] = React.useState({})
@@ -139,9 +138,6 @@ export default function SignIn() {
                 </Grid>
               </Grid>
             </form>
-            <Box mt={8}>
-              <Copyright />
-            </Box>
           </div>
           </Paper>
         </Container>  

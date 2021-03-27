@@ -13,10 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Copyright from '../../components/nav/copyright'
 import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
-import Voltar from '../../components/nav/voltar'
+import Voltar from '../nav/Voltar'
 import { errorApi } from '../../config/handleErrors'
 import LoadingOverlay from 'react-loading-overlay';
 
@@ -355,9 +354,6 @@ export default function CadastroFeira(props) {
                 Salvar
               </Button>
             </form>
-            <Box mt={8}>
-              <Copyright />
-            </Box>
           </div>
           </Paper>
         </Container>  
