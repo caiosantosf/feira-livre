@@ -12,6 +12,9 @@ import Container from '@material-ui/core/Container';
 import Voltar from '../../components/nav/Voltar'
 import Paper from '@material-ui/core/Paper'
 import Alert from '@material-ui/lab/Alert';
+import { api } from '../../config/api';
+import { errorApi } from '../../config/handleErrors'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,14 +51,101 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CadastroLocais() {
+export default function CadastroLocais(props) {
   const classes = useStyles();
 
   const [local, setLocal] = React.useState([])
   const [error, setError] = React.useState([])
 
-  const handleChange = (event) => {
-    
+  const id = 0
+  const { state } = props.location
+  if (state) {
+    id = state.id
+  }
+
+  let history = useHistory()
+
+  const feiraId = sessionStorage.getItem('feiraId')
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get(`/feiras/${feiraId}/locais/${id}`)
+
+        if (res.status === 200) {
+          setLocal(res.data)
+        }
+      } catch (error) {
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
+      }
+    }
+    if (id) {
+      fetchData()
+    }
+  }, [feiraId, history])
+
+  const handleDelete = async () => {
+    try {
+      setError([])
+
+      const config = { headers :{
+        'x-access-token' : sessionStorage.getItem('token'),
+      }}
+
+      const res = await api.delete(`/feiras/${feiraId}/locais/${id}`, config)
+
+      if (res.status === 200) {
+        history.push('/locais')
+      }
+    } catch (error) {
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
+    }
+  }
+
+  const handleSave = async () => {
+    try {
+      setError([])
+
+      let { id, ...localData } = local
+
+      const config = { headers :{
+        'x-access-token' : sessionStorage.getItem('token'),
+      }}
+
+      const res = !id ? await api.post(`/feiras/${feiraId}/locais`, localData, config)
+                     : await api.put(`/feiras/${feiraId}/locais/${id}`, localData, config)
+
+      if (res.status === 200) {
+        history.push('/locais')
+      }
+    } catch (error) {
+      const errorHandled = errorApi(error)
+      if (errorHandled.general) {
+        setError([errorHandled.error])
+      } else {
+        let errorMessage = []
+        Object.keys(errorHandled.error).forEach(function(key, i) {
+          errorMessage.push(errorHandled.error[key])
+        })
+        setError(errorMessage)
+      }
+    }
   }
 
   return (
@@ -75,35 +165,45 @@ export default function CadastroLocais() {
                   })}
                 </Alert>
                 <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="nomeFeira"
-                      label="Nome da Feira"
-                      name="nomeFeira"
-                      autoComplete="nomeFeira"
-                    />
-                  </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       id="cep"
                       label="CEP"
                       name="cep"
                       autoComplete="cep"
+                      value={local.cep || ''}
+                      onChange={e => {
+                        setLocal({ ...local, cep: e.target.value})
+                      }}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={8}>
                     <TextField
                       autoComplete="logradouro"
                       name="logradouro"
-                      required
                       fullWidth
                       id="logradouro"
                       label="Endereço"
                       autoFocus
+                      value={local.logradouro || ''}
+                      onChange={e => {
+                        setLocal({ ...local, logradouro: e.target.value})
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      autoComplete="numero"
+                      name="numero"
+                      fullWidth
+                      id="numero"
+                      label="Número"
+                      autoFocus
+                      value={local.numero || ''}
+                      onChange={e => {
+                        setLocal({ ...local, numero: e.target.value})
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -114,68 +214,82 @@ export default function CadastroLocais() {
                       id="complemento"
                       label="Complemento"
                       autoFocus
+                      value={local.complemento || ''}
+                      onChange={e => {
+                        setLocal({ ...local, complemento: e.target.value})
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      required
                       fullWidth
                       id="bairro"
                       label="Bairro"
                       name="bairro"
                       autoComplete="bairro"
+                      value={local.bairro || ''}
+                      onChange={e => {
+                        setLocal({ ...local, bairro: e.target.value})
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                        id="horaInicial"
-                        label="Hora Inicial"
-                        type="time"
-                        required
-                        fullWidth
-                        defaultValue="06:00"
-                        InputLabelProps={{
+                      id="horaInicial"
+                      label="Hora Inicial"
+                      type="time"
+                      fullWidth
+                      defaultValue="06:00"
+                      InputLabelProps={{
                         shrink: true,
-                        }}
-                        inputProps={{
+                      }}
+                      inputProps={{
                         step: 300, // 5 min
-                        }}
+                      }}
+                      value={local.horarioInicio || ''}
+                      onChange={e => {
+                        setLocal({ ...local, horarioInicio: e.target.value})
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                   <TextField
-                        id="horaFinal"
-                        label="Hora Final"
-                        type="time"
-                        required
-                        fullWidth
-                        defaultValue="12:00"
-                        InputLabelProps={{
+                      id="horaFinal"
+                      label="Hora Final"
+                      type="time"
+                      fullWidth
+                      defaultValue="12:00"
+                      InputLabelProps={{
                         shrink: true,
-                        }}
-                        inputProps={{
+                      }}
+                      inputProps={{
                         step: 300, // 5 min
-                        }}
+                      }}
+                      value={local.horarioTermino || ''}
+                      onChange={e => {
+                        setLocal({ ...local, horarioTermino: e.target.value})
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <InputLabel id="select-day">Dia da Semana</InputLabel>
                     <Select
-                      required
                       fullWidth
                       labelId="select-day"
                       id="select-day"
-                      value={true}
-                      onChange={handleChange}
+                      value={local.diaSemana || ''}
+                      onChange={e => {
+                        setLocal({ ...local, diaSemana: e.target.value})
+                      }}
                     >
-                      <MenuItem value={1}>Domingo</MenuItem>
-                      <MenuItem value={2}>Segunda-Feira</MenuItem>
-                      <MenuItem value={3}>Terça-Feira</MenuItem>
-                      <MenuItem value={4}>Quarta-Feira</MenuItem>
-                      <MenuItem value={5}>Quinta-Feira</MenuItem>
-                      <MenuItem value={6}>Sexta-Feira</MenuItem>
-                      <MenuItem value={7}>Sábado</MenuItem>
+                      <MenuItem value={'Domingo'}>Domingo</MenuItem>
+                      <MenuItem value={'Segunda-Feira'}>Segunda-Feira</MenuItem>
+                      <MenuItem value={'Terça-Feira'}>Terça-Feira</MenuItem>
+                      <MenuItem value={'Quarta-Feira'}>Quarta-Feira</MenuItem>
+                      <MenuItem value={'Quinta-Feira'}>Quinta-Feira</MenuItem>
+                      <MenuItem value={'Sexta-Feira'}>Sexta-Feira</MenuItem>
+                      <MenuItem value={'Sábado'}>Sábado</MenuItem>
                     </Select>
                   </FormControl>
                   </Grid>
@@ -186,8 +300,9 @@ export default function CadastroLocais() {
                   variant="contained"
                   color="primary"
                   className={classes.submit}
+                  onClick={() => handleSave()}
                 >
-                  Cadastrar
+                  Salvar
                 </Button>
                 <Button
                   type="submit"
@@ -195,6 +310,8 @@ export default function CadastroLocais() {
                   variant="contained"
                   color="secondary"
                   className={classes.submit}
+                  onClick={() => handleDelete()}
+                  style={!id ? {display: 'none'} : {}}
                 >
                   Apagar
                 </Button>

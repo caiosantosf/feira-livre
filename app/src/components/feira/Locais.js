@@ -117,7 +117,7 @@ export default function Locais(props) {
                           id={labelId} 
                           primary={`${local.diaSemana} - ${local.bairro}`} 
                           onClick={() => {
-                          history.push('/cadastro-locais')
+                          history.push('/cadastro-locais', {id: local.id})
                         }}/>
                       </ListItem>
                     );
