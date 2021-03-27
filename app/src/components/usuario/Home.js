@@ -5,9 +5,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box';
+import Alert from '@material-ui/lab/Alert';
 import { api } from '../../config/api';
-import Voltar from '../../components/nav/voltar'
+import Voltar from '../../components/nav/Voltar'
 import { errorApi } from '../../config/handleErrors'
 
 const useStyles = makeStyles((theme) => ({
@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', 
-    marginTop: theme.spacing(3),
+    width: '100%',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -49,11 +48,9 @@ export default function Home(props) {
 
   let history = useHistory()
 
-  const { state } = props.location
-  let feiraId = 0
-  if (state) {
-    feiraId = state.feiraId
-  }
+  const usuarioId = sessionStorage.getItem('usuarioId')
+  const feiraId = sessionStorage.getItem('feiraId')
+  const feiranteId = sessionStorage.getItem('feiranteId')
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -92,12 +89,19 @@ export default function Home(props) {
             <CssBaseline />
             <div className={classes.paper}>
             <form className={classes.form} noValidate>
+              <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+                {error.map((err, i) => {
+                  return (
+                    <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                  )
+                })}
+              </Alert>
               <Button
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+                onClick={() => {history.push('/cadastro', {usuarioId})}}
               >
                 Alterar dados do usuário
               </Button>
@@ -107,7 +111,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro-feira', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+                onClick={() => {history.push('/cadastro-feira', {usuarioId})}}
               >
                 Alterar dados da feira
               </Button>
@@ -117,7 +121,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/cadastro-feirante', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+                onClick={() => {history.push('/cadastro-feirante', {usuarioId})}}
               >
                 Alterar dados do feirante
               </Button>
@@ -127,7 +131,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feira' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/locais', {usuarioId: sessionStorage.getItem('usuarioId'), feiraId})}}
+                onClick={() => {history.push('/locais')}}
               >
                 Locais e horários da feira
               </Button>
@@ -147,7 +151,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/feirantegrid', {usuarioId: sessionStorage.getItem('usuarioId')})}}
+                onClick={() => {history.push('/feirantegrid', {usuarioId})}}
               >
                 Produtos
               </Button>

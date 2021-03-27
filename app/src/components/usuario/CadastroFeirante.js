@@ -14,7 +14,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import { api } from '../../config/api';
-import Voltar from '../../components/nav/voltar'
+import Voltar from '../../components/nav/Voltar'
 import { errorApi } from '../../config/handleErrors'
 import LoadingOverlay from 'react-loading-overlay';
 
@@ -157,6 +157,7 @@ export default function CadastroFeirante(props) {
 
       sessionStorage.setItem('tipo', 'feirante')
       sessionStorage.setItem('feiranteId', idCreated)
+      sessionStorage.setItem('usuarioId', usuarioId)
 
       history.push('/home')
     } catch (error) {

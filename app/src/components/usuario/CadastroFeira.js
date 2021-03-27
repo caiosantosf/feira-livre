@@ -12,7 +12,6 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box';
 import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
 import Voltar from '../nav/Voltar'
@@ -124,6 +123,7 @@ export default function CadastroFeira(props) {
 
       sessionStorage.setItem('tipo', 'feira')
       sessionStorage.setItem('feiraId', idCreated)
+      sessionStorage.setItem('usuarioId', usuarioId)
 
       history.push('/home')
     } catch (error) {

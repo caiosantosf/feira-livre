@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
-import Voltar from '../../components/nav/voltar'
+import Voltar from '../../components/nav/Voltar'
 import { api } from '../../config/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,9 +51,11 @@ export default function Login() {
     try {
       setError({})
       const res = await api.post('/usuarios/login/', auth)
-      const { token, id, tipo } = res.data
+      const { token, id, tipo, feiraId, feiranteId } = res.data
 
       sessionStorage.setItem('usuarioId', id)
+      sessionStorage.setItem('feiraId', feiraId)
+      sessionStorage.setItem('feiranteId', feiranteId)
       sessionStorage.setItem('token', token)
       sessionStorage.setItem('tipo', tipo)
       

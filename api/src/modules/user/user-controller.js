@@ -21,7 +21,20 @@ module.exports = {
       const { id , senha: dbSenha, tipo } = usuario[0]
 
       if (await compareCrypt(reqSenha, dbSenha)) {
-        return res.status(200).json({ auth: true, token: token(id, tipo), id, tipo })
+
+        let feiraId = 0
+        const feira = await db('feiras').where({ usuarioId: id })
+        if (feira.length) {
+          feiraId = feira[0].id
+        }
+        
+        let feiranteId = 0
+        const feirante = await db('feirantes').where({ usuarioId: id })
+        if (feirante.length) {
+          feiranteId = feirante[0].id
+        }
+        
+        return res.status(200).json({ auth: true, token: token(id, tipo), id, tipo, feiraId, feiranteId })
       }
       return res.status(400).json({ senha: 'Senha inválida' })
     }

@@ -13,8 +13,8 @@ import CadastroLocais   from './components/feira/CadastroLocais'
 import Locais   from './components/feira/Locais'
 import Home   from './components/usuario/Home'
 import Solicitacoes   from './components/usuario/Solicitacoes'
-import Feiras     from './components/cliente/feiras'
-import Feirantes  from './components/cliente/feirantes'
+import Feiras     from './components/cliente/Feiras'
+import Feirantes  from './components/cliente/Feirantes'
 
 export default function Routes() {
   return (
