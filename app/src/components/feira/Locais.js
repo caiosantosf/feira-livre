@@ -91,7 +91,7 @@ export default function Locais(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Locais e Horários"/>
+        <Voltar titulo="Locais e Horários" pagina="home"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

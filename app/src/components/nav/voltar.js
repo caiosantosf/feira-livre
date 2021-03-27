@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Voltar({titulo}) {
+export default function Voltar({titulo, pagina}) {
     const classes = useStyles();
     let history = useHistory()
   
@@ -32,7 +32,13 @@ export default function Voltar({titulo}) {
         <AppBar position="fixed">
             <Toolbar variant="dense" className={classes.box}>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <ArrowBackIcon onClick={() => history.goBack()} />
+                    <ArrowBackIcon onClick={() => {
+                      if (pagina) {
+                        history.goBack()
+                      } else {
+                        history.push(pagina)
+                      }
+                    }}/>
                 </IconButton>
                   <Typography className={classes.middle} variant="h6" color="inherit">
                       {titulo}

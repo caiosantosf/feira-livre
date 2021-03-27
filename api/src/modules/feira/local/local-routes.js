@@ -11,7 +11,7 @@ routes.get('/feiras/:feiraId/locais',
 
 routes.post('/feiras/:feiraId/locais', 
   security(['feira']), 
-  validation(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'diaSemana', 
+  validation(['cep', 'logradouro', 'numero', 'bairro', 'diaSemana', 
               'horarioInicio', 'horarioTermino']), 
   post
 )
@@ -22,7 +22,7 @@ routes.get('/feiras/:feiraId/locais/:id',
 
 routes.put('/feiras/:feiraId/locais/:id', 
   security(['feira']), 
-  validation(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'diaSemana', 
+  validation(['cep', 'logradouro', 'numero', 'bairro', 'diaSemana', 
               'horarioInicio', 'horarioTermino']),
   put
 )

@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import Voltar from '../../components/nav/Voltar'
 import Paper from '@material-ui/core/Paper'
 import Alert from '@material-ui/lab/Alert';
-import { api } from '../../config/api';
+import { api, apiCep } from '../../config/api';
 import { errorApi } from '../../config/handleErrors'
 import { useHistory } from "react-router-dom";
 
@@ -57,7 +57,7 @@ export default function CadastroLocais(props) {
   const [local, setLocal] = React.useState([])
   const [error, setError] = React.useState([])
 
-  const id = 0
+  let id = 0
   const { state } = props.location
   if (state) {
     id = state.id
@@ -66,6 +66,22 @@ export default function CadastroLocais(props) {
   let history = useHistory()
 
   const feiraId = sessionStorage.getItem('feiraId')
+
+  const handleCepApi = async () => {
+    try {
+      const res = await apiCep(local.cep)
+      const { data } = res
+      if (!data.erro) {
+        setLocal({ ...local,
+                  logradouro: data.logradouro, 
+                  complemento: data.complement,
+                  bairro: data.bairro
+                })
+      }
+    } catch (error) {
+      setError({cep: "CEP Inválido!"})
+    }
+  }
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +105,7 @@ export default function CadastroLocais(props) {
     if (id) {
       fetchData()
     }
-  }, [feiraId, history])
+  }, [id, feiraId, history])
 
   const handleDelete = async () => {
     try {
@@ -131,7 +147,7 @@ export default function CadastroLocais(props) {
       const res = !id ? await api.post(`/feiras/${feiraId}/locais`, localData, config)
                      : await api.put(`/feiras/${feiraId}/locais/${id}`, localData, config)
 
-      if (res.status === 200) {
+      if (res.status === 201 || res.status === 200) {
         history.push('/locais')
       }
     } catch (error) {
@@ -151,7 +167,7 @@ export default function CadastroLocais(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Locais e Horários"/>
+        <Voltar titulo="Locais e Horários" pagina="locais"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />
@@ -172,9 +188,16 @@ export default function CadastroLocais(props) {
                       label="CEP"
                       name="cep"
                       autoComplete="cep"
+                      maxLength="8"
+                      onBlur={handleCepApi}
                       value={local.cep || ''}
                       onChange={e => {
-                        setLocal({ ...local, cep: e.target.value})
+                        const re = /^[0-9\b]+$/
+                        const key = e.target.value
+            
+                        if (key === '' || re.test(key)) {
+                          setLocal({ ...local, cep: e.target.value})
+                        }
                       }}
                     />
                   </Grid>
@@ -295,7 +318,6 @@ export default function CadastroLocais(props) {
                   </Grid>
                 </Grid>
                 <Button
-                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
