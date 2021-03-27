@@ -3,16 +3,14 @@ import { useHistory } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Footer from '../../components/nav/footer';
-import Voltar from '../../components/nav/voltar'
+import Footer from '../nav/footer';
+import Voltar from '../nav/voltar'
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,34 +66,29 @@ export default function SignUp() {
 
   return (
     <div className={classes.root}>
-      <Voltar titulo="Cadastro de Produtos" />
+      <Voltar titulo="Solicitações de Feirantes" />
       <Container maxWidth="sm">
         <CssBaseline />
       
       <List dense className={classes.rootList}>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value}`;
-        return (
-          <ListItem key={value} button>
-            <ListItemAvatar>
-              <Avatar
-                alt={`Avatar n°${value + 1}`}
-                src={`/static/images/avatar/${value + 1}.jpg`}
-              />
-            </ListItemAvatar>
-            <ListItemText 
-              id={labelId} 
-              primary={`Line item ${value + 1}`} 
-              onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}}/>
-          </ListItem>
-        );
-      })}
-    </List>
-    <div className={classes.rootFab}>
-      <Fab color="primary" aria-label="add">
-        <AddIcon onClick={() => {history.push('/cadastro-produto', {usuarioId: sessionStorage.getItem('usuarioId')})}} />
-      </Fab>
-    </div>
+        {[0, 1, 2, 3].map((value) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem key={value} button>
+              <ListItemAvatar>
+                <Avatar
+                  alt={`${value + 1}`}
+                  src={`/static/images/avatar/${value + 1}.jpg`}
+                />
+              </ListItemAvatar>
+              <ListItemText 
+                id={labelId} 
+                primary={`Solicitação ${value + 1}`} 
+                onClick={() => {history.push('')}}/>
+            </ListItem>
+          );
+        })}
+      </List>
       </Container>
       <Footer/>
     </div>

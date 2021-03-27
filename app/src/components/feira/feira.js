@@ -59,13 +59,10 @@ export default function SignUp() {
 
   return (
     <div className={classes.root}>
-      <Voltar url="/feiragrid"/>
+      <Voltar titulo="Cadastro da Feira"/>
       <Container maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Cadastro da Feira
-          </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
             <Grid item xs={12}>
