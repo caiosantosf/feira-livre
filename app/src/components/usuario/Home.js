@@ -151,7 +151,7 @@ export default function Home(props) {
                 color="primary"
                 style={sessionStorage.getItem('tipo') === 'feirante' ? {} : {display: 'none'}}
                 className={classes.submit}
-                onClick={() => {history.push('/feirantegrid', {usuarioId})}}
+                onClick={() => {history.push('/produtos', {usuarioId})}}
               >
                 Produtos
               </Button>
@@ -162,6 +162,8 @@ export default function Home(props) {
                 className={classes.submit}
                 onClick={() => {
                   sessionStorage.setItem('usuarioId', '')
+                  sessionStorage.setItem('feiraId', '')
+                  sessionStorage.setItem('feiranteId', '')
                   sessionStorage.setItem('token', '')
                   history.push('/')
                 }}

@@ -327,7 +327,6 @@ export default function CadastroLocais(props) {
                   Salvar
                 </Button>
                 <Button
-                  type="submit"
                   fullWidth
                   variant="contained"
                   color="secondary"
