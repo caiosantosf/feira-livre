@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Voltar from '../../components/nav/Voltar'
+import Voltar from '../nav/voltar'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -124,7 +124,7 @@ export default function Produtos(props) {
                           id={labelId} 
                           primary={`${produto.descricao} - ${produto.valor}`} 
                           onClick={() => {
-                          history.push('/cadastro-produtos', {id: produto.id})
+                          history.push('/cadastro-produto', {id: produto.id})
                         }}/>
                       </ListItem>
                     );
@@ -138,7 +138,7 @@ export default function Produtos(props) {
       <div className={classes.rootFab}>
         <Fab color="primary" aria-label="add">
           <AddIcon onClick={() => {
-          history.push('/cadastro-produtos')
+          history.push('/cadastro-produto')
           }} />
         </Fab>
       </div>

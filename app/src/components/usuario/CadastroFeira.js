@@ -14,7 +14,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
-import Voltar from '../nav/Voltar'
+import Voltar from '../nav/voltar'
 import { errorApi } from '../../config/handleErrors'
 import LoadingOverlay from 'react-loading-overlay';
 
@@ -172,7 +172,7 @@ export default function CadastroFeira(props) {
         text='Carregando Cidades...'
         >
       <div className={classes.root}>
-        <Voltar titulo="Dados da Feira" />
+        <Voltar titulo="Dados da Feira" pagina="home"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

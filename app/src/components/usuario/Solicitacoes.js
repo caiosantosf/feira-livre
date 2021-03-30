@@ -5,9 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box';
 import { api } from '../../config/api';
-import Voltar from '../../components/nav/Voltar'
+import Voltar from '../nav/voltar'
 import { errorApi } from '../../config/handleErrors'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -122,7 +121,7 @@ export default function Solicitacoes(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Solicitações" />
+        <Voltar titulo="Solicitações" pagina="home" />
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

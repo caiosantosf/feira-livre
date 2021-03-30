@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import { api } from '../../config/api';
-import Voltar from '../../components/nav/Voltar'
+import Voltar from '../nav/voltar'
 import { errorApi } from '../../config/handleErrors'
 
 const useStyles = makeStyles((theme) => ({
@@ -146,7 +146,7 @@ export default function Cadastro(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Cadastro" />
+        <Voltar titulo="Cadastro" pagina="home"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

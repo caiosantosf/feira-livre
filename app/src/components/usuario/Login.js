@@ -10,8 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box';
-import Voltar from '../../components/nav/Voltar'
+import Voltar from '../nav/voltar'
 import { api } from '../../config/api';
 
 const useStyles = makeStyles((theme) => ({

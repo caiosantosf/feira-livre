@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Voltar from '../../components/nav/Voltar'
+import Voltar from '../nav/voltar'
 import Paper from '@material-ui/core/Paper'
 import Alert from '@material-ui/lab/Alert';
 import { api, apiCep } from '../../config/api';
