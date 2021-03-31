@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Feirantes(props) {
   const classes = useStyles();
-
   const { titulo } = props.location.state
 
   const [locais, setLocais] = React.useState([])

@@ -14,7 +14,6 @@ import Voltar from '../nav/voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    //marginTop: theme.spacing(4),
     display: 'flex',
     width: '100%',
     justifyContent: "center",
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Feiras() {
   const [feiras, setFeiras] = React.useState([])
-
   const cidade = sessionStorage.getItem('cidade')
   const estado = sessionStorage.getItem('estado')
 
