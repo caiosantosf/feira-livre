@@ -11,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper'
-import { api } from '../../config/api';
+import { api } from '../../config/Api';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { api } from '../../config/api';
-import Voltar from '../nav/voltar'
+import { api } from '../../config/Api';
+import Voltar from '../nav/Voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {

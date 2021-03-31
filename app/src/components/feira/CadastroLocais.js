@@ -9,11 +9,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Voltar from '../nav/voltar'
+import Voltar from '../nav/Voltar'
 import Paper from '@material-ui/core/Paper'
 import Alert from '@material-ui/lab/Alert';
-import { api, apiCep } from '../../config/api';
-import { errorApi } from '../../config/handleErrors'
+import { api, apiCep } from '../../config/Api';
+import { errorApi } from '../../config/HandleErrors'
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

@@ -5,9 +5,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import { api } from '../../config/api';
-import Voltar from '../nav/voltar'
-import { errorApi } from '../../config/handleErrors'
+import { api } from '../../config/Api';
+import Voltar from '../nav/Voltar'
+import { errorApi } from '../../config/HandleErrors'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';

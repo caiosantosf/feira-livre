@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Voltar from '../nav/voltar'
+import Voltar from '../nav/Voltar'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,8 +13,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Place, Schedule } from '@material-ui/icons';
-import { api } from '../../config/api';
-import { errorApi } from '../../config/handleErrors'
+import { api } from '../../config/Api';
+import { errorApi } from '../../config/HandleErrors'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
