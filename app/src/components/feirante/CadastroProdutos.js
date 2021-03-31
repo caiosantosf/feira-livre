@@ -186,6 +186,7 @@ export default function CadastroProdutos(props) {
               <Grid item xs={12}>
                   <TextField
                     required
+                    autoFocus
                     fullWidth
                     id="descricaoProduto"
                     label="Descrição do Produto"
@@ -199,12 +200,11 @@ export default function CadastroProdutos(props) {
                 </Grid>
                 <Grid item xs={12} sm={8}>
                   <TextField
-                    name="preco"
                     required
                     fullWidth
+                    name="preco"
                     id="preco"
                     label="Preço"
-                    autoFocus
                     value={produto.valor || ''}
                     onChange={e => {
                       setProduto({ ...produto, valor: e.target.value})
