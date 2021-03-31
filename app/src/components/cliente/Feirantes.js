@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { api } from '../../config/Api';
+import { api } from '../../config/api';
 import Voltar from '../nav/Voltar'
 import { Place, Schedule } from '@material-ui/icons';
 

@@ -12,10 +12,10 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import { api, apiCidades } from '../../config/Api';
+import { api, apiCidades } from '../../config/api';
 import ImageUploading from 'react-images-uploading'
 import Voltar from '../nav/Voltar'
-import { errorApi } from '../../config/HandleErrors'
+import { errorApi } from '../../config/handleErrors'
 import LoadingOverlay from 'react-loading-overlay';
 
 const useStyles = makeStyles((theme) => ({

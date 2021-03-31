@@ -12,9 +12,9 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import { api } from '../../config/Api';
+import { api } from '../../config/api';
 import Voltar from '../nav/Voltar'
-import { errorApi } from '../../config/HandleErrors'
+import { errorApi } from '../../config/handleErrors'
 import ImageUploading from 'react-images-uploading'
 
 const useStyles = makeStyles((theme) => ({

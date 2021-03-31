@@ -13,8 +13,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Place, Schedule } from '@material-ui/icons';
-import { api } from '../../config/Api';
-import { errorApi } from '../../config/HandleErrors'
+import { api } from '../../config/api';
+import { errorApi } from '../../config/handleErrors'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
