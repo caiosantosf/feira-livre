@@ -11,6 +11,8 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { api } from '../../config/api';
 import Voltar from '../nav/Voltar'
+import { errorApi } from '../../config/handleErrors'
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,8 +36,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Feiras() {
   const [feiras, setFeiras] = React.useState([])
+  const [error, setError] = React.useState([])
+
   const cidade = sessionStorage.getItem('cidade')
   const estado = sessionStorage.getItem('estado')
+
+  let history = useHistory()
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -44,17 +50,24 @@ export default function Feiras() {
           cidade,
           estado
         }})
-        setFeiras(res.data)
+        if (res.status === 200) {
+          setFeiras(res.data)
+        }
       } catch (error) {
-        alert(error)
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
       }
     }
     fetchData()
-  }, [cidade, estado])
+  }, [cidade, estado, history])
 
   const classes = useStyles();
-
-  let history = useHistory()
 
   return (
     <React.Fragment>
@@ -64,6 +77,13 @@ export default function Feiras() {
         <Container maxWidth="false">
           <CssBaseline />
           <div className={classes.paper}>
+            <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+              {error.map((err, i) => {
+                return (
+                  <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+                )
+              })}
+            </Alert>
             {feiras.map((feira, i) => {
               return (
                 <Box key={i} display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} >

@@ -19,7 +19,7 @@ module.exports = {
 
     if (usuario.length) {
       const { id , senha: dbSenha, tipo } = usuario[0]
-
+      
       if (await compareCrypt(reqSenha, dbSenha)) {
 
         let feiraId = 0
@@ -42,11 +42,9 @@ module.exports = {
   },
 
   async getMany (req, res) {
-    const { currentPage } = req.headers
     const usuarios = await db('usuarios')
                           .whereNot({ 'name' : 'admin'})
                           .orderBy('name')
-                          .paginate({ perPage: 10, currentPage, isLengthAware: true  })
 
     if (usuarios.hasOwnProperty('data')) {
       if (usuarios.data.length) {

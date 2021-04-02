@@ -2,7 +2,7 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { cidade, estado, usuarioId } = req.headers
+    const { cidade, estado, usuarioid : usuarioId } = req.headers
     const feiras = await db('feiras')
                           .modify(q => { if (cidade) q.where({ cidade }) })
                           .modify(q => { if (estado) q.where({ estado }) })
@@ -54,7 +54,7 @@ module.exports = {
   async getOne (req, res) {
     const { id } = req.params
     const feira = await db('feiras')
-                        .where({ id })
+                        .where({ 'feiras.id': id })
                         .join('usuarios', 'usuarios.id', 'feiras.usuarioId')
                         .select('feiras.*', 'usuarios.nome as nomeUsuario')
 

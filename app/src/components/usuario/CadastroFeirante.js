@@ -51,12 +51,12 @@ export default function CadastroFeirante(props) {
   const classes = useStyles();
 
   const { state } = props.location
-  let usuarioId = ''
   let novo = false
   if (state) {
-    usuarioId = state.usuarioId
     novo = state.novo
   }
+
+  const usuarioId = sessionStorage.getItem('usuarioId')
 
   const [cidades, setCidades] = React.useState([])
   const [estados, setEstados] = React.useState([])
@@ -84,6 +84,7 @@ export default function CadastroFeirante(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
+
         const resFeirantes = await api.get('/feirantes/', 
           { headers :{
             'x-access-token' : sessionStorage.getItem('token'),
@@ -97,12 +98,12 @@ export default function CadastroFeirante(props) {
               'x-access-token' : sessionStorage.getItem('token'),
               'usuarioId' : usuarioId
             }})
-          
+
           data.estado = resFeira.data.estado
           data.cidade = resFeira.data.cidade
 
           handleGetCidades(resFeira.data.estado)
-          
+
           setisActive(true)
           const resFeiras = await api.get('/feiras/', 
           { headers :{
@@ -142,7 +143,7 @@ export default function CadastroFeirante(props) {
     try {
       setError([])
 
-      let { id, cidade, estado, ...feiranteData } = feirante
+      let { id, cidade, estado, nomeUsuario, ...feiranteData } = feirante
       feiranteData = { ...feiranteData, usuarioId }
 
       const config = { headers :{
@@ -154,9 +155,10 @@ export default function CadastroFeirante(props) {
 
       const { id: idCreated } = res.data
 
-      sessionStorage.setItem('tipo', 'feirante')
-      sessionStorage.setItem('feiranteId', idCreated)
-      sessionStorage.setItem('usuarioId', usuarioId)
+      if (idCreated) {
+        sessionStorage.setItem('tipo', 'feirante')
+        sessionStorage.setItem('feiranteId', idCreated)
+      }
 
       history.push('/home')
     } catch (error) {

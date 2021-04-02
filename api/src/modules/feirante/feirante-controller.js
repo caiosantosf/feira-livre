@@ -2,10 +2,12 @@ const db = require('../../database/connection')
 
 module.exports = {
   async getMany (req, res) {
-    const { feiraId, confirmado } = req.headers
+    const { feiraid : feiraId, confirmado, usuarioid : usuarioId } = req.headers
+    
     const feirantes = await db('feirantes')
                             .modify(q => { if (feiraId) q.where({ feiraId }) })
                             .modify(q => { if (confirmado) q.where({ confirmado }) })
+                            .modify(q => { if (usuarioId) q.where({ usuarioId }) })
                             .join('usuarios', 'usuarios.id', 'feirantes.usuarioId')
                             .select('feirantes.*', 'usuarios.nome as nomeUsuario')
                             .orderBy('descricao')

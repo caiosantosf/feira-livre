@@ -6,9 +6,9 @@ module.exports = {
     const { feiraId } = req.params
 
     let locais = await db('feiraLocais')
-                          .where('feiraId', feiraId)
+                          .where({ feiraId })
                           .orderBy('id', 'desc')
-                          
+                        
     if (locais.length) {
       return res.status(200).json(locais)
     }

@@ -52,12 +52,12 @@ export default function CadastroFeira(props) {
   const classes = useStyles();
 
   const { state } = props.location
-  let usuarioId = ''
   let novo = false
   if (state) {
-    usuarioId = state.usuarioId
     novo = state.novo
   }
+
+  const usuarioId = sessionStorage.getItem('usuarioId')
 
   const [image, setImage] = React.useState()
   const [cidades, setCidades] = React.useState([])
@@ -100,7 +100,7 @@ export default function CadastroFeira(props) {
     try {
       setError([])
 
-      let { id, imagemUrl, ...feiraData } = feira
+      let { id, imagemUrl, nomeUsuario, ...feiraData } = feira
       feiraData = { ...feiraData, usuarioId }
 
       const config = { headers :{
@@ -121,9 +121,10 @@ export default function CadastroFeira(props) {
         await api.patch(`/feiras/${idCreated ? idCreated : id}`, data, config)
       }
 
-      sessionStorage.setItem('tipo', 'feira')
-      sessionStorage.setItem('feiraId', idCreated)
-      sessionStorage.setItem('usuarioId', usuarioId)
+      if (idCreated) {
+        sessionStorage.setItem('tipo', 'feira')
+        sessionStorage.setItem('feiraId', idCreated)
+      }
 
       history.push('/home')
     } catch (error) {
@@ -145,12 +146,14 @@ export default function CadastroFeira(props) {
       setisActive(true)
       const res = await apiCidades(estado)
       const { data } = res
+      
       if (data) {
 
         const cidadesAux = []
         for (const cidade of data) {
           cidadesAux.push(cidade.nome)
         }
+        cidadesAux.sort()
         setCidades(cidadesAux)
       }
       setisActive(false)

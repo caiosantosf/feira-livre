@@ -167,7 +167,7 @@ export default function CadastroLocais(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Locais e Horários" pagina="locais"/>
+        <Voltar titulo="Locais e Horários" pagina="/locais"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

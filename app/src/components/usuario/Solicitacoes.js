@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', 
-    marginTop: theme.spacing(3),
+    width: '100%',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -71,6 +70,8 @@ export default function Solicitacoes(props) {
 
         if (resFeirantes.status === 200) {
           setSolicitacoes(resFeirantes.data)
+        } else if (resFeirantes.status === 204) {
+          setError(['Você não tem nenhuma solicitação'])
         }
       } catch (error) {
         const errorHandled = errorApi(error)

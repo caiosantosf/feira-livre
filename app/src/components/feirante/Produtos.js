@@ -76,6 +76,8 @@ export default function Produtos(props) {
 
         if (res.status === 200) {
           setProdutos(res.data)
+        } else if (res.status === 204) {
+          setError(['Você ainda não cadastrou nenhum produto'])
         }
       } catch (error) {
         const errorHandled = errorApi(error)
@@ -96,7 +98,7 @@ export default function Produtos(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Produtos" pagina="home"/>
+        <Voltar titulo="Produtos" pagina="/home"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />
@@ -113,7 +115,11 @@ export default function Produtos(props) {
                   {produtos.map((produto) => {
                     const labelId = `checkbox-list-secondary-label-${produto.id}`;
                     return (
-                      <ListItem key={produto.id} button>
+                      <ListItem key={produto.id} button
+                        onClick={() => {
+                          history.push('/cadastro-produto', {id: produto.id})
+                        }}
+                      >
                         <ListItemAvatar>
                           <Avatar
                             alt={produto.descricao}
@@ -122,10 +128,8 @@ export default function Produtos(props) {
                         </ListItemAvatar>
                         <ListItemText 
                           id={labelId} 
-                          primary={`${produto.descricao} - ${produto.valor}`} 
-                          onClick={() => {
-                          history.push('/cadastro-produto', {id: produto.id})
-                        }}/>
+                          primary={`${produto.descricao} - ${produto.valor.replace('.',',')}`} 
+                        />
                       </ListItem>
                     );
                   })}

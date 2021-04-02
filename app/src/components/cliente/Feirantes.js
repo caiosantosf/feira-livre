@@ -15,6 +15,9 @@ import Container from '@material-ui/core/Container';
 import { api } from '../../config/api';
 import Voltar from '../nav/Voltar'
 import { Place, Schedule } from '@material-ui/icons';
+import { errorApi } from '../../config/handleErrors'
+import Alert from '@material-ui/lab/Alert';
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,11 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
+    display: "block"
   },
   secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
+    fontSize: theme.typography.pxToRem(13),
     color: theme.palette.text.secondary,
   },
   texto: {
@@ -71,11 +73,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Feirantes(props) {
   const classes = useStyles();
-  const { titulo } = props.location.state
+
+  const { state } = props.location
+  let titulo = ''
+  if (state) {
+    titulo = props.location.state.titulo
+  }
+
+  let history = useHistory()
 
   const [locais, setLocais] = React.useState([])
   const [feirantes, setFeirante] = React.useState([])
   const [produtos, setProdutos] = React.useState([])
+  const [error, setError] = React.useState([])
 
   let { feiraId } = props.match.params
 
@@ -85,7 +95,14 @@ export default function Feirantes(props) {
         const resLocais = await api.get(`/feiras/${feiraId}/locais`)
         if (resLocais.status === 200) setLocais(resLocais.data)
       } catch (error) {
-        alert(error)
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
       }
 
       try{
@@ -96,18 +113,32 @@ export default function Feirantes(props) {
 
         if (resFeirantes.status === 200) setFeirante(resFeirantes.data)
       } catch (error) {
-        alert(error)
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
       }
 
       try {
         const resProdutos = await api.get(`/feiras/${feiraId}/feirantes/produtos`)
         if (resProdutos.status === 200) setProdutos(resProdutos.data)
       } catch (error) {
-        alert(error)
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
       }
     }
     fetchData()
-  }, [feiraId])
+  }, [feiraId, history])
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -117,9 +148,17 @@ export default function Feirantes(props) {
 
   return (
     <div className={classes.root}>
-    <Voltar titulo={titulo} pagina="feira"/>
+    <Voltar titulo={titulo} pagina="/feiras"/>
     <Container >
       <CssBaseline />
+
+      <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+        {error.map((err, i) => {
+          return (
+            <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+          )
+        })}
+      </Alert>
 
       <Card className={classes.cardLocais}>
         <CardActionArea>
@@ -161,22 +200,22 @@ export default function Feirantes(props) {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
           >
-          <Typography className={classes.heading}>{feirante.nome}</Typography>
-          <Typography className={classes.secondaryHeading}>{feirante.descricao}</Typography>
+          <Typography className={classes.heading}>{feirante.nome + ' - ' + feirante.descricao}</Typography>
           </AccordionSummary>
           <AccordionDetails>
           <div className={classes.paper}>
-              <Box display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} bgcolor="background.paper">
+              <Box display="flex" flexWrap="wrap" textAlign="center" bgcolor="background.paper">
                   {produtos.map((produto, i) => {
                       if (produto.feiranteId === feirante.id) {
                           return (
-                              <Box key={i} p={i} css={{ maxWidth: 200 }}>
+                            <Box key={i} display="flex" flexWrap="wrap" textAlign="center" >
+                              <Box p={1} css={{ maxWidth: 400 }}>
                                   <Card className={classes.card}>
                                   <CardActionArea>
                                   <CardMedia
                                       component="img"
                                       alt={produto.nome}
-                                      height="140"
+                                      height="200"
                                       image={produto.imagemUrl}
                                       title={produto.nome}
                                   />
@@ -194,6 +233,7 @@ export default function Feirantes(props) {
                                   </CardActionArea>
                                   </Card>
                               </Box>
+                             </Box>
                           )
                       } else {
                           return ''
@@ -207,6 +247,7 @@ export default function Feirantes(props) {
       })}
       </div>
     </Container>
+    <br />
     </div>
   );
 }

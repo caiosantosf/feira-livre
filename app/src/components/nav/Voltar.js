@@ -33,7 +33,7 @@ export default function Voltar({titulo, pagina}) {
             <Toolbar variant="dense" className={classes.box}>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <ArrowBackIcon onClick={() => {
-                      if (pagina) {
+                      if (!pagina || pagina === undefined) {
                         history.goBack()
                       } else {
                         history.push(pagina)

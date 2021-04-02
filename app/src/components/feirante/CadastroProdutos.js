@@ -72,7 +72,7 @@ export default function CadastroProdutos(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get(`/feirantes/${feiranteId}/locais/${id}`)
+        const res = await api.get(`/feirantes/${feiranteId}/produtos/${id}`)
 
         if (res.status === 200) {
           setProduto(res.data)
@@ -124,11 +124,13 @@ export default function CadastroProdutos(props) {
     try {
       setError([])
 
-      let { id, ...produtoData } = produto
+      let { id, imagemUrl, ...produtoData } = produto
 
       const config = { headers :{
         'x-access-token' : sessionStorage.getItem('token'),
       }}
+
+      produtoData.feiranteId = feiranteId
 
       const res = !id ? await api.post(`/feirantes/${feiranteId}/produtos`, produtoData, config)
                      : await api.put(`/feirantes/${feiranteId}/produtos/${id}`, produtoData, config)
@@ -141,7 +143,7 @@ export default function CadastroProdutos(props) {
         data.append("name", image[0].file.name)
         data.append("file", image[0].file)
 
-        await api.patch(`/feiras/${idCreated ? idCreated : id}`, data, config)
+        await api.patch(`/feirantes/${feiranteId}/produtos/${idCreated ? idCreated : id}`, data, config)
       }
 
       if (res.status === 201 || res.status === 200) {
@@ -168,7 +170,7 @@ export default function CadastroProdutos(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Cadastro" pagina="produtos"/>
+        <Voltar titulo="Cadastro" pagina="/produtos"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />
@@ -205,6 +207,7 @@ export default function CadastroProdutos(props) {
                     name="preco"
                     id="preco"
                     label="Preço"
+                    type="number"
                     value={produto.valor || ''}
                     onChange={e => {
                       setProduto({ ...produto, valor: e.target.value})
@@ -219,18 +222,18 @@ export default function CadastroProdutos(props) {
                       fullWidth
                       labelId="select-unidade"
                       id="select-unidade"
-                      value={produto.unidadeMedida}
+                      value={produto.unidadeMedida || ''}
                       onChange={e => {
                         setProduto({ ...produto, unidadeMedida: e.target.value})
                       }}
                     >
-                      <MenuItem value={'Kilo'}>Kilo</MenuItem>
-                      <MenuItem value={'100 Gramas'}>100 Gramas</MenuItem>
-                      <MenuItem value={'Unidade'}>Unidade</MenuItem>
-                      <MenuItem value={'Dúzia'}>Dúzia</MenuItem>
-                      <MenuItem value={'Metro'}>Metro</MenuItem>
-                      <MenuItem value={'Litro'}>Litro</MenuItem>
-                      <MenuItem value={'ML'}>ML</MenuItem>
+                      <MenuItem value='Kilo'>Kilo</MenuItem>
+                      <MenuItem value='100 Gramas'>100 Gramas</MenuItem>
+                      <MenuItem value='Unidade'>Unidade</MenuItem>
+                      <MenuItem value='Dúzia'>Dúzia</MenuItem>
+                      <MenuItem value='Metro'>Metro</MenuItem>
+                      <MenuItem value='Litro'>Litro</MenuItem>
+                      <MenuItem value='ML'>ML</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -301,7 +304,7 @@ export default function CadastroProdutos(props) {
                 className={classes.submit}
                 onClick={() => handleSave()}
               >
-                Cadastrar
+                Salvar
               </Button>
               <Button
                 fullWidth

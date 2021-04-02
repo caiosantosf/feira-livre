@@ -12,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper'
 import { api } from '../../config/api';
+import { errorApi } from '../../config/handleErrors'
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +41,7 @@ export default function App() {
 
   const [cidades, setCidades] = React.useState([]);
   const [estados, setEstados] = React.useState([]);
-
+  const [error, setError] = React.useState([])
   const [cidade, setCidade] = React.useState();
   const [estado, setEstado] = React.useState();
 
@@ -60,11 +62,18 @@ export default function App() {
           setEstados(res.data)
         }
       } catch (error) {
-        alert(error)
+        const errorHandled = errorApi(error)
+        if (errorHandled.forbidden) {
+          history.push('/')
+        } else {
+          if (errorHandled.general) {
+            setError([errorHandled.error])
+          }
+        }
       }
     }
     fetchData()
-  }, [])
+  }, [history])
 
   const handleGetCidades = async (estado) => {
     try {
@@ -73,7 +82,14 @@ export default function App() {
         setCidades(res.data)
       }
     } catch (error) {
-      alert(error)
+      const errorHandled = errorApi(error)
+      if (errorHandled.forbidden) {
+        history.push('/')
+      } else {
+        if (errorHandled.general) {
+          setError([errorHandled.error])
+        }
+      }
     }
   }
 
@@ -82,6 +98,13 @@ export default function App() {
       <div id="container-imagem"></div>
       <Container component="main" maxWidth="false">
         <Paper className="paperApp" elevation={3}>
+          <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
+            {error.map((err, i) => {
+              return (
+                <React.Fragment> {i ? <br /> : ''} {err} </React.Fragment>
+              )
+            })}
+          </Alert>
           <CssBaseline />
           <div className={classes.paper}>
           <Box display="flex" 

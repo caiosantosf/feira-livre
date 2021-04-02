@@ -71,6 +71,8 @@ export default function Locais(props) {
 
         if (res.status === 200) {
           setLocais(res.data)
+        } else if (res.status === 204) {
+          setError(['Você ainda não cadastrou nenhum local'])
         }
       } catch (error) {
         const errorHandled = errorApi(error)
@@ -91,7 +93,7 @@ export default function Locais(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Locais e Horários" pagina="home"/>
+        <Voltar titulo="Locais e Horários" pagina="/home"/>
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />

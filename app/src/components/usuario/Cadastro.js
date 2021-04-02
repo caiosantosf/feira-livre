@@ -116,7 +116,11 @@ export default function Cadastro(props) {
 
           if (token) {
             sessionStorage.setItem('token', token)
-            sessionStorage.setItem('usuarioId', idCreated)
+
+            if (idCreated) {
+              sessionStorage.setItem('usuarioId', idCreated)
+            }
+
             if (usuario.tipo === 'feira') {
               history.push('/cadastro-feira', {usuarioId: id ? id : idCreated, novo: true})
             } else {
@@ -146,7 +150,7 @@ export default function Cadastro(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Voltar titulo="Cadastro" pagina="home"/>
+        <Voltar titulo="Cadastro" />
         <Container component="main" maxWidth="false">
           <Paper className="paperApp" elevation={3}>
             <CssBaseline />
