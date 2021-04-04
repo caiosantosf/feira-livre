@@ -1,14 +1,12 @@
-import { useHistory } from "react-router-dom"
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
+import Voltar from '../nav/Voltar'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,13 +32,45 @@ const useStyles = makeStyles((theme) => ({
 export default function NovaSenha() {
   const classes = useStyles();
 
-  let history = useHistory()
+  const nodemailer = require('nodemailer');
+
+  const transporter = nodemailer.createTransport({
+    service: 'SendGrid',
+    auth: {
+      user: "apikey",
+      pass: "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"
+    },
+  });
+
+  const mailOptions = {
+    from: 'no-reply@diegopinho.com',
+    to: 'luismar_pavani@hotmail.com',
+    subject: 'E-mail enviado usando Node!',
+    text: 'Bem fácil, não? ;)'
+  };
+
+  const handleEmail = async () => {
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email enviado: ' + info.response);
+        }
+      });
+
+    try {
+      //setError({})
+      
+    } catch (error) {
+      //setError(error)
+    }
+  }
 
   return (
     <React.Fragment>
-      <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
-        <Paper elevation={3}>
+      <Voltar titulo="Recuperar Senha" pagina="login" />
+        <Container component="main" maxWidth="false">
+          <Paper className="paperApp" elevation={3}>
           <CssBaseline />
           <div className={classes.paper}>
           
@@ -65,21 +95,10 @@ export default function NovaSenha() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleEmail}
             >
               Enviar
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/login')
-                }}>
-                  {"Voltar para o login"}
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
         </Paper>

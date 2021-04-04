@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles()
 
-  const [error, setError] = React.useState({})
+  //const [error, setError] = React.useState({})
   const [auth, setAuth] = React.useState({})
 
   let history = useHistory()
 
   const handleAuth = async () => {
     try {
-      setError({})
+      //setError({})
       const res = await api.post('/usuarios/login/', auth)
       const { token, id, tipo, feiraId, feiranteId } = res.data
 
@@ -60,7 +60,7 @@ export default function Login() {
       
       history.push('/home')
     } catch (error) {
-      setError(error)
+      //setError(error)
     }
   }
 
