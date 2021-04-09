@@ -31,24 +31,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NovaSenha() {
   const classes = useStyles();
-
+  
   const nodemailer = require('nodemailer');
 
-  const transporter = nodemailer.createTransport({
-    service: 'SendGrid',
+  const transporter = nodemailer.createTransport({ 
+    service: 'gmail',
     auth: {
-      user: "apikey",
-      pass: "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"
+      user: "luismar@chb.com.br",
+      pass: "luismarchb"
     },
   });
 
   const mailOptions = {
-    from: 'no-reply@diegopinho.com',
+    from: 'luismar@chb.com.br',
     to: 'luismar_pavani@hotmail.com',
     subject: 'E-mail enviado usando Node!',
     text: 'Bem fácil, não? ;)'
   };
 
+  
   const handleEmail = async () => {
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {

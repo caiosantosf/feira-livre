@@ -103,10 +103,6 @@ export default function Login() {
                   })
                 }}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Continuar Conectado"
-              />
               <Button
                 fullWidth
                 variant="contained"
@@ -117,16 +113,6 @@ export default function Login() {
                 Acessar
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link 
-                  component="button"
-                  variant="body2"
-                  onClick={() => {
-                    history.push('/novasenha')
-                  }}>
-                    Esqueceu a Senha?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link
                   component="button"
