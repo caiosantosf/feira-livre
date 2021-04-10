@@ -18,15 +18,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '20px',
   },
   avatar: {
-    margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', 
-    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -103,10 +100,7 @@ export default function Login() {
                   })
                 }}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Continuar Conectado"
-              />
+
               <Button
                 fullWidth
                 variant="contained"
@@ -117,16 +111,6 @@ export default function Login() {
                 Acessar
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link 
-                  component="button"
-                  variant="body2"
-                  onClick={() => {
-                    history.push('/novasenha')
-                  }}>
-                    Esqueceu a Senha?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link
                   component="button"

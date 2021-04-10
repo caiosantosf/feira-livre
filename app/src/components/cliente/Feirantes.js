@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardLocais: {
     width: '100%',
-    marginTop: "30px"
+    marginTop: "16px"
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   texto: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
   },
   diaSemana: {
     fontSize: theme.typography.pxToRem(15),
@@ -209,7 +209,7 @@ export default function Feirantes(props) {
                       if (produto.feiranteId === feirante.id) {
                           return (
                             <Box key={i} display="flex" flexWrap="wrap" textAlign="center" >
-                              <Box p={1} css={{ maxWidth: 400 }}>
+                              <Box css={{ maxWidth: 400 }}>
                                   <Card className={classes.card}>
                                   <CardActionArea>
                                   <CardMedia

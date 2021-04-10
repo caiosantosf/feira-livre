@@ -13,6 +13,13 @@ code {
 }
 
 main {
+  min-height: 80vh !important; /* These two lines are counted as one :-)       */
+
+  display: flex !important;
+  align-items: center !important;
+}
+
+.inicioCentralizado {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -25,7 +32,7 @@ main {
     box-shadow:none !important;
   }
   .paperApp {
-    background-color: #FAFAFA !important
+    background-color: transparent !important
   }
   .makeStyles-paper-1 {
     padding: 0px !important;

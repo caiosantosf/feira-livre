@@ -96,7 +96,7 @@ export default function App() {
   return (
     <React.Fragment>
       <div id="container-imagem"></div>
-      <Container component="main" maxWidth="false">
+      <Container component="main" maxWidth="false" className="inicioCentralizado">
         <Paper className="paperApp" elevation={3}>
           <Alert severity="error" style={error.length ? { display: 'flex'} : { display : 'none' }}>
             {error.map((err, i) => {

@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     justifyContent: "center",
     flexWrap: "wrap",
+    marginBottom: "20px"
   },
   card: {
     width: '100%',
@@ -86,8 +87,8 @@ export default function Feiras() {
             </Alert>
             {feiras.map((feira, i) => {
               return (
-                <Box key={i} display="flex" flexWrap="wrap" textAlign="center" p={1} m={1} >
-                  <Box p={1} css={{ maxWidth: 400 }}>
+                <Box key={i} display="flex" flexWrap="wrap" textAlign="center" mt={2} >
+                  <Box css={{ maxWidth: 400 }}>
                       <Card className={classes.card}>
                         <CardActionArea>
                         <CardMedia

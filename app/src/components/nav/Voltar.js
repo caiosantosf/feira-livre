@@ -8,9 +8,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: "50px" 
-  },
   box: {
     display: "flex",
     justifyContent: "space-between",
@@ -29,7 +26,7 @@ export default function Voltar({titulo, pagina}) {
   
     return (
     <div className={classes.root}>
-        <AppBar position="fixed">
+        <AppBar position="static">
             <Toolbar variant="dense" className={classes.box}>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <ArrowBackIcon onClick={() => {
