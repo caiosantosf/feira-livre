@@ -87,7 +87,7 @@ export default function Feiras() {
             </Alert>
             {feiras.map((feira, i) => {
               return (
-                <Box key={i} display="flex" flexWrap="wrap" textAlign="center" mt={2} >
+                <Box key={i} textAlign="center" ml={1} mt={2} >
                   <Box css={{ maxWidth: 400 }}>
                       <Card className={classes.card}>
                         <CardActionArea>

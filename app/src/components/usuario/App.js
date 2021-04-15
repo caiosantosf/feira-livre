@@ -17,7 +17,7 @@ import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    padding: '20px'
+
   },
   form: {
     width: '100%'
@@ -152,7 +152,6 @@ export default function App() {
 
             <form className={classes.form}>
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -160,7 +159,11 @@ export default function App() {
                 onClick={() => {
                   sessionStorage.setItem('estado', estado)
                   sessionStorage.setItem('cidade', cidade)
-                  history.push('/feiras')
+                  if (estado && cidade) {
+                    history.push('/feiras')
+                  } else {
+                    setError(['Seleciona um estado e uma cidade!'])
+                  }
                 }}
               >
                 Acessar

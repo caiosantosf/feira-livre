@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const path = require('path');
 
 const usuarioRoutes = require('./modules/user/user-routes')
 const feiraRoutes = require('./modules/feira/feira-routes')
@@ -13,7 +14,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.use(express.static(`${process.cwd()}\\public`))
+app.use(express.static(path.join(__dirname.replace('\\src',''), 'public')))
 
 app.use(usuarioRoutes)
 app.use(feiraRoutes)

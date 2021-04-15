@@ -208,8 +208,8 @@ export default function Feirantes(props) {
                   {produtos.map((produto, i) => {
                       if (produto.feiranteId === feirante.id) {
                           return (
-                            <Box key={i} display="flex" flexWrap="wrap" textAlign="center" >
-                              <Box css={{ maxWidth: 400 }}>
+                            <Box key={i} m={1} textAlign="center" >
+                              <Box css={{ maxWidth: 350 }}>
                                   <Card className={classes.card}>
                                   <CardActionArea>
                                   <CardMedia

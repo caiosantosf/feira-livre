@@ -20,8 +20,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px',
+    alignItems: 'center'
   },
   avatar: {
     margin: theme.spacing(1),
